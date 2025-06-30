@@ -29,6 +29,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       });
       onSuccess?.();
     } catch (error: any) {
+      console.error('Login error:', error);
       toast({
         title: 'Erro no login',
         description: error.message || 'Credenciais inválidas.',
@@ -50,6 +51,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           onChange={(e) => setEmail(e.target.value)}
           required
           disabled={isLoading}
+          placeholder="seu@email.com"
         />
       </div>
       <div className="space-y-2">
@@ -61,6 +63,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           onChange={(e) => setPassword(e.target.value)}
           required
           disabled={isLoading}
+          placeholder="Sua senha"
         />
       </div>
       <Button type="submit" className="w-full" disabled={isLoading}>

@@ -26,6 +26,16 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (formData.password.length < 6) {
+      toast({
+        title: 'Erro',
+        description: 'A senha deve ter pelo menos 6 caracteres.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -38,10 +48,11 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       
       toast({
         title: 'Conta criada!',
-        description: 'Sua conta foi criada com sucesso. Verifique seu email.',
+        description: 'Sua conta foi criada com sucesso.',
       });
       onSuccess?.();
     } catch (error: any) {
+      console.error('Registration error:', error);
       toast({
         title: 'Erro no cadastro',
         description: error.message || 'Erro ao criar conta.',
@@ -63,6 +74,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
             required
             disabled={isLoading}
+            placeholder="Seu nome"
           />
         </div>
         <div className="space-y-2">
@@ -73,6 +85,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
             required
             disabled={isLoading}
+            placeholder="Seu sobrenome"
           />
         </div>
       </div>
@@ -86,6 +99,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
           required
           disabled={isLoading}
+          placeholder="seu@email.com"
         />
       </div>
       
@@ -97,6 +111,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           value={formData.phone}
           onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
           disabled={isLoading}
+          placeholder="(11) 99999-9999"
         />
       </div>
       
@@ -123,6 +138,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           required
           disabled={isLoading}
           minLength={6}
+          placeholder="Mínimo 6 caracteres"
         />
       </div>
       

@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,29 +21,52 @@ import ReportsPage from "@/pages/admin/ReportsPage";
 import SystemSettings from "@/pages/admin/SystemSettings";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function AppRoutes() {
   const { user, profile, loading } = useAuth();
 
+  console.log('AppRoutes - loading:', loading, 'user:', !!user, 'profile:', profile?.role);
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Inicializando aplicação...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show landing page if not authenticated
+  if (!user || !profile) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {user && profile && profile.role !== 'admin' && <Navbar />}
-      <main className={user && profile && profile.role !== 'admin' ? '' : ''}>
+      {profile.role !== 'admin' && <Navbar />}
+      <main>
         <Routes>
           <Route path="/" element={
-            !user ? <LandingPage /> : 
-            profile?.role === 'admin' ? <Navigate to="/admin" replace /> :
-            profile?.role === 'trainer' ? <Navigate to="/trainer" replace /> :
-            profile?.role === 'student' ? <Navigate to="/student" replace /> :
+            profile.role === 'admin' ? <Navigate to="/admin" replace /> :
+            profile.role === 'trainer' ? <Navigate to="/trainer" replace /> :
+            profile.role === 'student' ? <Navigate to="/student" replace /> :
             <LandingPage />
           } />
           
@@ -112,28 +136,10 @@ function AppRoutes() {
             </ProtectedRoute>
           } />
           
-          <Route path="/trainer/*" element={
-            <ProtectedRoute requiredRole="trainer">
-              <div className="p-6">
-                <h1 className="text-2xl font-bold">Funcionalidade em desenvolvimento</h1>
-                <p className="text-gray-600 mt-2">Esta seção estará disponível em breve.</p>
-              </div>
-            </ProtectedRoute>
-          } />
-          
           {/* Student Routes */}
           <Route path="/student" element={
             <ProtectedRoute requiredRole="student">
               <StudentDashboard />
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/student/*" element={
-            <ProtectedRoute requiredRole="student">
-              <div className="p-6">
-                <h1 className="text-2xl font-bold">Funcionalidade em desenvolvimento</h1>
-                <p className="text-gray-600 mt-2">Esta seção estará disponível em breve.</p>
-              </div>
             </ProtectedRoute>
           } />
           

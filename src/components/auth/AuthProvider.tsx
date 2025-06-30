@@ -29,65 +29,108 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        loadUserProfile(session.user.id);
-      } else {
-        setLoading(false);
+    const getInitialSession = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error('Error getting session:', error);
+          if (mounted) setLoading(false);
+          return;
+        }
+
+        if (session?.user && mounted) {
+          setUser(session.user);
+          await loadUserProfile(session.user.id);
+        } else if (mounted) {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error in getInitialSession:', error);
+        if (mounted) setLoading(false);
       }
-    });
+    };
+
+    getInitialSession();
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await loadUserProfile(session.user.id);
-        } else {
-          setProfile(null);
-          setTrainerProfile(null);
-          setStudentProfile(null);
-          setLoading(false);
+        console.log('Auth state changed:', event, session?.user?.id);
+        
+        if (mounted) {
+          setUser(session?.user ?? null);
+          
+          if (session?.user) {
+            await loadUserProfile(session.user.id);
+          } else {
+            setProfile(null);
+            setTrainerProfile(null);
+            setStudentProfile(null);
+            setLoading(false);
+          }
         }
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const loadUserProfile = async (userId: string) => {
     try {
+      console.log('Loading profile for user:', userId);
+      
       // Load basic profile
-      const { data: profileData } = await supabase
+      const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .single();
 
+      if (profileError) {
+        console.error('Error loading profile:', profileError);
+        setLoading(false);
+        return;
+      }
+
       if (profileData) {
+        console.log('Profile loaded:', profileData);
         setProfile(profileData);
 
         // Load role-specific profile
         if (profileData.role === 'trainer') {
-          const { data: trainerData } = await supabase
+          const { data: trainerData, error: trainerError } = await supabase
             .from('trainer_profiles')
             .select('*')
             .eq('id', userId)
             .single();
-          setTrainerProfile(trainerData);
+            
+          if (trainerError) {
+            console.error('Error loading trainer profile:', trainerError);
+          } else {
+            setTrainerProfile(trainerData);
+          }
         } else if (profileData.role === 'student') {
-          const { data: studentData } = await supabase
+          const { data: studentData, error: studentError } = await supabase
             .from('student_profiles')
             .select('*')
             .eq('id', userId)
             .single();
-          setStudentProfile(studentData);
+            
+          if (studentError) {
+            console.error('Error loading student profile:', studentError);
+          } else {
+            setStudentProfile(studentData);
+          }
         }
       }
     } catch (error) {
-      console.error('Error loading profile:', error);
+      console.error('Error in loadUserProfile:', error);
     } finally {
       setLoading(false);
     }
@@ -107,6 +150,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
       options: {
         data: userData,
+        emailRedirectTo: `${window.location.origin}/`
       },
     });
     if (error) throw error;
