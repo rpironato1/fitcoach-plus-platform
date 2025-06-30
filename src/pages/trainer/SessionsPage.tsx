@@ -52,7 +52,7 @@ export default function SessionsPage() {
         .from('student_profiles')
         .select(`
           id,
-          profiles!inner(first_name, last_name)
+          profiles(first_name, last_name)
         `)
         .eq('trainer_id', profile.id)
         .eq('status', 'active');
@@ -61,8 +61,8 @@ export default function SessionsPage() {
 
       return data.map(student => ({
         id: student.id,
-        first_name: student.profiles.first_name,
-        last_name: student.profiles.last_name,
+        first_name: student.profiles?.first_name || '',
+        last_name: student.profiles?.last_name || '',
       }));
     },
     enabled: !!profile?.id,
@@ -83,7 +83,7 @@ export default function SessionsPage() {
           status,
           notes,
           payment_intent_id,
-          profiles!sessions_student_id_fkey(first_name, last_name)
+          profiles(first_name, last_name)
         `)
         .eq('trainer_id', profile.id)
         .order('scheduled_at', { ascending: true });

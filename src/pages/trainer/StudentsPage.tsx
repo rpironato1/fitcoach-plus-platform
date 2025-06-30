@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -44,7 +43,7 @@ export default function StudentsPage() {
           id,
           start_date,
           status,
-          profiles!inner(first_name, last_name, phone)
+          profiles(first_name, last_name, phone)
         `)
         .eq('trainer_id', profile.id);
 
@@ -56,9 +55,9 @@ export default function StudentsPage() {
           const { data: userData } = await supabase.auth.admin.getUserById(student.id);
           return {
             id: student.id,
-            first_name: student.profiles.first_name,
-            last_name: student.profiles.last_name,
-            phone: student.profiles.phone,
+            first_name: student.profiles?.first_name || '',
+            last_name: student.profiles?.last_name || '',
+            phone: student.profiles?.phone || null,
             email: userData.user?.email || '',
             start_date: student.start_date,
             status: student.status,

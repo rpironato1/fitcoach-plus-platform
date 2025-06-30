@@ -54,7 +54,7 @@ export default function DietPlansPage() {
         .from('student_profiles')
         .select(`
           id,
-          profiles!inner(first_name, last_name)
+          profiles(first_name, last_name)
         `)
         .eq('trainer_id', profile.id)
         .eq('status', 'active');
@@ -63,8 +63,8 @@ export default function DietPlansPage() {
 
       return data.map(student => ({
         id: student.id,
-        first_name: student.profiles.first_name,
-        last_name: student.profiles.last_name,
+        first_name: student.profiles?.first_name || '',
+        last_name: student.profiles?.last_name || '',
       }));
     },
     enabled: !!profile?.id,
@@ -85,7 +85,7 @@ export default function DietPlansPage() {
           is_paid,
           content,
           created_at,
-          profiles!diet_plans_student_id_fkey(first_name, last_name)
+          profiles(first_name, last_name)
         `)
         .eq('trainer_id', profile.id)
         .order('created_at', { ascending: false });
