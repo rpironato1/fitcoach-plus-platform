@@ -30,17 +30,17 @@ const queryClient = new QueryClient({
   },
 });
 
-function AppRoutes() {
+function AppContent() {
   const { user, profile, loading } = useAuth();
 
-  console.log('AppRoutes - loading:', loading, 'user:', !!user, 'profile:', profile?.role);
+  console.log('App loading:', loading, 'user:', !!user, 'profile role:', profile?.role);
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Inicializando aplicação...</p>
+          <p className="mt-4 text-gray-600">Carregando...</p>
         </div>
       </div>
     );
@@ -67,7 +67,7 @@ function AppRoutes() {
             profile.role === 'admin' ? <Navigate to="/admin" replace /> :
             profile.role === 'trainer' ? <Navigate to="/trainer" replace /> :
             profile.role === 'student' ? <Navigate to="/student" replace /> :
-            <LandingPage />
+            <Navigate to="/" replace />
           } />
           
           {/* Admin Routes */}
@@ -157,7 +157,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <AppRoutes />
+          <AppContent />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

@@ -31,12 +31,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    // Get initial session
+    // Set up auth state listener first
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.id);
+        
+        if (mounted) {
+          setUser(session?.user ?? null);
+          
+          if (session?.user) {
+            // Defer profile loading to avoid blocking
+            setTimeout(() => {
+              if (mounted) {
+                loadUserProfile(session.user.id);
+              }
+            }, 0);
+          } else {
+            setProfile(null);
+            setTrainerProfile(null);
+            setStudentProfile(null);
+            setLoading(false);
+          }
+        }
+      }
+    );
+
+    // Then get initial session
     const getInitialSession = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
+        
         if (error) {
-          console.error('Error getting session:', error);
+          console.error('Error getting initial session:', error);
           if (mounted) setLoading(false);
           return;
         }
@@ -55,26 +81,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     getInitialSession();
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.id);
-        
-        if (mounted) {
-          setUser(session?.user ?? null);
-          
-          if (session?.user) {
-            await loadUserProfile(session.user.id);
-          } else {
-            setProfile(null);
-            setTrainerProfile(null);
-            setStudentProfile(null);
-            setLoading(false);
-          }
-        }
-      }
-    );
-
     return () => {
       mounted = false;
       subscription.unsubscribe();
@@ -90,7 +96,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
 
       if (profileError) {
         console.error('Error loading profile:', profileError);
@@ -104,27 +110,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // Load role-specific profile
         if (profileData.role === 'trainer') {
-          const { data: trainerData, error: trainerError } = await supabase
+          const { data: trainerData } = await supabase
             .from('trainer_profiles')
             .select('*')
             .eq('id', userId)
-            .single();
+            .maybeSingle();
             
-          if (trainerError) {
-            console.error('Error loading trainer profile:', trainerError);
-          } else {
+          if (trainerData) {
             setTrainerProfile(trainerData);
           }
         } else if (profileData.role === 'student') {
-          const { data: studentData, error: studentError } = await supabase
+          const { data: studentData } = await supabase
             .from('student_profiles')
             .select('*')
             .eq('id', userId)
-            .single();
+            .maybeSingle();
             
-          if (studentError) {
-            console.error('Error loading student profile:', studentError);
-          } else {
+          if (studentData) {
             setStudentProfile(studentData);
           }
         }
