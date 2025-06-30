@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Users, Search, Filter, MoreHorizontal, Edit, Trash2 } from 'lucide-react';
+import { Users, Search, Filter, MoreHorizontal, Trash2 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 interface Trainer {
@@ -20,8 +20,8 @@ interface Trainer {
   profiles: {
     first_name: string;
     last_name: string;
-    phone: string;
-  };
+    phone: string | null;
+  } | null;
   _count?: {
     students: number;
   };
@@ -36,12 +36,17 @@ export default function TrainersManagement() {
   const { data: trainers, isLoading } = useQuery({
     queryKey: ['admin-trainers'],
     queryFn: async () => {
-      const { data: trainersData } = await supabase
+      const { data: trainersData, error } = await supabase
         .from('trainer_profiles')
         .select(`
           *,
-          profiles!inner(first_name, last_name, phone)
+          profiles(first_name, last_name, phone)
         `);
+
+      if (error) {
+        console.error('Erro ao buscar trainers:', error);
+        throw error;
+      }
 
       // Buscar contagem de alunos para cada trainer
       const trainersWithCounts = await Promise.all(
@@ -59,7 +64,7 @@ export default function TrainersManagement() {
         })
       );
 
-      return trainersWithCounts as Trainer[];
+      return trainersWithCounts;
     }
   });
 
@@ -118,6 +123,8 @@ export default function TrainersManagement() {
   });
 
   const filteredTrainers = trainers?.filter(trainer => {
+    if (!trainer.profiles) return false;
+    
     const matchesSearch = `${trainer.profiles.first_name} ${trainer.profiles.last_name}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -209,10 +216,10 @@ export default function TrainersManagement() {
                   </div>
                   <div>
                     <h3 className="font-semibold">
-                      {trainer.profiles.first_name} {trainer.profiles.last_name}
+                      {trainer.profiles ? `${trainer.profiles.first_name} ${trainer.profiles.last_name}` : 'Nome não disponível'}
                     </h3>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <span>{trainer.profiles.phone}</span>
+                      <span>{trainer.profiles?.phone || 'Telefone não informado'}</span>
                       <span>{trainer._count?.students || 0} alunos</span>
                       <span>{trainer.ai_credits} créditos IA</span>
                     </div>
