@@ -37,30 +37,39 @@ export default function StudentsPage() {
     queryFn: async () => {
       if (!profile?.id) return [];
 
-      const { data, error } = await supabase
+      // Primeiro buscar os student_profiles
+      const { data: studentProfiles, error } = await supabase
         .from('student_profiles')
-        .select(`
-          id,
-          start_date,
-          status,
-          profiles(first_name, last_name, phone)
-        `)
+        .select('id, start_date, status')
         .eq('trainer_id', profile.id);
 
       if (error) throw error;
 
+      if (!studentProfiles || studentProfiles.length === 0) return [];
+
+      // Buscar os perfis dos alunos
+      const studentIds = studentProfiles.map(sp => sp.id);
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name, phone')
+        .in('id', studentIds);
+
+      if (profilesError) throw profilesError;
+
       // Buscar emails dos usuários via auth
       const studentData = await Promise.all(
-        data.map(async (student) => {
-          const { data: userData } = await supabase.auth.admin.getUserById(student.id);
+        studentProfiles.map(async (studentProfile) => {
+          const studentProfileData = profiles?.find(p => p.id === studentProfile.id);
+          const { data: userData } = await supabase.auth.admin.getUserById(studentProfile.id);
+          
           return {
-            id: student.id,
-            first_name: student.profiles?.first_name || '',
-            last_name: student.profiles?.last_name || '',
-            phone: student.profiles?.phone || null,
+            id: studentProfile.id,
+            first_name: studentProfileData?.first_name || '',
+            last_name: studentProfileData?.last_name || '',
+            phone: studentProfileData?.phone || null,
             email: userData.user?.email || '',
-            start_date: student.start_date,
-            status: student.status,
+            start_date: studentProfile.start_date,
+            status: studentProfile.status,
           };
         })
       );

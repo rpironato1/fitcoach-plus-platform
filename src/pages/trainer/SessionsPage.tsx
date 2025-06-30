@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,22 +47,31 @@ export default function SessionsPage() {
     queryFn: async () => {
       if (!profile?.id) return [];
 
-      const { data, error } = await supabase
+      // Primeiro buscar os student_profiles ativos
+      const { data: studentProfiles, error } = await supabase
         .from('student_profiles')
-        .select(`
-          id,
-          profiles(first_name, last_name)
-        `)
+        .select('id')
         .eq('trainer_id', profile.id)
         .eq('status', 'active');
 
       if (error) throw error;
 
-      return data.map(student => ({
-        id: student.id,
-        first_name: student.profiles?.first_name || '',
-        last_name: student.profiles?.last_name || '',
-      }));
+      if (!studentProfiles || studentProfiles.length === 0) return [];
+
+      // Buscar os perfis dos alunos
+      const studentIds = studentProfiles.map(sp => sp.id);
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name')
+        .in('id', studentIds);
+
+      if (profilesError) throw profilesError;
+
+      return profiles?.map(profile => ({
+        id: profile.id,
+        first_name: profile.first_name || '',
+        last_name: profile.last_name || '',
+      })) || [];
     },
     enabled: !!profile?.id,
   });
@@ -74,7 +82,8 @@ export default function SessionsPage() {
     queryFn: async () => {
       if (!profile?.id) return [];
 
-      const { data, error } = await supabase
+      // Buscar sessões
+      const { data: sessionsData, error } = await supabase
         .from('sessions')
         .select(`
           id,
@@ -83,25 +92,39 @@ export default function SessionsPage() {
           status,
           notes,
           payment_intent_id,
-          profiles(first_name, last_name)
+          student_id
         `)
         .eq('trainer_id', profile.id)
         .order('scheduled_at', { ascending: true });
 
       if (error) throw error;
 
-      return data.map(session => ({
-        id: session.id,
-        scheduled_at: session.scheduled_at,
-        duration_minutes: session.duration_minutes,
-        status: session.status,
-        notes: session.notes,
-        payment_intent_id: session.payment_intent_id,
-        student: {
-          first_name: session.profiles?.first_name || '',
-          last_name: session.profiles?.last_name || '',
-        },
-      }));
+      if (!sessionsData || sessionsData.length === 0) return [];
+
+      // Buscar perfis dos estudantes
+      const studentIds = [...new Set(sessionsData.map(s => s.student_id))];
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name')
+        .in('id', studentIds);
+
+      if (profilesError) throw profilesError;
+
+      return sessionsData.map(session => {
+        const studentProfile = profiles?.find(p => p.id === session.student_id);
+        return {
+          id: session.id,
+          scheduled_at: session.scheduled_at,
+          duration_minutes: session.duration_minutes,
+          status: session.status,
+          notes: session.notes,
+          payment_intent_id: session.payment_intent_id,
+          student: {
+            first_name: studentProfile?.first_name || '',
+            last_name: studentProfile?.last_name || '',
+          },
+        };
+      });
     },
     enabled: !!profile?.id,
   });
