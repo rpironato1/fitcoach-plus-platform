@@ -1,202 +1,136 @@
 
-import { useState } from 'react';
-import { useAuth } from '@/components/auth/AuthProvider';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
-
-interface Student {
-  id: string;
-  first_name: string;
-  last_name: string;
-}
+import { useAuth } from '@/components/auth/AuthProvider';
+import { useToast } from '@/hooks/use-toast';
 
 interface Session {
   id: string;
+  trainer_id: string;
+  student_id: string;
   scheduled_at: string;
   duration_minutes: number;
   status: string;
   notes: string | null;
-  student: {
-    first_name: string;
-    last_name: string;
-  };
-  payment_intent_id: string | null;
+  created_at: string;
+  updated_at: string;
+  student_name?: string;
 }
 
-interface CreateSessionData {
-  student_id: string;
-  scheduled_at: string;
-  duration_minutes: number;
-  notes?: string;
+interface Student {
+  id: string;
+  profiles?: {
+    first_name: string;
+    last_name: string;
+  } | null;
 }
 
 export function useSessions() {
-  const { profile, trainerProfile } = useAuth();
+  const { profile } = useAuth();
+  const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Query para buscar alunos
-  const { data: students } = useQuery({
+  const { data: students, isLoading: studentsLoading } = useQuery({
     queryKey: ['students-for-sessions', profile?.id],
     queryFn: async () => {
       if (!profile?.id) return [];
 
-      // Primeiro buscar os student_profiles ativos
-      const { data: studentProfiles, error } = await supabase
+      const { data: studentsData, error } = await supabase
         .from('student_profiles')
-        .select('id')
+        .select('*')
         .eq('trainer_id', profile.id)
         .eq('status', 'active');
 
       if (error) throw error;
 
-      if (!studentProfiles || studentProfiles.length === 0) return [];
-
-      // Buscar os perfis dos alunos
-      const studentIds = studentProfiles.map(sp => sp.id);
-      const { data: profiles, error: profilesError } = await supabase
+      // Buscar profiles dos estudantes
+      const { data: profilesData } = await supabase
         .from('profiles')
-        .select('id, first_name, last_name')
-        .in('id', studentIds);
+        .select('id, first_name, last_name');
 
-      if (profilesError) throw profilesError;
+      // Combinar os dados
+      const studentsWithProfiles = studentsData?.map(student => ({
+        ...student,
+        profiles: profilesData?.find(p => p.id === student.id) || null
+      }));
 
-      return profiles?.map(profile => ({
-        id: profile.id,
-        first_name: profile.first_name || '',
-        last_name: profile.last_name || '',
-      })) || [];
+      return studentsWithProfiles as Student[];
     },
-    enabled: !!profile?.id,
+    enabled: !!profile?.id
   });
 
-  // Query para buscar sessões
-  const { data: sessions, isLoading } = useQuery({
+  const { data: sessions, isLoading: sessionsLoading } = useQuery({
     queryKey: ['sessions', profile?.id],
     queryFn: async () => {
       if (!profile?.id) return [];
 
-      // Buscar sessões
       const { data: sessionsData, error } = await supabase
         .from('sessions')
-        .select(`
-          id,
-          scheduled_at,
-          duration_minutes,
-          status,
-          notes,
-          payment_intent_id,
-          student_id
-        `)
+        .select('*')
         .eq('trainer_id', profile.id)
         .order('scheduled_at', { ascending: true });
 
       if (error) throw error;
 
-      if (!sessionsData || sessionsData.length === 0) return [];
-
-      // Buscar perfis dos estudantes
-      const studentIds = [...new Set(sessionsData.map(s => s.student_id))];
-      const { data: profiles, error: profilesError } = await supabase
+      // Buscar nomes dos estudantes
+      const { data: profilesData } = await supabase
         .from('profiles')
-        .select('id, first_name, last_name')
-        .in('id', studentIds);
+        .select('id, first_name, last_name');
 
-      if (profilesError) throw profilesError;
+      // Combinar dados das sessões com nomes dos estudantes
+      const sessionsWithNames = sessionsData?.map(session => ({
+        ...session,
+        student_name: profilesData?.find(p => p.id === session.student_id)
+          ? `${profilesData.find(p => p.id === session.student_id)?.first_name} ${profilesData.find(p => p.id === session.student_id)?.last_name}`
+          : 'Aluno não encontrado'
+      }));
 
-      return sessionsData.map(session => {
-        const studentProfile = profiles?.find(p => p.id === session.student_id);
-        return {
-          id: session.id,
-          scheduled_at: session.scheduled_at,
-          duration_minutes: session.duration_minutes,
-          status: session.status,
-          notes: session.notes,
-          payment_intent_id: session.payment_intent_id,
-          student: {
-            first_name: studentProfile?.first_name || '',
-            last_name: studentProfile?.last_name || '',
-          },
-        };
-      });
+      return sessionsWithNames as Session[];
     },
-    enabled: !!profile?.id,
+    enabled: !!profile?.id
   });
 
-  // Mutation para criar sessão
-  const createSessionMutation = useMutation({
-    mutationFn: async (sessionData: CreateSessionData) => {
-      // Verificar se precisa de pagamento (plano Free)
-      if (trainerProfile?.plan === 'free') {
-        // Criar PaymentIntent primeiro
-        const { data: paymentIntent, error: paymentError } = await supabase
-          .from('payment_intents')
-          .insert({
-            student_id: sessionData.student_id,
-            trainer_id: profile!.id,
-            amount: 50.00, // Valor exemplo
-            method: 'credit_card',
-            fee_percent: 1.5,
-            status: 'pending',
-          })
-          .select()
-          .single();
+  const createSession = useMutation({
+    mutationFn: async (sessionData: {
+      studentId: string;
+      scheduledAt: string;
+      durationMinutes: number;
+      notes?: string;
+    }) => {
+      const { error } = await supabase
+        .from('sessions')
+        .insert({
+          trainer_id: profile!.id,
+          student_id: sessionData.studentId,
+          scheduled_at: sessionData.scheduledAt,
+          duration_minutes: sessionData.durationMinutes,
+          notes: sessionData.notes,
+          status: 'scheduled'
+        });
 
-        if (paymentError) throw paymentError;
-
-        // Criar sessão com payment_intent_id
-        const { data, error } = await supabase
-          .from('sessions')
-          .insert({
-            ...sessionData,
-            trainer_id: profile!.id,
-            payment_intent_id: paymentIntent.id,
-            status: 'payment_pending',
-          })
-          .select()
-          .single();
-
-        if (error) throw error;
-        return data;
-      } else {
-        // Criar sessão direto (Pro/Elite)
-        const { data, error } = await supabase
-          .from('sessions')
-          .insert({
-            ...sessionData,
-            trainer_id: profile!.id,
-            status: 'scheduled',
-          })
-          .select()
-          .single();
-
-        if (error) throw error;
-        return data;
-      }
+      if (error) throw error;
     },
     onSuccess: () => {
       toast({
-        title: "Sessão agendada com sucesso!",
-        description: trainerProfile?.plan === 'free' 
-          ? "Aguardando pagamento do aluno para confirmação."
-          : "A sessão foi confirmada.",
+        title: 'Sucesso',
+        description: 'Sessão agendada com sucesso!'
       });
       queryClient.invalidateQueries({ queryKey: ['sessions'] });
     },
     onError: (error: any) => {
       toast({
-        title: "Erro ao agendar sessão",
-        description: error.message,
-        variant: "destructive",
+        title: 'Erro',
+        description: error.message || 'Erro ao agendar sessão.',
+        variant: 'destructive'
       });
-    },
+    }
   });
 
   return {
     students,
     sessions,
-    isLoading,
-    createSession: createSessionMutation.mutate,
-    isCreatingSession: createSessionMutation.isPending,
+    isLoading: studentsLoading || sessionsLoading,
+    createSession: createSession.mutate,
+    isCreatingSession: createSession.isPending
   };
 }

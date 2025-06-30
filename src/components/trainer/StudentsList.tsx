@@ -1,17 +1,19 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Users, Mail, Phone, Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { User, MoreHorizontal, Phone } from 'lucide-react';
 
 interface Student {
   id: string;
-  first_name: string;
-  last_name: string;
-  phone: string | null;
-  email: string;
-  start_date: string;
   status: 'active' | 'paused' | 'cancelled';
+  start_date: string;
+  profiles?: {
+    first_name: string;
+    last_name: string;
+    phone: string | null;
+  } | null;
 }
 
 interface StudentsListProps {
@@ -19,98 +21,98 @@ interface StudentsListProps {
   onUpdateStatus: (studentId: string, status: 'active' | 'paused' | 'cancelled') => void;
 }
 
+const statusColors = {
+  active: 'bg-green-100 text-green-800',
+  paused: 'bg-yellow-100 text-yellow-800',
+  cancelled: 'bg-red-100 text-red-800',
+};
+
+const statusLabels = {
+  active: 'Ativo',
+  paused: 'Pausado',
+  cancelled: 'Cancelado',
+};
+
 export function StudentsList({ students, onUpdateStatus }: StudentsListProps) {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'paused': return 'bg-yellow-100 text-yellow-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'active': return 'Ativo';
-      case 'paused': return 'Pausado';
-      case 'cancelled': return 'Cancelado';
-      default: return status;
-    }
-  };
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>Lista de Alunos</CardTitle>
         <CardDescription>
-          Visualize e gerencie todos os seus alunos
+          Gerencie todos os seus alunos cadastrados
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {students && students.length > 0 ? (
-          <div className="space-y-4">
-            {students.map((student) => (
+        <div className="space-y-4">
+          {students.length === 0 ? (
+            <div className="text-center py-8">
+              <User className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-500">Nenhum aluno cadastrado ainda</p>
+              <p className="text-sm text-gray-400 mt-2">
+                Clique em "Adicionar Aluno" para começar
+              </p>
+            </div>
+          ) : (
+            students.map((student) => (
               <div key={student.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Users className="h-5 w-5 text-blue-600" />
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <User className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold">
-                      {student.first_name} {student.last_name}
+                      {student.profiles 
+                        ? `${student.profiles.first_name} ${student.profiles.last_name}`
+                        : 'Nome não disponível'
+                      }
                     </h3>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <Mail className="h-4 w-4" />
-                        {student.email}
-                      </div>
-                      {student.phone && (
-                        <div className="flex items-center gap-1">
-                          <Phone className="h-4 w-4" />
-                          {student.phone}
-                        </div>
+                      {student.profiles?.phone && (
+                        <span className="flex items-center gap-1">
+                          <Phone className="h-3 w-3" />
+                          {student.profiles.phone}
+                        </span>
                       )}
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        Desde {new Date(student.start_date).toLocaleDateString('pt-BR')}
-                      </div>
+                      <span>Desde {new Date(student.start_date).toLocaleDateString('pt-BR')}</span>
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge className={getStatusColor(student.status)}>
-                    {getStatusText(student.status)}
+                  <Badge className={statusColors[student.status]}>
+                    {statusLabels[student.status]}
                   </Badge>
-                  <Select
-                    value={student.status}
-                    onValueChange={(value: 'active' | 'paused' | 'cancelled') => 
-                      onUpdateStatus(student.id, value)
-                    }
-                  >
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Ativo</SelectItem>
-                      <SelectItem value="paused">Pausado</SelectItem>
-                      <SelectItem value="cancelled">Cancelado</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem 
+                        onClick={() => onUpdateStatus(student.id, 'active')}
+                        className="text-green-600"
+                      >
+                        Ativar
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => onUpdateStatus(student.id, 'paused')}
+                        className="text-yellow-600"
+                      >
+                        Pausar
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => onUpdateStatus(student.id, 'cancelled')}
+                        className="text-red-600"
+                      >
+                        Cancelar
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Nenhum aluno cadastrado
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Comece adicionando seu primeiro aluno para gerenciar treinos e dietas.
-            </p>
-          </div>
-        )}
+            ))
+          )}
+        </div>
       </CardContent>
     </Card>
   );

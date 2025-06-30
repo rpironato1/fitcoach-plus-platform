@@ -1,11 +1,10 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Plus } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
 
 interface AddStudentDialogProps {
   onAddStudent: (data: { email: string; firstName: string; lastName: string; phone: string }) => void;
@@ -14,53 +13,26 @@ interface AddStudentDialogProps {
 }
 
 export function AddStudentDialog({ onAddStudent, isLoading, canAddStudent }: AddStudentDialogProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    firstName: '',
+    lastName: '',
+    phone: ''
+  });
 
-  const handleSubmit = () => {
-    if (!email || !firstName || !lastName) {
-      toast({
-        title: "Campos obrigatórios",
-        description: "Por favor, preencha todos os campos obrigatórios.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!canAddStudent) {
-      toast({
-        title: "Limite de alunos atingido",
-        description: "Faça upgrade para Pro para adicionar mais alunos.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    onAddStudent({ email, firstName, lastName, phone });
-  };
-
-  const resetForm = () => {
-    setEmail('');
-    setFirstName('');
-    setLastName('');
-    setPhone('');
-  };
-
-  const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
-    if (!open) {
-      resetForm();
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onAddStudent(formData);
+    setFormData({ email: '', firstName: '', lastName: '', phone: '' });
+    setOpen(false);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
+        <Button disabled={!canAddStudent}>
+          <Plus className="h-4 w-4 mr-2" />
           Adicionar Aluno
         </Button>
       </DialogTrigger>
@@ -68,64 +40,58 @@ export function AddStudentDialog({ onAddStudent, isLoading, canAddStudent }: Add
         <DialogHeader>
           <DialogTitle>Adicionar Novo Aluno</DialogTitle>
           <DialogDescription>
-            Cadastre um novo aluno para começar o acompanhamento
+            Preencha os dados do aluno para enviá-lo um convite
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="firstName">Nome *</Label>
+            <div className="space-y-2">
+              <Label htmlFor="firstName">Nome</Label>
               <Input
                 id="firstName"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Nome do aluno"
+                value={formData.firstName}
+                onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
+                required
               />
             </div>
-            <div>
-              <Label htmlFor="lastName">Sobrenome *</Label>
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Sobrenome</Label>
               <Input
                 id="lastName"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="Sobrenome do aluno"
+                value={formData.lastName}
+                onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
+                required
               />
             </div>
           </div>
-          <div>
-            <Label htmlFor="email">E-mail *</Label>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="email@exemplo.com"
+              value={formData.email}
+              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+              required
             />
           </div>
-          <div>
+          <div className="space-y-2">
             <Label htmlFor="phone">Telefone</Label>
             <Input
               id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="(11) 99999-9999"
+              type="tel"
+              value={formData.phone}
+              onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
             />
           </div>
-          <div className="flex justify-end gap-2">
-            <Button
-              variant="outline"
-              onClick={() => setIsOpen(false)}
-            >
+          <div className="flex gap-2 justify-end">
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancelar
             </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={isLoading}
-            >
+            <Button type="submit" disabled={isLoading}>
               {isLoading ? 'Adicionando...' : 'Adicionar Aluno'}
             </Button>
           </div>
-        </div>
+        </form>
       </DialogContent>
     </Dialog>
   );

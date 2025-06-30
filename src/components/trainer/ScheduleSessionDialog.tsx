@@ -1,73 +1,63 @@
 
 import { useState } from 'react';
-import { useAuth } from '@/components/auth/AuthProvider';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, DollarSign } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
+import { Textarea } from '@/components/ui/textarea';
+import { Calendar } from 'lucide-react';
 
 interface Student {
   id: string;
-  first_name: string;
-  last_name: string;
+  profiles?: {
+    first_name: string;
+    last_name: string;
+  } | null;
 }
 
 interface ScheduleSessionDialogProps {
   students: Student[];
-  onScheduleSession: (sessionData: {
-    student_id: string;
-    scheduled_at: string;
-    duration_minutes: number;
+  onScheduleSession: (data: {
+    studentId: string;
+    scheduledAt: string;
+    durationMinutes: number;
     notes?: string;
   }) => void;
   isCreatingSession: boolean;
 }
 
 export function ScheduleSessionDialog({ students, onScheduleSession, isCreatingSession }: ScheduleSessionDialogProps) {
-  const { trainerProfile } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState('');
-  const [scheduledDate, setScheduledDate] = useState('');
-  const [scheduledTime, setScheduledTime] = useState('');
-  const [duration, setDuration] = useState('60');
-  const [notes, setNotes] = useState('');
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    studentId: '',
+    date: '',
+    time: '',
+    duration: 60,
+    notes: ''
+  });
 
-  const handleScheduleSession = () => {
-    if (!selectedStudent || !scheduledDate || !scheduledTime) {
-      toast({
-        title: "Campos obrigatórios",
-        description: "Por favor, preencha todos os campos obrigatórios.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const scheduledAt = new Date(`${scheduledDate}T${scheduledTime}`).toISOString();
-
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const scheduledAt = new Date(`${formData.date}T${formData.time}`).toISOString();
+    
     onScheduleSession({
-      student_id: selectedStudent,
-      scheduled_at: scheduledAt,
-      duration_minutes: parseInt(duration),
-      notes: notes || undefined,
+      studentId: formData.studentId,
+      scheduledAt,
+      durationMinutes: formData.duration,
+      notes: formData.notes || undefined
     });
-
-    // Reset form and close dialog
-    setSelectedStudent('');
-    setScheduledDate('');
-    setScheduledTime('');
-    setDuration('60');
-    setNotes('');
-    setIsOpen(false);
+    
+    setFormData({ studentId: '', date: '', time: '', duration: 60, notes: '' });
+    setOpen(false);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
+        <Button>
+          <Calendar className="h-4 w-4 mr-2" />
           Agendar Sessão
         </Button>
       </DialogTrigger>
@@ -75,48 +65,55 @@ export function ScheduleSessionDialog({ students, onScheduleSession, isCreatingS
         <DialogHeader>
           <DialogTitle>Agendar Nova Sessão</DialogTitle>
           <DialogDescription>
-            Agende uma sessão de treino com um aluno
+            Agende uma sessão de treino com um dos seus alunos
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="student">Aluno *</Label>
-            <Select value={selectedStudent} onValueChange={setSelectedStudent}>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="student">Aluno</Label>
+            <Select value={formData.studentId} onValueChange={(value) => setFormData(prev => ({ ...prev, studentId: value }))}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione um aluno" />
               </SelectTrigger>
               <SelectContent>
-                {students?.map((student) => (
+                {students.map((student) => (
                   <SelectItem key={student.id} value={student.id}>
-                    {student.first_name} {student.last_name}
+                    {student.profiles 
+                      ? `${student.profiles.first_name} ${student.profiles.last_name}`
+                      : 'Nome não disponível'
+                    }
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
+          
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="date">Data *</Label>
+            <div className="space-y-2">
+              <Label htmlFor="date">Data</Label>
               <Input
                 id="date"
                 type="date"
-                value={scheduledDate}
-                onChange={(e) => setScheduledDate(e.target.value)}
+                value={formData.date}
+                onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                required
               />
             </div>
-            <div>
-              <Label htmlFor="time">Horário *</Label>
+            <div className="space-y-2">
+              <Label htmlFor="time">Horário</Label>
               <Input
                 id="time"
                 type="time"
-                value={scheduledTime}
-                onChange={(e) => setScheduledTime(e.target.value)}
+                value={formData.time}
+                onChange={(e) => setFormData(prev => ({ ...prev, time: e.target.value }))}
+                required
               />
             </div>
           </div>
-          <div>
+          
+          <div className="space-y-2">
             <Label htmlFor="duration">Duração (minutos)</Label>
-            <Select value={duration} onValueChange={setDuration}>
+            <Select value={formData.duration.toString()} onValueChange={(value) => setFormData(prev => ({ ...prev, duration: parseInt(value) }))}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -129,38 +126,26 @@ export function ScheduleSessionDialog({ students, onScheduleSession, isCreatingS
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Label htmlFor="notes">Observações</Label>
-            <Input
+          
+          <div className="space-y-2">
+            <Label htmlFor="notes">Observações (opcional)</Label>
+            <Textarea
               id="notes"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Observações sobre a sessão..."
+              value={formData.notes}
+              onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+              placeholder="Adicione observações sobre a sessão..."
             />
           </div>
-          {trainerProfile?.plan === 'free' && (
-            <div className="bg-yellow-50 p-3 rounded-lg">
-              <p className="text-sm text-yellow-800">
-                <DollarSign className="h-4 w-4 inline mr-1" />
-                Plano Free: O aluno precisará efetuar o pagamento para confirmar a sessão.
-              </p>
-            </div>
-          )}
-          <div className="flex justify-end gap-2">
-            <Button
-              variant="outline"
-              onClick={() => setIsOpen(false)}
-            >
+          
+          <div className="flex gap-2 justify-end">
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancelar
             </Button>
-            <Button
-              onClick={handleScheduleSession}
-              disabled={isCreatingSession}
-            >
+            <Button type="submit" disabled={isCreatingSession || !formData.studentId || !formData.date || !formData.time}>
               {isCreatingSession ? 'Agendando...' : 'Agendar Sessão'}
             </Button>
           </div>
-        </div>
+        </form>
       </DialogContent>
     </Dialog>
   );

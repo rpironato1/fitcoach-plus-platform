@@ -1,147 +1,133 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface Student {
   id: string;
-  first_name: string;
-  last_name: string;
-  phone: string | null;
-  email: string;
-  start_date: string;
+  trainer_id: string;
   status: 'active' | 'paused' | 'cancelled';
+  start_date: string;
+  created_at: string;
+  updated_at: string;
+  profiles?: {
+    first_name: string;
+    last_name: string;
+    phone: string | null;
+  } | null;
 }
 
-export function useStudents(profileId?: string) {
+export function useStudents(trainerId?: string) {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const { data: students, isLoading } = useQuery({
-    queryKey: ['students', profileId],
+    queryKey: ['students', trainerId],
     queryFn: async () => {
-      if (!profileId) return [];
+      if (!trainerId) return [];
 
-      const { data: studentProfiles, error } = await supabase
+      const { data: studentsData, error } = await supabase
         .from('student_profiles')
-        .select('id, start_date, status')
-        .eq('trainer_id', profileId);
+        .select('*')
+        .eq('trainer_id', trainerId);
 
       if (error) throw error;
 
-      if (!studentProfiles || studentProfiles.length === 0) return [];
-
-      const studentIds = studentProfiles.map(sp => sp.id);
-      const { data: profiles, error: profilesError } = await supabase
+      // Buscar profiles separadamente
+      const { data: profilesData } = await supabase
         .from('profiles')
-        .select('id, first_name, last_name, phone')
-        .in('id', studentIds);
+        .select('id, first_name, last_name, phone');
 
-      if (profilesError) throw profilesError;
+      // Combinar os dados
+      const studentsWithProfiles = studentsData?.map(student => ({
+        ...student,
+        profiles: profilesData?.find(p => p.id === student.id) || null
+      }));
 
-      const studentData = await Promise.all(
-        studentProfiles.map(async (studentProfile) => {
-          const studentProfileData = profiles?.find(p => p.id === studentProfile.id);
-          const { data: userData } = await supabase.auth.admin.getUserById(studentProfile.id);
-          
-          return {
-            id: studentProfile.id,
-            first_name: studentProfileData?.first_name || '',
-            last_name: studentProfileData?.last_name || '',
-            phone: studentProfileData?.phone || null,
-            email: userData.user?.email || '',
-            start_date: studentProfile.start_date,
-            status: studentProfile.status,
-          };
-        })
-      );
-
-      return studentData;
+      return studentsWithProfiles as Student[];
     },
-    enabled: !!profileId,
+    enabled: !!trainerId
   });
 
-  const addStudentMutation = useMutation({
+  const addStudent = useMutation({
     mutationFn: async (studentData: { email: string; firstName: string; lastName: string; phone: string }) => {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      // Primeiro criar o usuário
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: studentData.email,
-        password: 'temp123456',
+        password: 'tempPassword123!',
         options: {
           data: {
             first_name: studentData.firstName,
             last_name: studentData.lastName,
-            role: 'student',
-          },
-        },
+            phone: studentData.phone,
+            role: 'student'
+          }
+        }
       });
 
-      if (authError) throw authError;
+      if (signUpError) throw signUpError;
 
-      if (authData.user) {
-        const { error: profileError } = await supabase
+      if (signUpData.user) {
+        // Criar o perfil de estudante
+        const { error: studentError } = await supabase
           .from('student_profiles')
           .insert({
-            id: authData.user.id,
-            trainer_id: profileId!,
-            status: 'active',
+            id: signUpData.user.id,
+            trainer_id: trainerId!,
+            status: 'active'
           });
 
-        if (profileError) throw profileError;
-
-        if (studentData.phone) {
-          await supabase
-            .from('profiles')
-            .update({ phone: studentData.phone })
-            .eq('id', authData.user.id);
-        }
+        if (studentError) throw studentError;
       }
 
-      return authData;
+      return signUpData;
     },
     onSuccess: () => {
       toast({
-        title: "Aluno adicionado com sucesso!",
-        description: "O aluno foi cadastrado e pode fazer login com a senha temporária.",
+        title: 'Sucesso',
+        description: 'Aluno adicionado com sucesso!'
       });
       queryClient.invalidateQueries({ queryKey: ['students'] });
     },
     onError: (error: any) => {
       toast({
-        title: "Erro ao adicionar aluno",
-        description: error.message,
-        variant: "destructive",
+        title: 'Erro',
+        description: error.message || 'Erro ao adicionar aluno.',
+        variant: 'destructive'
       });
-    },
+    }
   });
 
-  const updateStatusMutation = useMutation({
+  const updateStatus = useMutation({
     mutationFn: async ({ studentId, status }: { studentId: string; status: 'active' | 'paused' | 'cancelled' }) => {
       const { error } = await supabase
         .from('student_profiles')
-        .update({ status })
+        .update({ status, updated_at: new Date().toISOString() })
         .eq('id', studentId);
 
       if (error) throw error;
     },
     onSuccess: () => {
       toast({
-        title: "Status atualizado com sucesso!",
+        title: 'Sucesso',
+        description: 'Status do aluno atualizado!'
       });
       queryClient.invalidateQueries({ queryKey: ['students'] });
     },
-    onError: (error: any) => {
+    onError: () => {
       toast({
-        title: "Erro ao atualizar status",
-        description: error.message,
-        variant: "destructive",
+        title: 'Erro',
+        description: 'Erro ao atualizar status do aluno.',
+        variant: 'destructive'
       });
-    },
+    }
   });
 
   return {
     students,
     isLoading,
-    addStudent: addStudentMutation.mutate,
-    isAddingStudent: addStudentMutation.isPending,
-    updateStatus: updateStatusMutation.mutate,
+    addStudent: addStudent.mutate,
+    isAddingStudent: addStudent.isPending,
+    updateStatus: updateStatus.mutate
   };
 }

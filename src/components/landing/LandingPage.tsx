@@ -1,262 +1,210 @@
 
 import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Dumbbell, Calendar, CreditCard, Users, Star, Zap } from "lucide-react";
-import { LoginForm } from '../auth/LoginForm';
-import { RegisterForm } from '../auth/RegisterForm';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { LoginForm } from '@/components/auth/LoginForm';
+import { RegisterForm } from '@/components/auth/RegisterForm';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Users, Dumbbell, Calendar, ChefHat, Trophy, Star } from 'lucide-react';
 
 export function LandingPage() {
-  const [showAuth, setShowAuth] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
-  if (showAuth) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
-          {isLogin ? (
-            <LoginForm onToggleMode={() => setIsLogin(false)} />
-          ) : (
-            <RegisterForm onToggleMode={() => setIsLogin(true)} />
-          )}
-          <div className="mt-4 text-center">
-            <Button
-              variant="ghost"
-              onClick={() => setShowAuth(false)}
-              className="text-sm"
-            >
-              ← Voltar para página inicial
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const features = [
+    {
+      icon: Users,
+      title: 'Gestão de Alunos',
+      description: 'Gerencie seus alunos e acompanhe seu progresso de forma eficiente.'
+    },
+    {
+      icon: Calendar,
+      title: 'Agendamento de Sessões',
+      description: 'Organize sua agenda e mantenha controle total dos seus treinos.'
+    },
+    {
+      icon: ChefHat,
+      title: 'Planos de Dieta com IA',
+      description: 'Crie planos alimentares personalizados com inteligência artificial.'
+    },
+    {
+      icon: Trophy,
+      title: 'Sistema de Pagamentos',
+      description: 'Receba pagamentos de forma segura e automática.'
+    }
+  ];
+
+  const plans = [
+    {
+      name: 'Free',
+      price: 'Grátis',
+      features: ['Até 3 alunos', 'Agendamento básico', 'Suporte por email'],
+      popular: false
+    },
+    {
+      name: 'Pro',
+      price: 'R$ 49/mês',
+      features: ['Até 40 alunos', '50 créditos IA/mês', 'Planos de dieta com IA', 'Suporte prioritário'],
+      popular: true
+    },
+    {
+      name: 'Elite',
+      price: 'R$ 99/mês',
+      features: ['Alunos ilimitados', '100 créditos IA/mês', 'Recursos avançados', 'Suporte 24/7'],
+      popular: false
+    }
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center">
-              <Dumbbell className="h-8 w-8 text-blue-600 mr-2" />
-              <h1 className="text-2xl font-bold text-gray-900">FitCoach</h1>
-            </div>
-            <div className="space-x-4">
-              <Button variant="ghost" onClick={() => { setShowAuth(true); setIsLogin(true); }}>
-                Entrar
-              </Button>
-              <Button onClick={() => { setShowAuth(true); setIsLogin(false); }}>
-                Cadastrar
-              </Button>
-            </div>
+      <header className="container mx-auto px-4 py-6">
+        <nav className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Dumbbell className="h-8 w-8 text-blue-600" />
+            <span className="text-2xl font-bold text-gray-900">FitCoach</span>
           </div>
-        </div>
+          <div className="flex gap-4">
+            <Button variant="ghost" onClick={() => setIsLoginOpen(true)}>
+              Entrar
+            </Button>
+            <Button onClick={() => setIsRegisterOpen(true)}>
+              Cadastrar
+            </Button>
+          </div>
+        </nav>
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">
-            Gerencie seu negócio fitness com
-            <span className="text-blue-600"> FitCoach</span>
+      <section className="container mx-auto px-4 py-20 text-center">
+        <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          A plataforma completa para
+          <span className="text-blue-600"> Personal Trainers</span>
+        </h1>
+        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          Gerencie seus alunos, crie planos de treino e dieta com IA, agende sessões e receba pagamentos tudo em um só lugar.
+        </p>
+        <div className="flex gap-4 justify-center">
+          <Button size="lg" onClick={() => setIsRegisterOpen(true)}>
+            Começar Grátis
+          </Button>
+          <Button size="lg" variant="outline">
+            Ver Demo
+          </Button>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="container mx-auto px-4 py-20">
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          Tudo que você precisa para crescer
+        </h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => (
+            <Card key={index} className="text-center">
+              <CardHeader>
+                <feature.icon className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                <CardTitle>{feature.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>{feature.description}</CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="container mx-auto px-4 py-20">
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          Planos que se adaptam ao seu negócio
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {plans.map((plan, index) => (
+            <Card key={index} className={`relative ${plan.popular ? 'border-blue-500 border-2' : ''}`}>
+              {plan.popular && (
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                    <Star className="h-4 w-4" />
+                    Mais Popular
+                  </span>
+                </div>
+              )}
+              <CardHeader className="text-center">
+                <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                <div className="text-3xl font-bold text-blue-600">{plan.price}</div>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {plan.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full mt-6" variant={plan.popular ? 'default' : 'outline'}>
+                  Escolher Plano
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-blue-600 text-white py-20">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">
+            Pronto para transformar seu negócio?
           </h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            A plataforma completa para personal trainers organizarem agenda, treinos, 
-            dietas e pagamentos dos alunos em um só lugar.
+          <p className="text-xl mb-8 opacity-90">
+            Junte-se a centenas de personal trainers que já estão usando o FitCoach
           </p>
-          <div className="space-x-4">
-            <Button size="lg" onClick={() => { setShowAuth(true); setIsLogin(false); }}>
-              Começar Grátis
-            </Button>
-            <Button size="lg" variant="outline">
-              Ver Demo
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Tudo que você precisa para gerenciar seus alunos
-          </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card>
-              <CardHeader>
-                <Calendar className="h-10 w-10 text-blue-600 mb-2" />
-                <CardTitle>Agenda Inteligente</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Organize suas sessões, controle horários e receba lembretes automáticos.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <Users className="h-10 w-10 text-blue-600 mb-2" />
-                <CardTitle>Gestão de Alunos</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Acompanhe o progresso, histórico e informações completas de cada aluno.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CreditCard className="h-10 w-10 text-blue-600 mb-2" />
-                <CardTitle>Pagamentos Online</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Receba pagamentos por cartão ou PIX com taxas reduzidas.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Planos para cada momento do seu negócio
-          </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Free Plan */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-center">Free</CardTitle>
-                <CardDescription className="text-center">
-                  <span className="text-3xl font-bold">Grátis</span>
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-2">
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Até 3 alunos
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Agenda básica
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Taxa 1,5% por sessão
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Dietas R$ 7,90/unidade
-                  </li>
-                </ul>
-                <Button className="w-full" variant="outline">
-                  Começar Grátis
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Pro Plan */}
-            <Card className="border-blue-500 border-2 relative">
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  Mais Popular
-                </span>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-center">Pro</CardTitle>
-                <CardDescription className="text-center">
-                  <span className="text-3xl font-bold">R$ 49</span>/mês
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-2">
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Até 40 alunos
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Sem taxas por sessão
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    50 créditos IA/mês
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Dietas ilimitadas
-                  </li>
-                  <li className="flex items-center">
-                    <Star className="h-4 w-4 text-yellow-500 mr-2" />
-                    Trial 14 dias grátis
-                  </li>
-                </ul>
-                <Button className="w-full">
-                  Começar Trial
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Elite Plan */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-center">Elite</CardTitle>
-                <CardDescription className="text-center">
-                  <span className="text-3xl font-bold">R$ 99</span>/mês
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-2">
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Alunos ilimitados
-                  </li>
-                  <li className="flex items-center">
-                    <Zap className="h-4 w-4 text-blue-500 mr-2" />
-                    Cashback 0,5%
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    150 créditos IA/mês
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Suporte prioritário
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="h-4 w-4 text-green-500 mr-2" />
-                    Relatórios avançados
-                  </li>
-                </ul>
-                <Button className="w-full" variant="outline">
-                  Falar com Vendas
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+          <Button size="lg" variant="secondary" onClick={() => setIsRegisterOpen(true)}>
+            Começar Agora - É Grátis
+          </Button>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex items-center justify-center mb-4">
-            <Dumbbell className="h-6 w-6 text-blue-400 mr-2" />
-            <span className="text-xl font-bold">FitCoach</span>
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <Dumbbell className="h-8 w-8" />
+            <span className="text-2xl font-bold">FitCoach</span>
           </div>
-          <p className="text-gray-400">
-            © 2024 FitCoach. Todos os direitos reservados. Transforme seu negócio fitness.
-          </p>
+          <div className="text-center text-gray-400">
+            <p>&copy; 2024 FitCoach. Todos os direitos reservados.</p>
+          </div>
         </div>
       </footer>
+
+      {/* Login Dialog */}
+      <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Entrar na sua conta</DialogTitle>
+            <DialogDescription>
+              Entre com suas credenciais para acessar o FitCoach
+            </DialogDescription>
+          </DialogHeader>
+          <LoginForm onSuccess={() => setIsLoginOpen(false)} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Register Dialog */}
+      <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Criar sua conta</DialogTitle>
+            <DialogDescription>
+              Cadastre-se gratuitamente e comece a usar o FitCoach hoje mesmo
+            </DialogDescription>
+          </DialogHeader>
+          <RegisterForm onSuccess={() => setIsRegisterOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

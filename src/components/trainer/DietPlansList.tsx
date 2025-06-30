@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Utensils, User, Calendar } from 'lucide-react';
+import { ChefHat, User, Calendar } from 'lucide-react';
 
 interface DietPlan {
   id: string;
@@ -9,10 +9,8 @@ interface DietPlan {
   total_calories: number | null;
   is_paid: boolean;
   created_at: string;
-  student: {
-    first_name: string;
-    last_name: string;
-  };
+  student_name?: string;
+  content: any;
 }
 
 interface DietPlansListProps {
@@ -23,64 +21,54 @@ export function DietPlansList({ dietPlans }: DietPlansListProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Planos de Dieta Criados</CardTitle>
+        <CardTitle>Planos de Dieta</CardTitle>
         <CardDescription>
-          Gerencie todos os planos de dieta criados
+          Todos os planos alimentares criados para seus alunos
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {dietPlans && dietPlans.length > 0 ? (
-          <div className="space-y-4">
-            {dietPlans.map((plan) => (
+        <div className="space-y-4">
+          {dietPlans.length === 0 ? (
+            <div className="text-center py-8">
+              <ChefHat className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-500">Nenhum plano de dieta criado ainda</p>
+              <p className="text-sm text-gray-400 mt-2">
+                Clique em "Criar Plano de Dieta" para começar
+              </p>
+            </div>
+          ) : (
+            dietPlans.map((plan) => (
               <div key={plan.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <Utensils className="h-5 w-5 text-green-600" />
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <ChefHat className="h-6 w-6 text-green-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold">{plan.name}</h3>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <User className="h-4 w-4" />
-                        {plan.student.first_name} {plan.student.last_name}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
+                      <span className="flex items-center gap-1">
+                        <User className="h-3 w-3" />
+                        {plan.student_name || 'Aluno não encontrado'}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
                         {new Date(plan.created_at).toLocaleDateString('pt-BR')}
-                      </div>
+                      </span>
                       {plan.total_calories && (
-                        <div className="flex items-center gap-1">
-                          <Utensils className="h-4 w-4" />
-                          {plan.total_calories} kcal
-                        </div>
+                        <span>{plan.total_calories} kcal</span>
                       )}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {plan.is_paid && (
-                    <Badge className="bg-green-100 text-green-800">
-                      Pago
-                    </Badge>
-                  )}
-                  <Badge variant="outline">
-                    Gerado com IA
+                  <Badge className={plan.is_paid ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}>
+                    {plan.is_paid ? 'Pago' : 'Gratuito'}
                   </Badge>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <Utensils className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Nenhum plano de dieta criado
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Comece criando planos de dieta personalizados com IA para seus alunos.
-            </p>
-          </div>
-        )}
+            ))
+          )}
+        </div>
       </CardContent>
     </Card>
   );
