@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -36,21 +35,33 @@ export default function TrainersManagement() {
   const { data: trainers, isLoading } = useQuery({
     queryKey: ['admin-trainers'],
     queryFn: async () => {
-      const { data: trainersData, error } = await supabase
+      // Buscar trainer_profiles primeiro
+      const { data: trainersData, error: trainersError } = await supabase
         .from('trainer_profiles')
-        .select(`
-          *,
-          profiles(first_name, last_name, phone)
-        `);
+        .select('*');
 
-      if (error) {
-        console.error('Erro ao buscar trainers:', error);
-        throw error;
+      if (trainersError) {
+        console.error('Erro ao buscar trainers:', trainersError);
+        throw trainersError;
       }
 
-      // Buscar contagem de alunos para cada trainer
-      const trainersWithCounts = await Promise.all(
+      // Buscar profiles separadamente
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name, phone');
+
+      if (profilesError) {
+        console.error('Erro ao buscar profiles:', profilesError);
+        throw profilesError;
+      }
+
+      // Combinar os dados
+      const trainersWithProfiles = await Promise.all(
         (trainersData || []).map(async (trainer) => {
+          // Encontrar o profile correspondente
+          const profile = profilesData?.find(p => p.id === trainer.id);
+
+          // Buscar contagem de alunos
           const { count } = await supabase
             .from('student_profiles')
             .select('*', { count: 'exact', head: true })
@@ -59,12 +70,13 @@ export default function TrainersManagement() {
 
           return {
             ...trainer,
+            profiles: profile || null,
             _count: { students: count || 0 }
           };
         })
       );
 
-      return trainersWithCounts;
+      return trainersWithProfiles;
     }
   });
 
