@@ -9,7 +9,272 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      ai_credit_ledger: {
+        Row: {
+          amount: number
+          id: string
+          trainer_id: string
+          type: string
+          used_at: string
+        }
+        Insert: {
+          amount: number
+          id?: string
+          trainer_id: string
+          type: string
+          used_at?: string
+        }
+        Update: {
+          amount?: number
+          id?: string
+          trainer_id?: string
+          type?: string
+          used_at?: string
+        }
+        Relationships: []
+      }
+      diet_plans: {
+        Row: {
+          content: Json | null
+          created_at: string
+          id: string
+          is_paid: boolean
+          name: string
+          student_id: string
+          total_calories: number | null
+          trainer_id: string
+          updated_at: string
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string
+          id?: string
+          is_paid?: boolean
+          name: string
+          student_id: string
+          total_calories?: number | null
+          trainer_id: string
+          updated_at?: string
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string
+          id?: string
+          is_paid?: boolean
+          name?: string
+          student_id?: string
+          total_calories?: number | null
+          trainer_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payment_intents: {
+        Row: {
+          amount: number
+          created_at: string
+          fee_percent: number
+          id: string
+          method: Database["public"]["Enums"]["payment_method"]
+          status: Database["public"]["Enums"]["payment_status"]
+          stripe_payment_intent_id: string | null
+          student_id: string
+          trainer_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          fee_percent: number
+          id?: string
+          method: Database["public"]["Enums"]["payment_method"]
+          status?: Database["public"]["Enums"]["payment_status"]
+          stripe_payment_intent_id?: string | null
+          student_id: string
+          trainer_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          fee_percent?: number
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          status?: Database["public"]["Enums"]["payment_status"]
+          stripe_payment_intent_id?: string | null
+          student_id?: string
+          trainer_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payment_processor_config: {
+        Row: {
+          created_at: string
+          id: string
+          markup_percent: number
+          trainer_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          markup_percent?: number
+          trainer_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          markup_percent?: number
+          trainer_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          first_name: string
+          id: string
+          last_name: string
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          first_name: string
+          id: string
+          last_name: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          created_at: string
+          duration_minutes: number
+          id: string
+          notes: string | null
+          payment_intent_id: string | null
+          scheduled_at: string
+          status: string
+          student_id: string
+          trainer_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          notes?: string | null
+          payment_intent_id?: string | null
+          scheduled_at: string
+          status?: string
+          student_id: string
+          trainer_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          notes?: string | null
+          payment_intent_id?: string | null
+          scheduled_at?: string
+          status?: string
+          student_id?: string
+          trainer_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_payment_intent_id_fkey"
+            columns: ["payment_intent_id"]
+            isOneToOne: false
+            referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_profiles: {
+        Row: {
+          created_at: string
+          id: string
+          start_date: string
+          status: Database["public"]["Enums"]["student_status"]
+          trainer_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          start_date?: string
+          status?: Database["public"]["Enums"]["student_status"]
+          trainer_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          start_date?: string
+          status?: Database["public"]["Enums"]["student_status"]
+          trainer_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      trainer_profiles: {
+        Row: {
+          active_until: string | null
+          ai_credits: number
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          id: string
+          max_students: number
+          plan: Database["public"]["Enums"]["trainer_plan"]
+          updated_at: string
+          whatsapp_number: string | null
+        }
+        Insert: {
+          active_until?: string | null
+          ai_credits?: number
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          id: string
+          max_students?: number
+          plan?: Database["public"]["Enums"]["trainer_plan"]
+          updated_at?: string
+          whatsapp_number?: string | null
+        }
+        Update: {
+          active_until?: string | null
+          ai_credits?: number
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          id?: string
+          max_students?: number
+          plan?: Database["public"]["Enums"]["trainer_plan"]
+          updated_at?: string
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +283,11 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      payment_method: "credit_card" | "pix" | "bank_transfer"
+      payment_status: "pending" | "succeeded" | "failed" | "cancelled"
+      student_status: "active" | "paused" | "cancelled"
+      trainer_plan: "free" | "pro" | "elite"
+      user_role: "admin" | "trainer" | "student"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +402,12 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      payment_method: ["credit_card", "pix", "bank_transfer"],
+      payment_status: ["pending", "succeeded", "failed", "cancelled"],
+      student_status: ["active", "paused", "cancelled"],
+      trainer_plan: ["free", "pro", "elite"],
+      user_role: ["admin", "trainer", "student"],
+    },
   },
 } as const
