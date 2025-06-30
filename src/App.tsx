@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,12 +6,18 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/components/auth/AuthProvider";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { Navbar } from "@/components/layout/Navbar";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { LandingPage } from "@/components/landing/LandingPage";
 import TrainerDashboard from "@/pages/trainer/TrainerDashboard";
 import StudentsPage from "@/pages/trainer/StudentsPage";
 import SessionsPage from "@/pages/trainer/SessionsPage";
 import DietPlansPage from "@/pages/trainer/DietPlansPage";
 import StudentDashboard from "@/pages/student/StudentDashboard";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import TrainersManagement from "@/pages/admin/TrainersManagement";
+import PaymentsManagement from "@/pages/admin/PaymentsManagement";
+import ReportsPage from "@/pages/admin/ReportsPage";
+import SystemSettings from "@/pages/admin/SystemSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,16 +35,59 @@ function AppRoutes() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {user && profile && <Navbar />}
-      <main className={user && profile ? '' : ''}>
+      {user && profile && profile.role !== 'admin' && <Navbar />}
+      <main className={user && profile && profile.role !== 'admin' ? '' : ''}>
         <Routes>
           <Route path="/" element={
             !user ? <LandingPage /> : 
+            profile?.role === 'admin' ? <Navigate to="/admin" replace /> :
             profile?.role === 'trainer' ? <Navigate to="/trainer" replace /> :
             profile?.role === 'student' ? <Navigate to="/student" replace /> :
             <LandingPage />
           } />
           
+          {/* Admin Routes */}
+          <Route path="/admin" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <AdminDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin/trainers" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <TrainersManagement />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin/payments" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <PaymentsManagement />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin/reports" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <ReportsPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/admin/settings" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <SystemSettings />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+          
+          {/* Trainer Routes */}
           <Route path="/trainer" element={
             <ProtectedRoute requiredRole="trainer">
               <TrainerDashboard />
@@ -73,6 +121,7 @@ function AppRoutes() {
             </ProtectedRoute>
           } />
           
+          {/* Student Routes */}
           <Route path="/student" element={
             <ProtectedRoute requiredRole="student">
               <StudentDashboard />
