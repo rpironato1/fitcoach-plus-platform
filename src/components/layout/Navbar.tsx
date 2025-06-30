@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { LogOut, User, Calendar, Users, DollarSign } from "lucide-react";
+import { LogOut, User, Calendar, Users, DollarSign, Utensils } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export function Navbar() {
@@ -61,6 +61,15 @@ export function Navbar() {
                 >
                   <Calendar className="h-4 w-4" />
                   Agenda
+                </Button>
+                <Button
+                  variant={location.pathname === '/trainer/diet-plans' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => navigate('/trainer/diet-plans')}
+                  className="flex items-center gap-2"
+                >
+                  <Utensils className="h-4 w-4" />
+                  Dietas
                 </Button>
                 <Button
                   variant={location.pathname === '/trainer/payments' ? 'default' : 'ghost'}

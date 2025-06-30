@@ -9,6 +9,9 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { Navbar } from "@/components/layout/Navbar";
 import { LandingPage } from "@/components/landing/LandingPage";
 import TrainerDashboard from "@/pages/trainer/TrainerDashboard";
+import StudentsPage from "@/pages/trainer/StudentsPage";
+import SessionsPage from "@/pages/trainer/SessionsPage";
+import DietPlansPage from "@/pages/trainer/DietPlansPage";
 import StudentDashboard from "@/pages/student/StudentDashboard";
 import NotFound from "./pages/NotFound";
 
@@ -40,6 +43,24 @@ function AppRoutes() {
           <Route path="/trainer" element={
             <ProtectedRoute requiredRole="trainer">
               <TrainerDashboard />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/trainer/students" element={
+            <ProtectedRoute requiredRole="trainer">
+              <StudentsPage />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/trainer/sessions" element={
+            <ProtectedRoute requiredRole="trainer">
+              <SessionsPage />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/trainer/diet-plans" element={
+            <ProtectedRoute requiredRole="trainer">
+              <DietPlansPage />
             </ProtectedRoute>
           } />
           

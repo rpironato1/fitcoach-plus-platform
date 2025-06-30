@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,9 +8,12 @@ import { Progress } from '@/components/ui/progress';
 import { Users, Calendar, DollarSign, Zap, TrendingUp, Clock } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { UpgradeModal } from '@/components/trainer/UpgradeModal';
 
 export default function TrainerDashboard() {
   const { profile, trainerProfile } = useAuth();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeReason, setUpgradeReason] = useState<'students_limit' | 'ai_credits' | 'manual'>('manual');
 
   // Query para buscar estatísticas do trainer
   const { data: stats } = useQuery({
@@ -43,6 +47,22 @@ export default function TrainerDashboard() {
     },
     enabled: !!profile?.id,
   });
+
+  // Verificar se deve mostrar modal de upgrade automaticamente
+  useEffect(() => {
+    if (trainerProfile?.plan === 'free' && stats) {
+      // Verificar limite de alunos
+      if (stats.activeStudents >= 3) {
+        setUpgradeReason('students_limit');
+        setShowUpgradeModal(true);
+      }
+      // Verificar créditos de IA
+      else if (trainerProfile.ai_credits === 0) {
+        setUpgradeReason('ai_credits');
+        setShowUpgradeModal(true);
+      }
+    }
+  }, [trainerProfile, stats]);
 
   if (!profile || !trainerProfile) {
     return <div>Carregando...</div>;
@@ -80,8 +100,11 @@ export default function TrainerDashboard() {
           <Badge className={planColors[trainerProfile.plan]}>
             Plano {planNames[trainerProfile.plan]}
           </Badge>
-          {trainerProfile.plan === 'free' && currentStudents >= 3 && (
-            <Button>
+          {trainerProfile.plan === 'free' && (
+            <Button onClick={() => {
+              setUpgradeReason('manual');
+              setShowUpgradeModal(true);
+            }}>
               Upgrade para Pro
             </Button>
           )}
@@ -140,7 +163,9 @@ export default function TrainerDashboard() {
             <Zap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{trainerProfile.ai_credits}</div>
+            <div className="text-2xl font-bold">
+              {trainerProfile.plan === 'elite' ? '∞' : trainerProfile.ai_credits}
+            </div>
             <p className="text-xs text-muted-foreground">
               disponíveis este mês
             </p>
@@ -189,7 +214,10 @@ export default function TrainerDashboard() {
           </CardHeader>
           <CardContent>
             <div className="flex gap-4">
-              <Button>
+              <Button onClick={() => {
+                setUpgradeReason('students_limit');
+                setShowUpgradeModal(true);
+              }}>
                 Upgrade para Pro
               </Button>
               <Button variant="outline">
@@ -199,6 +227,38 @@ export default function TrainerDashboard() {
           </CardContent>
         </Card>
       )}
+
+      {/* AI Credits Warning */}
+      {trainerProfile.plan === 'free' && trainerProfile.ai_credits === 0 && (
+        <Card className="border-red-200 bg-red-50">
+          <CardHeader>
+            <CardTitle className="text-red-800">Créditos de IA Esgotados</CardTitle>
+            <CardDescription className="text-red-700">
+              Você não possui créditos de IA. Faça upgrade para acessar recursos de inteligência artificial!
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-4">
+              <Button onClick={() => {
+                setUpgradeReason('ai_credits');
+                setShowUpgradeModal(true);
+              }}>
+                Upgrade para Pro
+              </Button>
+              <Button variant="outline">
+                Ver Planos
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Upgrade Modal */}
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        reason={upgradeReason}
+      />
     </div>
   );
 }
