@@ -2,6 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, User } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 interface Session {
   id: string;
@@ -50,18 +51,15 @@ export function SessionsList({ sessions, title, description, filterType }: Sessi
       <CardContent>
         <div className="space-y-4">
           {filteredSessions.length === 0 ? (
-            <div className="text-center py-8">
-              <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">
-                {filterType === 'upcoming' ? 'Nenhuma sessão agendada' : 'Nenhuma sessão realizada'}
-              </p>
-              <p className="text-sm text-gray-400 mt-2">
-                {filterType === 'upcoming' 
+            <EmptyState
+              icon={Calendar}
+              title={filterType === 'upcoming' ? 'Nenhuma sessão agendada' : 'Nenhuma sessão realizada'}
+              description={
+                filterType === 'upcoming' 
                   ? 'Clique em "Agendar Sessão" para começar'
                   : 'Suas sessões passadas aparecerão aqui'
-                }
-              </p>
-            </div>
+              }
+            />
           ) : (
             filteredSessions.map((session) => (
               <div key={session.id} className="flex items-center justify-between p-4 border rounded-lg">

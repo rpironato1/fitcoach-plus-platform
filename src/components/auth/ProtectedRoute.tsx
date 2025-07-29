@@ -12,8 +12,6 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
   const { user, profile, loading } = useAuth();
   const location = useLocation();
 
-  console.log('ProtectedRoute - loading:', loading, 'user:', !!user, 'profile:', profile?.role, 'requiredRole:', requiredRole);
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -26,12 +24,10 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
   }
 
   if (!user || !profile) {
-    console.log('Redirecting to home - no user or profile');
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   if (requiredRole && profile.role !== requiredRole) {
-    console.log('Redirecting to home - role mismatch');
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 

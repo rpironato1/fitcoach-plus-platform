@@ -28,11 +28,12 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         description: 'Login realizado com sucesso.',
       });
       onSuccess?.();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Login error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Credenciais inválidas.';
       toast({
         title: 'Erro no login',
-        description: error.message || 'Credenciais inválidas.',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {

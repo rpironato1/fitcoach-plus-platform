@@ -15,7 +15,7 @@ interface AuthContextType {
   studentProfile: StudentProfile | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, userData: any) => Promise<void>;
+  signUp: (email: string, password: string, userData: Record<string, unknown>) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -31,21 +31,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    // Set up auth state listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.id);
-        
         if (mounted) {
           setUser(session?.user ?? null);
           
           if (session?.user) {
-            // Defer profile loading to avoid blocking
-            setTimeout(() => {
-              if (mounted) {
-                loadUserProfile(session.user.id);
-              }
-            }, 0);
+            if (mounted) {
+              loadUserProfile(session.user.id);
+            }
           } else {
             setProfile(null);
             setTrainerProfile(null);
@@ -56,13 +50,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
-    // Then get initial session
     const getInitialSession = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
-          console.error('Error getting initial session:', error);
           if (mounted) setLoading(false);
           return;
         }
@@ -74,7 +66,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setLoading(false);
         }
       } catch (error) {
-        console.error('Error in getInitialSession:', error);
         if (mounted) setLoading(false);
       }
     };
@@ -89,9 +80,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loadUserProfile = async (userId: string) => {
     try {
-      console.log('Loading profile for user:', userId);
-      
-      // Load basic profile
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('*')
@@ -99,16 +87,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .maybeSingle();
 
       if (profileError) {
-        console.error('Error loading profile:', profileError);
         setLoading(false);
         return;
       }
 
       if (profileData) {
-        console.log('Profile loaded:', profileData);
         setProfile(profileData);
 
-        // Load role-specific profile
         if (profileData.role === 'trainer') {
           const { data: trainerData } = await supabase
             .from('trainer_profiles')
@@ -132,7 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       }
     } catch (error) {
-      console.error('Error in loadUserProfile:', error);
+      // Error handling
     } finally {
       setLoading(false);
     }
@@ -146,7 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error) throw error;
   };
 
-  const signUp = async (email: string, password: string, userData: any) => {
+  const signUp = async (email: string, password: string, userData: Record<string, unknown>) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,

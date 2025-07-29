@@ -117,7 +117,7 @@ export function useSessions() {
       });
       queryClient.invalidateQueries({ queryKey: ['sessions'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Erro',
         description: error.message || 'Erro ao agendar sessão.',

@@ -51,11 +51,12 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         description: 'Sua conta foi criada com sucesso.',
       });
       onSuccess?.();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Registration error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao criar conta.';
       toast({
         title: 'Erro no cadastro',
-        description: error.message || 'Erro ao criar conta.',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {

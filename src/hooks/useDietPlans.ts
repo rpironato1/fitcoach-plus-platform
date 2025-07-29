@@ -9,7 +9,7 @@ interface DietPlan {
   name: string;
   student_id: string;
   trainer_id: string;
-  content: any;
+  content: unknown;
   total_calories: number | null;
   is_paid: boolean;
   created_at: string;
@@ -126,7 +126,7 @@ export function useDietPlans() {
       });
       queryClient.invalidateQueries({ queryKey: ['diet-plans'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Erro',
         description: error.message || 'Erro ao criar plano de dieta.',

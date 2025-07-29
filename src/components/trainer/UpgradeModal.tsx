@@ -54,7 +54,7 @@ export function UpgradeModal({ isOpen, onClose, reason }: UpgradeModalProps) {
       queryClient.invalidateQueries({ queryKey: ['trainer-stats'] });
       onClose();
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: "Erro ao atualizar plano",
         description: error.message,
@@ -92,7 +92,7 @@ export function UpgradeModal({ isOpen, onClose, reason }: UpgradeModalProps) {
       queryClient.invalidateQueries({ queryKey: ['trainer-stats'] });
       onClose();
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: "Erro ao iniciar trial",
         description: error.message,

@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/components/auth/AuthProvider";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { Navbar } from "@/components/layout/Navbar";
@@ -30,10 +30,33 @@ const queryClient = new QueryClient({
   },
 });
 
+// Componente de Layout para rotas de Admin
+const AdminRoutes = () => (
+  <ProtectedRoute requiredRole="admin">
+    <AdminLayout>
+      <Outlet />
+    </AdminLayout>
+  </ProtectedRoute>
+);
+
+// Componente de Layout para rotas de Trainer
+const TrainerRoutes = () => (
+  <ProtectedRoute requiredRole="trainer">
+    <Navbar />
+    <Outlet />
+  </ProtectedRoute>
+);
+
+// Componente de Layout para rotas de Student
+const StudentRoutes = () => (
+  <ProtectedRoute requiredRole="student">
+    <Navbar />
+    <Outlet />
+  </ProtectedRoute>
+);
+
 function AppContent() {
   const { user, profile, loading } = useAuth();
-
-  console.log('App loading:', loading, 'user:', !!user, 'profile role:', profile?.role);
 
   if (loading) {
     return (
@@ -46,107 +69,56 @@ function AppContent() {
     );
   }
 
-  // Show landing page if not authenticated
-  if (!user || !profile) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
-    );
+  // Redirecionamento inicial baseado no perfil do usuário
+  if (user && profile) {
+    const role = profile.role;
+    const currentPath = window.location.pathname;
+
+    if (role === 'admin' && !currentPath.startsWith('/admin')) {
+      return <Navigate to="/admin" replace />;
+    }
+    if (role === 'trainer' && !currentPath.startsWith('/trainer')) {
+      return <Navigate to="/trainer" replace />;
+    }
+    if (role === 'student' && !currentPath.startsWith('/student')) {
+      return <Navigate to="/student" replace />;
+    }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {profile.role !== 'admin' && <Navbar />}
-      <main>
-        <Routes>
-          <Route path="/" element={
-            profile.role === 'admin' ? <Navigate to="/admin" replace /> :
-            profile.role === 'trainer' ? <Navigate to="/trainer" replace /> :
-            profile.role === 'student' ? <Navigate to="/student" replace /> :
-            <Navigate to="/" replace />
-          } />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={
-            <ProtectedRoute requiredRole="admin">
-              <AdminLayout>
-                <AdminDashboard />
-              </AdminLayout>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/admin/trainers" element={
-            <ProtectedRoute requiredRole="admin">
-              <AdminLayout>
-                <TrainersManagement />
-              </AdminLayout>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/admin/payments" element={
-            <ProtectedRoute requiredRole="admin">
-              <AdminLayout>
-                <PaymentsManagement />
-              </AdminLayout>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/admin/reports" element={
-            <ProtectedRoute requiredRole="admin">
-              <AdminLayout>
-                <ReportsPage />
-              </AdminLayout>
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/admin/settings" element={
-            <ProtectedRoute requiredRole="admin">
-              <AdminLayout>
-                <SystemSettings />
-              </AdminLayout>
-            </ProtectedRoute>
-          } />
-          
-          {/* Trainer Routes */}
-          <Route path="/trainer" element={
-            <ProtectedRoute requiredRole="trainer">
-              <TrainerDashboard />
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/trainer/students" element={
-            <ProtectedRoute requiredRole="trainer">
-              <StudentsPage />
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/trainer/sessions" element={
-            <ProtectedRoute requiredRole="trainer">
-              <SessionsPage />
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/trainer/diet-plans" element={
-            <ProtectedRoute requiredRole="trainer">
-              <DietPlansPage />
-            </ProtectedRoute>
-          } />
-          
-          {/* Student Routes */}
-          <Route path="/student" element={
-            <ProtectedRoute requiredRole="student">
-              <StudentDashboard />
-            </ProtectedRoute>
-          } />
-          
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-    </div>
+    <Routes>
+      {/* Rota Pública */}
+      <Route path="/" element={!user ? <LandingPage /> : <Navigate to={
+        profile?.role === 'admin' ? '/admin' :
+        profile?.role === 'trainer' ? '/trainer' :
+        profile?.role === 'student' ? '/student' : '/'
+      } replace />} />
+
+      {/* Rotas de Admin Agrupadas */}
+      <Route path="/admin" element={<AdminRoutes />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="trainers" element={<TrainersManagement />} />
+        <Route path="payments" element={<PaymentsManagement />} />
+        <Route path="reports" element={<ReportsPage />} />
+        <Route path="settings" element={<SystemSettings />} />
+      </Route>
+
+      {/* Rotas de Trainer Agrupadas */}
+      <Route path="/trainer" element={<TrainerRoutes />}>
+        <Route index element={<TrainerDashboard />} />
+        <Route path="students" element={<StudentsPage />} />
+        <Route path="sessions" element={<SessionsPage />} />
+        <Route path="diet-plans" element={<DietPlansPage />} />
+      </Route>
+
+      {/* Rotas de Student Agrupadas */}
+      <Route path="/student" element={<StudentRoutes />}>
+        <Route index element={<StudentDashboard />} />
+      </Route>
+
+      {/* Rota Not Found */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 

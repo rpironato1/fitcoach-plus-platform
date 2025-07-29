@@ -1,6 +1,6 @@
 
 import { ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Outlet } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { 
@@ -9,13 +9,12 @@ import {
   Settings, 
   FileText, 
   CreditCard,
-  Bell,
   LogOut
 } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
 
 interface AdminLayoutProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const navigation = [
@@ -40,7 +39,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <nav className="mt-6">
           {navigation.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.href;
+            const isActive = location.pathname === item.href || (item.href !== '/admin' && location.pathname.startsWith(item.href));
             return (
               <Link
                 key={item.name}
@@ -72,7 +71,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        {children}
+        {children ? children : <Outlet />}
       </div>
     </div>
   );

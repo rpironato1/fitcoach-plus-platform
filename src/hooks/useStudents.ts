@@ -89,7 +89,7 @@ export function useStudents(trainerId?: string) {
       });
       queryClient.invalidateQueries({ queryKey: ['students'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
         title: 'Erro',
         description: error.message || 'Erro ao adicionar aluno.',

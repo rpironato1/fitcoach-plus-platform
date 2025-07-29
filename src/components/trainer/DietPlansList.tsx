@@ -2,6 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ChefHat, User, Calendar } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 interface DietPlan {
   id: string;
@@ -10,7 +11,7 @@ interface DietPlan {
   is_paid: boolean;
   created_at: string;
   student_name?: string;
-  content: any;
+  content: unknown;
 }
 
 interface DietPlansListProps {
@@ -29,13 +30,11 @@ export function DietPlansList({ dietPlans }: DietPlansListProps) {
       <CardContent>
         <div className="space-y-4">
           {dietPlans.length === 0 ? (
-            <div className="text-center py-8">
-              <ChefHat className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">Nenhum plano de dieta criado ainda</p>
-              <p className="text-sm text-gray-400 mt-2">
-                Clique em "Criar Plano de Dieta" para começar
-              </p>
-            </div>
+            <EmptyState
+              icon={ChefHat}
+              title="Nenhum plano de dieta criado ainda"
+              description='Clique em "Criar Plano de Dieta" para começar'
+            />
           ) : (
             dietPlans.map((plan) => (
               <div key={plan.id} className="flex items-center justify-between p-4 border rounded-lg">

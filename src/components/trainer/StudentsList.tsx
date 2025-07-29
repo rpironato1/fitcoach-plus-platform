@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { User, MoreHorizontal, Phone } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 interface Student {
   id: string;
@@ -45,13 +46,11 @@ export function StudentsList({ students, onUpdateStatus }: StudentsListProps) {
       <CardContent>
         <div className="space-y-4">
           {students.length === 0 ? (
-            <div className="text-center py-8">
-              <User className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">Nenhum aluno cadastrado ainda</p>
-              <p className="text-sm text-gray-400 mt-2">
-                Clique em "Adicionar Aluno" para começar
-              </p>
-            </div>
+            <EmptyState
+              icon={User}
+              title="Nenhum aluno cadastrado ainda"
+              description='Clique em "Adicionar Aluno" para começar'
+            />
           ) : (
             students.map((student) => (
               <div key={student.id} className="flex items-center justify-between p-4 border rounded-lg">
