@@ -1,9 +1,12 @@
 
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { useDashboardStats, useUpcomingSessions, useRecentActivity } from '@/hooks/useDashboardData';
+import { useLocalStorageDashboardStats, useLocalStorageUpcomingSessions, useLocalStorageRecentActivity } from '@/hooks/useLocalStorageDashboardData';
+import { DataSourceManager } from '@/components/trainer/DataSourceManager';
 import { Users, Calendar, CreditCard, TrendingUp, Clock, Star, Dumbbell, Plus } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -11,9 +14,25 @@ import { Link } from 'react-router-dom';
 
 export default function TrainerDashboard() {
   const { profile, trainerProfile } = useAuth();
-  const { data: stats, isLoading: statsLoading } = useDashboardStats();
-  const { data: upcomingSessions, isLoading: sessionsLoading } = useUpcomingSessions();
-  const { data: recentActivity, isLoading: activityLoading } = useRecentActivity();
+  const [useLocalStorage, setUseLocalStorage] = useState(false);
+
+  // Use appropriate hooks based on data source selection
+  const { data: supabaseStats, isLoading: supabaseStatsLoading } = useDashboardStats();
+  const { data: supabaseSessions, isLoading: supabaseSessionsLoading } = useUpcomingSessions();
+  const { data: supabaseActivity, isLoading: supabaseActivityLoading } = useRecentActivity();
+  
+  const { data: localStats, isLoading: localStatsLoading } = useLocalStorageDashboardStats();
+  const { data: localSessions, isLoading: localSessionsLoading } = useLocalStorageUpcomingSessions();
+  const { data: localActivity, isLoading: localActivityLoading } = useLocalStorageRecentActivity();
+
+  // Select data source
+  const stats = useLocalStorage ? localStats : supabaseStats;
+  const upcomingSessions = useLocalStorage ? localSessions : supabaseSessions;
+  const recentActivity = useLocalStorage ? localActivity : supabaseActivity;
+  
+  const statsLoading = useLocalStorage ? localStatsLoading : supabaseStatsLoading;
+  const sessionsLoading = useLocalStorage ? localSessionsLoading : supabaseSessionsLoading;
+  const activityLoading = useLocalStorage ? localActivityLoading : supabaseActivityLoading;
 
   const getPlanColor = (plan: string) => {
     switch (plan) {
@@ -60,12 +79,23 @@ export default function TrainerDashboard() {
 
   return (
     <div className="p-6 space-y-6">
+      {/* Data Source Manager */}
+      <DataSourceManager 
+        useLocalStorage={useLocalStorage}
+        onToggleDataSource={setUseLocalStorage}
+      />
+
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
             Olá, {profile?.first_name}!
           </h1>
           <p className="text-gray-600">Aqui está um resumo da sua atividade hoje</p>
+          {useLocalStorage && (
+            <Badge variant="outline" className="mt-2">
+              📊 Usando dados localStorage para teste
+            </Badge>
+          )}
         </div>
         <Badge className={getPlanColor(trainerProfile?.plan || 'free')}>
           Plano {getPlanName(trainerProfile?.plan || 'free')}
