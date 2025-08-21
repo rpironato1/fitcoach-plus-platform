@@ -26,6 +26,34 @@ interface RecentActivity {
   created_at: string;
 }
 
+interface ProfileData {
+  first_name: string;
+  last_name: string;
+}
+
+interface SessionWithProfile {
+  id: string;
+  scheduled_at: string;
+  duration_minutes: number;
+  status: string;
+  student_id: string;
+  profiles: ProfileData;
+  updated_at?: string;
+}
+
+interface StudentWithProfile {
+  id: string;
+  created_at: string;
+  profiles: ProfileData;
+}
+
+interface PlanWithProfile {
+  id: string;
+  created_at: string;
+  name: string;
+  profiles: ProfileData;
+}
+
 export function useDashboardStats() {
   const { profile } = useAuth();
 
@@ -131,7 +159,7 @@ export function useUpcomingSessions() {
 
       if (error) throw error;
 
-      return sessions?.map((session: any) => ({
+      return sessions?.map((session: SessionWithProfile) => ({
         id: session.id,
         student_name: `${session.profiles.first_name} ${session.profiles.last_name}`,
         scheduled_at: session.scheduled_at,
@@ -166,7 +194,7 @@ export function useRecentActivity() {
         .order('updated_at', { ascending: false })
         .limit(3);
 
-      completedSessions?.forEach((session: any) => {
+      completedSessions?.forEach((session: SessionWithProfile) => {
         activities.push({
           id: session.id,
           type: 'session_completed',
@@ -187,7 +215,7 @@ export function useRecentActivity() {
         .order('created_at', { ascending: false })
         .limit(3);
 
-      newStudents?.forEach((student: any) => {
+      newStudents?.forEach((student: StudentWithProfile) => {
         activities.push({
           id: student.id,
           type: 'student_added',
@@ -209,7 +237,7 @@ export function useRecentActivity() {
         .order('created_at', { ascending: false })
         .limit(3);
 
-      dietPlans?.forEach((plan: any) => {
+      dietPlans?.forEach((plan: PlanWithProfile) => {
         activities.push({
           id: plan.id,
           type: 'diet_created',
@@ -232,7 +260,7 @@ export function useRecentActivity() {
         .order('created_at', { ascending: false })
         .limit(3);
 
-      workoutPlans?.forEach((plan: any) => {
+      workoutPlans?.forEach((plan: PlanWithProfile) => {
         activities.push({
           id: plan.id,
           type: 'workout_assigned',

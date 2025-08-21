@@ -2,7 +2,6 @@ import { ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AuthProvider } from '@/components/auth/AuthProvider'
 
 // Mock do Supabase para testes
 const mockSupabase = {
@@ -49,9 +48,7 @@ const AllTheProviders = ({ children }: AllTheProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        {children}
       </BrowserRouter>
     </QueryClientProvider>
   )
