@@ -6,7 +6,13 @@
  */
 
 // Add this to window for browser console access
-(window as any).fitcoachLocalStorageDemo = {
+declare global {
+  interface Window {
+    fitcoachLocalStorageDemo: typeof fitcoachLocalStorageDemo;
+  }
+}
+
+const fitcoachLocalStorageDemo = {
   // Test functions
   testEmptyData: () => {
     localStorage.setItem('use_localstorage', 'true');
@@ -71,6 +77,9 @@ Example usage:
     `);
   }
 };
+
+// Add to window for browser console access
+window.fitcoachLocalStorageDemo = fitcoachLocalStorageDemo;
 
 // Auto-run help on load
 console.log('FitCoach LocalStorage Demo loaded! Run fitcoachLocalStorageDemo.help() for commands.');
