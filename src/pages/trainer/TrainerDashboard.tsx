@@ -1,11 +1,19 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/components/auth/AuthProvider';
-import { Users, Calendar, CreditCard, TrendingUp, Clock, Star } from 'lucide-react';
+import { useDashboardStats, useUpcomingSessions, useRecentActivity } from '@/hooks/useDashboardData';
+import { Users, Calendar, CreditCard, TrendingUp, Clock, Star, Dumbbell, Plus } from 'lucide-react';
+import { formatDistanceToNow, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { Link } from 'react-router-dom';
 
 export default function TrainerDashboard() {
   const { profile, trainerProfile } = useAuth();
+  const { data: stats, isLoading: statsLoading } = useDashboardStats();
+  const { data: upcomingSessions, isLoading: sessionsLoading } = useUpcomingSessions();
+  const { data: recentActivity, isLoading: activityLoading } = useRecentActivity();
 
   const getPlanColor = (plan: string) => {
     switch (plan) {
@@ -24,6 +32,31 @@ export default function TrainerDashboard() {
       default: return 'Free';
     }
   };
+
+  const getActivityIcon = (type: string) => {
+    switch (type) {
+      case 'session_completed': return <Calendar className="h-4 w-4 text-green-600" />;
+      case 'student_added': return <Users className="h-4 w-4 text-blue-600" />;
+      case 'workout_assigned': return <Dumbbell className="h-4 w-4 text-purple-600" />;
+      case 'diet_created': return <Star className="h-4 w-4 text-yellow-600" />;
+      default: return <TrendingUp className="h-4 w-4 text-gray-600" />;
+    }
+  };
+
+  if (statsLoading) {
+    return (
+      <div className="p-6 space-y-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-32 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -47,9 +80,9 @@ export default function TrainerDashboard() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{stats?.activeStudents || 0}</div>
             <p className="text-xs text-muted-foreground">
-              de {trainerProfile?.max_students || 3} permitidos
+              de {stats?.maxStudents || 3} permitidos
             </p>
           </CardContent>
         </Card>
@@ -60,8 +93,10 @@ export default function TrainerDashboard() {
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
-            <p className="text-xs text-muted-foreground">nenhuma agendada</p>
+            <div className="text-2xl font-bold">{stats?.sessionsToday || 0}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats?.sessionsToday === 0 ? 'nenhuma agendada' : 'agendadas para hoje'}
+            </p>
           </CardContent>
         </Card>
 
@@ -71,7 +106,7 @@ export default function TrainerDashboard() {
             <Star className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{trainerProfile?.ai_credits || 0}</div>
+            <div className="text-2xl font-bold">{stats?.aiCredits || 0}</div>
             <p className="text-xs text-muted-foreground">disponíveis</p>
           </CardContent>
         </Card>
@@ -82,7 +117,9 @@ export default function TrainerDashboard() {
             <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">R$ 0</div>
+            <div className="text-2xl font-bold">
+              R$ {(stats?.monthlyRevenue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+            </div>
             <p className="text-xs text-muted-foreground">este mês</p>
           </CardContent>
         </Card>
@@ -91,34 +128,110 @@ export default function TrainerDashboard() {
       {/* Quick Actions and Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
-          <CardHeader>
-            <CardTitle>Próximas Sessões</CardTitle>
-            <CardDescription>Suas próximas atividades agendadas</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>Próximas Sessões</CardTitle>
+              <CardDescription>Suas próximas atividades agendadas</CardDescription>
+            </div>
+            <Button asChild size="sm">
+              <Link to="/trainer/sessions">
+                <Plus className="h-4 w-4 mr-2" />
+                Nova Sessão
+              </Link>
+            </Button>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-8">
-              <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">Nenhuma sessão agendada</p>
-              <p className="text-sm text-gray-400 mt-2">
-                Adicione alunos e agende suas primeiras sessões
-              </p>
-            </div>
+            {sessionsLoading ? (
+              <div className="space-y-3">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                ))}
+              </div>
+            ) : upcomingSessions && upcomingSessions.length > 0 ? (
+              <div className="space-y-4">
+                {upcomingSessions.slice(0, 5).map((session) => (
+                  <div key={session.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-sm">{session.student_name}</p>
+                      <p className="text-xs text-gray-500">
+                        {format(new Date(session.scheduled_at), "d 'de' MMMM 'às' HH:mm", { locale: ptBR })}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-500">{session.duration_minutes}min</p>
+                      <Badge variant={session.status === 'scheduled' ? 'default' : 'secondary'} className="text-xs">
+                        {session.status === 'scheduled' ? 'Agendado' : session.status}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-500">Nenhuma sessão agendada</p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Adicione alunos e agende suas primeiras sessões
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle>Atividade Recente</CardTitle>
-            <CardDescription>Últimas ações realizadas</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>Atividade Recente</CardTitle>
+              <CardDescription>Últimas ações realizadas</CardDescription>
+            </div>
+            <Button asChild size="sm" variant="outline">
+              <Link to="/trainer/workouts">
+                <Dumbbell className="h-4 w-4 mr-2" />
+                Treinos
+              </Link>
+            </Button>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-8">
-              <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">Nenhuma atividade recente</p>
-              <p className="text-sm text-gray-400 mt-2">
-                Comece adicionando seus primeiros alunos
-              </p>
-            </div>
+            {activityLoading ? (
+              <div className="space-y-3">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/3"></div>
+                  </div>
+                ))}
+              </div>
+            ) : recentActivity && recentActivity.length > 0 ? (
+              <div className="space-y-4">
+                {recentActivity.slice(0, 8).map((activity) => (
+                  <div key={activity.id} className="flex items-start space-x-3">
+                    <div className="mt-1">
+                      {getActivityIcon(activity.type)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-900">{activity.description}</p>
+                      <p className="text-xs text-gray-500">
+                        {formatDistanceToNow(new Date(activity.created_at), {
+                          addSuffix: true,
+                          locale: ptBR
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-500">Nenhuma atividade recente</p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Comece adicionando seus primeiros alunos
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -135,13 +248,13 @@ export default function TrainerDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center p-4 border rounded">
               <div className="text-2xl font-bold text-blue-600">
-                {trainerProfile?.max_students || 3}
+                {stats?.activeStudents || 0}/{stats?.maxStudents || 3}
               </div>
-              <p className="text-sm text-gray-600">Alunos máximos</p>
+              <p className="text-sm text-gray-600">Alunos ativos</p>
             </div>
             <div className="text-center p-4 border rounded">
               <div className="text-2xl font-bold text-purple-600">
-                {trainerProfile?.ai_credits || 0}
+                {stats?.aiCredits || 0}
               </div>
               <p className="text-sm text-gray-600">Créditos IA</p>
             </div>
