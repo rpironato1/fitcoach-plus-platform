@@ -13,6 +13,7 @@ import TrainerDashboard from "@/pages/trainer/TrainerDashboard";
 import StudentsPage from "@/pages/trainer/StudentsPage";
 import SessionsPage from "@/pages/trainer/SessionsPage";
 import DietPlansPage from "@/pages/trainer/DietPlansPage";
+import WorkoutsPage from "@/pages/trainer/WorkoutsPage";
 import StudentDashboard from "@/pages/student/StudentDashboard";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import TrainersManagement from "@/pages/admin/TrainersManagement";
@@ -109,6 +110,7 @@ function AppContent() {
         <Route path="students" element={<StudentsPage />} />
         <Route path="sessions" element={<SessionsPage />} />
         <Route path="diet-plans" element={<DietPlansPage />} />
+        <Route path="workouts" element={<WorkoutsPage />} />
       </Route>
 
       {/* Rotas de Student Agrupadas */}

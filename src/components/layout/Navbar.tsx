@@ -14,6 +14,7 @@ export function Navbar() {
       return [
         { href: '/trainer', label: 'Dashboard' },
         { href: '/trainer/students', label: 'Alunos' },
+        { href: '/trainer/workouts', label: 'Treinos' },
         { href: '/trainer/sessions', label: 'Sessões' },
         { href: '/trainer/diet-plans', label: 'Dietas' },
       ];
