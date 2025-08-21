@@ -4,12 +4,10 @@ Este documento descreve a estratégia de testes implementada no projeto FitCoach
 
 ## 📋 Visão Geral
 
-O projeto utiliza uma abordagem de testes em múltiplas camadas:
+O projeto utiliza uma abordagem de testes focada em qualidade de código:
 
 - **Testes Unitários**: Vitest + Testing Library
 - **Testes de Integração**: Vitest com mocks do Supabase
-- **Testes E2E**: Playwright
-- **Testes de Acessibilidade**: Playwright + axe-core
 - **Análise de Qualidade**: TypeScript + ESLint
 
 ## 🛠️ Tecnologias
@@ -20,12 +18,6 @@ O projeto utiliza uma abordagem de testes em múltiplas camadas:
 - **Coverage**: v8 provider
 - **Ambiente**: jsdom
 
-### Playwright
-- **Browsers**: Chromium, Firefox, WebKit
-- **Mobile**: Chrome Mobile, Safari Mobile
-- **Acessibilidade**: axe-playwright
-- **Reports**: HTML, JUnit, JSON
-
 ## 📁 Estrutura de Arquivos
 
 ```
@@ -35,11 +27,6 @@ src/
 │   └── test-utils.tsx         # Utilitários e providers para testes
 ├── **/*.test.{ts,tsx}         # Testes unitários
 └── **/*.spec.{ts,tsx}         # Testes de integração
-
-tests/
-└── e2e/
-    ├── *.spec.ts              # Testes E2E gerais
-    └── *.accessibility.spec.ts # Testes de acessibilidade
 ```
 
 ## 🎯 Scripts Disponíveis
@@ -64,23 +51,8 @@ npm run test
 # Testes com coverage
 npm run test:coverage
 
-# Testes E2E
-npm run test:e2e
-
-# Testes de acessibilidade
-npm run test:accessibility
-
 # Executar todos os testes
 npm run test:all
-```
-
-### Debug
-```bash
-# Debug do Playwright
-npm run test:e2e:debug
-
-# Interface do Playwright
-npm run test:e2e:ui
 ```
 
 ## ✅ Boas Práticas
@@ -91,19 +63,6 @@ npm run test:e2e:ui
 - ✅ Teste comportamentos, não implementação
 - ✅ Use `screen.getByRole` em vez de `getByTestId`
 - ✅ Mock serviços externos (Supabase)
-
-### Testes E2E
-- ✅ Foque em fluxos críticos do usuário
-- ✅ Use seletores semânticos (`getByRole`, `getByLabel`)
-- ✅ Teste em múltiplos browsers
-- ✅ Inclua testes mobile
-- ✅ Capture screenshots em falhas
-
-### Acessibilidade
-- ✅ Teste navegação por teclado
-- ✅ Verifique contraste de cores
-- ✅ Valide texto alternativo em imagens
-- ✅ Teste com leitores de tela (simulado)
 
 ## 🎨 Exemplos de Testes
 
@@ -122,34 +81,6 @@ describe('Button Component', () => {
     
     expect(handleClick).toHaveBeenCalledTimes(1)
   })
-})
-```
-
-### Teste E2E
-```typescript
-import { test, expect } from '@playwright/test'
-
-test('deve realizar login com sucesso', async ({ page }) => {
-  await page.goto('/')
-  await page.getByRole('button', { name: /entrar/i }).click()
-  
-  await page.fill('[placeholder*="email"]', 'user@test.com')
-  await page.fill('[placeholder*="senha"]', 'password123')
-  await page.getByRole('button', { name: /entrar/i }).click()
-  
-  await expect(page.getByText(/dashboard/i)).toBeVisible()
-})
-```
-
-### Teste de Acessibilidade
-```typescript
-import { test } from '@playwright/test'
-import { injectAxe, checkA11y } from 'axe-playwright'
-
-test('página deve estar acessível', async ({ page }) => {
-  await page.goto('/')
-  await injectAxe(page)
-  await checkA11y(page)
 })
 ```
 
@@ -173,9 +104,7 @@ O pipeline de CI/CD executa automaticamente:
 
 1. **Qualidade**: TypeScript + ESLint
 2. **Unitários**: Vitest com coverage
-3. **E2E**: Playwright em múltiplos browsers
-4. **Acessibilidade**: Testes axe-core
-5. **Build**: Verificação de build
+3. **Build**: Verificação de build
 
 ### GitHub Actions
 - ✅ Execução paralela de jobs
@@ -194,15 +123,6 @@ npm run test:watch -- --reporter=verbose
 npm run test:ui
 ```
 
-### Playwright
-```bash
-# Modo debug com browser visível
-npm run test:e2e:debug
-
-# Screenshots de falhas automáticas
-# Vídeos em caso de retry
-```
-
 ## 🔧 Configurações
 
 ### Vitest (`vitest.config.ts`)
@@ -210,12 +130,6 @@ npm run test:e2e:debug
 - Setup automático com mocks
 - Coverage com v8
 - Thresholds configurados
-
-### Playwright (`playwright.config.ts`)
-- Múltiplos browsers e dispositivos
-- Base URL configurável
-- Relatórios detalhados
-- WebServer automático
 
 ## 📝 Manutenção
 
@@ -228,8 +142,7 @@ npm run test:e2e:debug
 ### Monitoramento
 - Coverage trends
 - Test execution time
-- Flaky test detection
-- Browser compatibility
+- Unit test reliability
 
 ---
 
@@ -239,9 +152,7 @@ npm run test:e2e:debug
 2. **Testes de performance** com Lighthouse CI
 3. **Testes de carga** com k6
 4. **Testes de segurança** com OWASP ZAP
-5. **Visual regression tests** com Playwright
 
 Para mais informações, consulte a documentação oficial:
 - [Vitest](https://vitest.dev/)
-- [Playwright](https://playwright.dev/)
 - [Testing Library](https://testing-library.com/)
