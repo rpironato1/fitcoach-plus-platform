@@ -52,7 +52,7 @@ jobs:
         run: npm run test:coverage
 
       - name: 📊 Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ./coverage
           flags: unittests
@@ -80,7 +80,7 @@ jobs:
         run: npm run build
 
       - name: 📤 Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist/
