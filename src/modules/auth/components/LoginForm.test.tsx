@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@/test/test-utils'
-import { LoginForm } from '@/components/auth/LoginForm'
-import { useAuth } from '@/components/auth/AuthProvider'
+import { LoginForm } from './LoginForm'
+import { useAuth } from './AuthProvider'
 
 // Mock do useNavigate
 const mockNavigate = vi.fn()
@@ -14,7 +14,7 @@ vi.mock('react-router-dom', async () => {
 })
 
 // Mock do useAuth
-vi.mock('@/components/auth/AuthProvider', () => ({
+vi.mock('./AuthProvider', () => ({
   useAuth: vi.fn(),
 }))
 
