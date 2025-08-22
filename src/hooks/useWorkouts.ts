@@ -60,6 +60,36 @@ export interface WorkoutSession {
   };
 }
 
+interface WorkoutPlanExerciseRaw {
+  id: string;
+  exercise_id: string;
+  order_in_workout: number;
+  target_sets: number;
+  target_reps: string;
+  target_weight_kg?: number;
+  rest_seconds: number;
+  notes?: string;
+  exercises: Exercise;
+}
+
+interface WorkoutSessionRaw {
+  id: string;
+  student_id: string;
+  trainer_id: string;
+  workout_plan_id: string;
+  scheduled_date: string;
+  completed_at?: string;
+  status: string;
+  duration_minutes?: number;
+  notes?: string;
+  rating?: number;
+  workout_plans: WorkoutPlan;
+  profiles: {
+    first_name: string;
+    last_name: string;
+  };
+}
+
 // Exercises hooks
 export function useExercises() {
   const { profile } = useAuth();
@@ -151,7 +181,7 @@ export function useWorkoutPlan(id: string) {
 
       return {
         ...data,
-        exercises: data.workout_plan_exercises.map((wpe: any) => ({
+        exercises: data.workout_plan_exercises.map((wpe: WorkoutPlanExerciseRaw) => ({
           ...wpe,
           exercise: wpe.exercises,
         })),
@@ -273,7 +303,7 @@ export function useAssignWorkoutToStudent() {
       const { error: exercisesError } = await supabase
         .from('workout_plan_exercises')
         .insert(
-          originalPlan.workout_plan_exercises.map((exercise: any) => ({
+          originalPlan.workout_plan_exercises.map((exercise: WorkoutPlanExerciseRaw) => ({
             workout_plan_id: newPlan.id,
             exercise_id: exercise.exercise_id,
             order_in_workout: exercise.order_in_workout,
@@ -320,7 +350,7 @@ export function useWorkoutSessions() {
 
       if (error) throw error;
 
-      return data?.map((session: any) => ({
+      return data?.map((session: WorkoutSessionRaw) => ({
         ...session,
         workout_plan: session.workout_plans,
         student: session.profiles,

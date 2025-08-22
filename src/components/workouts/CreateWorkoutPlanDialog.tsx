@@ -89,7 +89,7 @@ export default function CreateWorkoutPlanDialog({ open, onOpenChange }: CreateWo
     setExercises(prev => prev.filter((_, i) => i !== index));
   };
 
-  const updateExercise = (index: number, field: keyof WorkoutExercise, value: any) => {
+  const updateExercise = (index: number, field: keyof WorkoutExercise, value: string | number) => {
     setExercises(prev => prev.map((exercise, i) => 
       i === index ? { ...exercise, [field]: value } : exercise
     ));
