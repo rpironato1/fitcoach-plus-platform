@@ -139,7 +139,7 @@ export function getRecommendedPlan(studentCount: number): TrainerPlan {
 /**
  * Check if subscription is in trial period
  */
-export function isTrialPeriod(subscription: any): boolean {
+export function isTrialPeriod(subscription: Record<string, unknown>): boolean {
   if (!subscription) return false;
   return subscription.status === 'trialing';
 }
@@ -147,9 +147,9 @@ export function isTrialPeriod(subscription: any): boolean {
 /**
  * Check if subscription is active
  */
-export function isActiveSubscription(subscription: any): boolean {
+export function isActiveSubscription(subscription: Record<string, unknown>): boolean {
   if (!subscription) return false;
-  return ['active', 'trialing'].includes(subscription.status);
+  return ['active', 'trialing'].includes(subscription.status as string);
 }
 
 /**

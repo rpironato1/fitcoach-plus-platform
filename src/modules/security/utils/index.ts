@@ -270,7 +270,7 @@ export function getDataRetentionPeriods(): Array<{ value: number; label: string;
 /**
  * Mask sensitive data for logs
  */
-export function maskSensitiveData(data: any): any {
+export function maskSensitiveData(data: Record<string, unknown>): Record<string, unknown> {
   if (typeof data !== 'object' || data === null) {
     return data;
   }

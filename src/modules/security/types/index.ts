@@ -49,7 +49,7 @@ export interface SecurityLog {
   id: string;
   user_id?: string;
   event_type: 'login' | 'logout' | 'failed_login' | 'password_change' | 'data_access' | 'rate_limit_exceeded';
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   ip_address: string;
   user_agent: string;
   timestamp: string;
@@ -74,8 +74,8 @@ export interface AuditLog {
   action: string;
   resource: string;
   resource_id?: string;
-  old_values?: Record<string, any>;
-  new_values?: Record<string, any>;
+  old_values?: Record<string, unknown>;
+  new_values?: Record<string, unknown>;
   ip_address: string;
   user_agent: string;
   timestamp: string;
@@ -87,7 +87,7 @@ export interface SecurityAlert {
   severity: 'low' | 'medium' | 'high' | 'critical';
   user_id?: string;
   description: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   resolved: boolean;
   resolved_at?: string;
   created_at: string;
@@ -106,5 +106,5 @@ export interface ComplianceReport {
     security_incidents: number;
     compliance_score: number;
   };
-  details: Record<string, any>;
+  details: Record<string, unknown>;
 }

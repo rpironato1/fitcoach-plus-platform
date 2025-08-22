@@ -1,9 +1,9 @@
 // Types for the Dependency Injection Container
-export interface ServiceConstructor<T = any> {
-  new (...args: any[]): T;
+export interface ServiceConstructor<T = unknown> {
+  new (...args: unknown[]): T;
 }
 
-export interface ServiceFactory<T = any> {
+export interface ServiceFactory<T = unknown> {
   (): T;
 }
 
@@ -24,7 +24,7 @@ export enum ServiceLifetime {
   Singleton = 'singleton'
 }
 
-export interface ServiceBinding<T = any> {
+export interface ServiceBinding<T = unknown> {
   type: 'constructor' | 'factory' | 'value';
   value: ServiceConstructor<T> | ServiceFactory<T> | T;
   lifetime: ServiceLifetime;
