@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@/test/test-utils'
 import { LoginForm } from '@/components/auth/LoginForm'
+import { useAuth } from '@/components/auth/AuthProvider'
 
 // Mock do useNavigate
 const mockNavigate = vi.fn()
@@ -11,6 +12,11 @@ vi.mock('react-router-dom', async () => {
     useNavigate: () => mockNavigate,
   }
 })
+
+// Mock do useAuth
+vi.mock('@/components/auth/AuthProvider', () => ({
+  useAuth: vi.fn(),
+}))
 
 // Mock do useToast
 const mockToast = vi.fn()
@@ -58,12 +64,29 @@ describe('LoginForm Component', () => {
     })
     fireEvent.click(screen.getByRole('button', { name: /entrar/i }))
 
+    await waitFor(() => {
+      expect(mockSignIn).toHaveBeenCalledWith('user@test.com', 'password123')
+    })
   })
 
   it('deve exibir toast de sucesso ao fazer login', async () => {
     mockSignIn.mockResolvedValue(undefined)
     render(<LoginForm />)
+    
+    fireEvent.change(screen.getByPlaceholderText(/seu@email.com/i), {
+      target: { value: 'user@test.com' }
+    })
+    fireEvent.change(screen.getByPlaceholderText(/sua senha/i), {
+      target: { value: 'password123' }
+    })
+    fireEvent.click(screen.getByRole('button', { name: /entrar/i }))
 
+    await waitFor(() => {
+      expect(mockToast).toHaveBeenCalledWith({
+        title: 'Sucesso!',
+        description: 'Login realizado com sucesso.',
+      })
+    })
   })
 
   it('deve exibir toast de erro quando login falha', async () => {
@@ -79,17 +102,11 @@ describe('LoginForm Component', () => {
     fireEvent.click(screen.getByRole('button', { name: /entrar/i }))
     
     await waitFor(() => {
-
-    render(<LoginForm />)
-    
-    fireEvent.change(screen.getByPlaceholderText(/seu@email.com/i), {
-      target: { value: 'user@test.com' }
+      expect(mockToast).toHaveBeenCalledWith({
+        title: 'Erro no login',
+        description: 'Credenciais inválidas',
+        variant: 'destructive',
+      })
     })
-    fireEvent.change(screen.getByPlaceholderText(/sua senha/i), {
-      target: { value: 'password123' }
-    })
-    fireEvent.click(screen.getByRole('button', { name: /entrar/i }))
-    
-
   })
 })
