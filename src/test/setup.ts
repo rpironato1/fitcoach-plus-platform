@@ -44,6 +44,21 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
+// Mock do AuthProvider
+vi.mock('@/components/auth/AuthProvider', () => ({
+  AuthProvider: ({ children }: { children: React.ReactNode }) => children,
+  useAuth: vi.fn(() => ({
+    user: null,
+    profile: null,
+    trainerProfile: null,
+    studentProfile: null,
+    loading: false,
+    signIn: vi.fn(),
+    signUp: vi.fn(),
+    signOut: vi.fn(),
+  })),
+}))
+
 // Mock dos hooks de toast
 vi.mock('@/hooks/use-toast', () => ({
   useToast: vi.fn(() => ({
