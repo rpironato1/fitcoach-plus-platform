@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -21,6 +22,9 @@ import PaymentsManagement from "@/pages/admin/PaymentsManagement";
 import ReportsPage from "@/pages/admin/ReportsPage";
 import SystemSettings from "@/pages/admin/SystemSettings";
 import NotFound from "./pages/NotFound";
+
+// Import localStorage demo utilities (development only)
+import "@/utils/localStorageDemo";
 
 const queryClient = new QueryClient({
   defaultOptions: {

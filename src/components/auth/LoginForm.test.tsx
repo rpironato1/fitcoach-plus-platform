@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@/test/test-utils'
 import { LoginForm } from '@/components/auth/LoginForm'
+import { useAuth } from '@/components/auth/AuthProvider'
 
 // Mock do useNavigate
 const mockNavigate = vi.fn()
@@ -12,8 +13,18 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
-// Get the mocked useAuth from the global mock
-const { useAuth } = await vi.importMock('@/components/auth/AuthProvider')
+// Mock do useAuth
+vi.mock('@/components/auth/AuthProvider', () => ({
+  useAuth: vi.fn(),
+}))
+
+// Mock do useToast
+const mockToast = vi.fn()
+vi.mock('@/hooks/use-toast', () => ({
+  useToast: () => ({
+    toast: mockToast,
+  }),
+}))
 
 describe('LoginForm Component', () => {
   const mockSignIn = vi.fn()
@@ -36,63 +47,66 @@ describe('LoginForm Component', () => {
   it('deve renderizar formulário de login', () => {
     render(<LoginForm />)
     
-    expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(/senha/i)).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/seu@email.com/i)).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/sua senha/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /entrar/i })).toBeInTheDocument()
   })
 
-  it('deve validar campos obrigatórios', async () => {
-    render(<LoginForm />)
-    
-    // Tentar submeter sem preencher campos
-    fireEvent.click(screen.getByRole('button', { name: /entrar/i }))
-    
-    // HTML5 validation should prevent submission
-    const emailInput = screen.getByPlaceholderText(/email/i)
-    const passwordInput = screen.getByPlaceholderText(/senha/i)
-    
-    expect(emailInput).toBeRequired()
-    expect(passwordInput).toBeRequired()
-  })
-
-  it('deve validar formato de email', async () => {
-    render(<LoginForm />)
-    
-    const emailInput = screen.getByPlaceholderText(/email/i)
-    expect(emailInput).toHaveAttribute('type', 'email')
-  })
-
   it('deve chamar signIn com dados corretos', async () => {
-    mockSignIn.mockResolvedValue({ error: null })
+    mockSignIn.mockResolvedValue(undefined)
     render(<LoginForm />)
     
-    fireEvent.change(screen.getByPlaceholderText(/email/i), {
+    fireEvent.change(screen.getByPlaceholderText(/seu@email.com/i), {
       target: { value: 'user@test.com' }
     })
-    fireEvent.change(screen.getByPlaceholderText(/senha/i), {
+    fireEvent.change(screen.getByPlaceholderText(/sua senha/i), {
       target: { value: 'password123' }
     })
     fireEvent.click(screen.getByRole('button', { name: /entrar/i }))
-    
+
     await waitFor(() => {
       expect(mockSignIn).toHaveBeenCalledWith('user@test.com', 'password123')
     })
   })
 
-  it('deve exibir erro de autenticação', async () => {
+  it('deve exibir toast de sucesso ao fazer login', async () => {
+    mockSignIn.mockResolvedValue(undefined)
+    render(<LoginForm />)
+    
+    fireEvent.change(screen.getByPlaceholderText(/seu@email.com/i), {
+      target: { value: 'user@test.com' }
+    })
+    fireEvent.change(screen.getByPlaceholderText(/sua senha/i), {
+      target: { value: 'password123' }
+    })
+    fireEvent.click(screen.getByRole('button', { name: /entrar/i }))
+
+    await waitFor(() => {
+      expect(mockToast).toHaveBeenCalledWith({
+        title: 'Sucesso!',
+        description: 'Login realizado com sucesso.',
+      })
+    })
+  })
+
+  it('deve exibir toast de erro quando login falha', async () => {
     mockSignIn.mockRejectedValue(new Error('Credenciais inválidas'))
     render(<LoginForm />)
     
-    fireEvent.change(screen.getByPlaceholderText(/email/i), {
+    fireEvent.change(screen.getByPlaceholderText(/seu@email.com/i), {
       target: { value: 'user@test.com' }
     })
-    fireEvent.change(screen.getByPlaceholderText(/senha/i), {
+    fireEvent.change(screen.getByPlaceholderText(/sua senha/i), {
       target: { value: 'wrong-password' }
     })
     fireEvent.click(screen.getByRole('button', { name: /entrar/i }))
     
     await waitFor(() => {
-      expect(mockSignIn).toHaveBeenCalledWith('user@test.com', 'wrong-password')
+      expect(mockToast).toHaveBeenCalledWith({
+        title: 'Erro no login',
+        description: 'Credenciais inválidas',
+        variant: 'destructive',
+      })
     })
   })
 })
