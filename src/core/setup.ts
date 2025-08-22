@@ -2,6 +2,8 @@ import { container } from '@/core';
 import { SupabaseAuthService, SupabaseProfileService } from '@/modules/auth/services/AuthService';
 import { SupabaseWorkoutService } from '@/modules/workouts/services/WorkoutService';
 import { StripePaymentService } from '@/modules/payments/services/PaymentService';
+import { OpenAIService } from '@/modules/ai/services/AIService';
+import { SupabaseSecurityService } from '@/modules/security/services/SecurityService';
 
 // Setup all modules' dependencies
 export function setupModules() {
@@ -15,7 +17,9 @@ export function setupModules() {
   // Payments module dependencies
   container.bind('PaymentService').to(StripePaymentService);
   
-  // Future modules will be added here
-  // setupAIModule();
-  // setupSecurityModule();
+  // AI module dependencies
+  container.bind('AIService').to(OpenAIService);
+  
+  // Security module dependencies
+  container.bind('SecurityService').to(SupabaseSecurityService);
 }
