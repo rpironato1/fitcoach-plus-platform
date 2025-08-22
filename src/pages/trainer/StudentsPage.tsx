@@ -1,5 +1,5 @@
 
-import { useAuth } from '@/components/auth/AuthProvider';
+import { useAuth } from '@/modules/auth';
 import { StudentStatsCards } from '@/components/trainer/StudentStatsCards';
 import { AddStudentDialog } from '@/components/trainer/AddStudentDialog';
 import { StudentsList } from '@/components/trainer/StudentsList';

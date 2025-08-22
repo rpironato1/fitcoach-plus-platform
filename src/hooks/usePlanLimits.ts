@@ -1,5 +1,5 @@
 
-import { useAuth } from '@/components/auth/AuthProvider';
+import { useAuth } from '@/modules/auth';
 
 export function usePlanLimits() {
   const { trainerProfile } = useAuth();

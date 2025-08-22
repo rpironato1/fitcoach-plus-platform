@@ -11,7 +11,7 @@ import {
   CreditCard,
   LogOut
 } from 'lucide-react';
-import { useAuth } from '@/components/auth/AuthProvider';
+import { useAuth } from '@/modules/auth';
 
 interface AdminLayoutProps {
   children?: ReactNode;
