@@ -18,11 +18,11 @@ export type {
 } from './types';
 
 // Setup function to register services in DI container
-export function setupAuthModule() {
-  const { container } = require('@/core');
+export async function setupAuthModule() {
+  const { container } = await import('@/core');
   
   // Import here to avoid circular dependencies
-  const { SupabaseAuthService, SupabaseProfileService } = require('./services/AuthService');
+  const { SupabaseAuthService, SupabaseProfileService } = await import('./services/AuthService');
   
   container.bind('AuthService').to(SupabaseAuthService);
   container.bind('ProfileService').to(SupabaseProfileService);

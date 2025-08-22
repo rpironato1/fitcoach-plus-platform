@@ -64,15 +64,17 @@ class DIContainer implements Container {
     let instance: T;
 
     switch (binding.type) {
-      case 'constructor':
+      case 'constructor': {
         const Constructor = binding.value as ServiceConstructor<T>;
         instance = new Constructor();
         break;
+      }
         
-      case 'factory':
+      case 'factory': {
         const factory = binding.value as ServiceFactory<T>;
         instance = factory();
         break;
+      }
         
       case 'value':
         instance = binding.value as T;
