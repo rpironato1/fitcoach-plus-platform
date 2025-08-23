@@ -16,6 +16,7 @@ import SessionsPage from "@/pages/trainer/SessionsPage";
 import DietPlansPage from "@/pages/trainer/DietPlansPage";
 import WorkoutsPage from "@/pages/trainer/WorkoutsPage";
 import StudentDashboard from "@/pages/student/StudentDashboard";
+import StudentDashboardDemo from "@/pages/student/StudentDashboardDemo";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import TrainersManagement from "@/pages/admin/TrainersManagement";
 import PaymentsManagement from "@/pages/admin/PaymentsManagement";
@@ -98,6 +99,9 @@ function AppContent() {
         profile?.role === 'trainer' ? '/trainer' :
         profile?.role === 'student' ? '/student' : '/'
       } replace />} />
+
+      {/* Demo Route - No Authentication Required */}
+      <Route path="/student-demo" element={<StudentDashboardDemo />} />
 
       {/* Rotas de Admin Agrupadas */}
       <Route path="/admin" element={<AdminRoutes />}>

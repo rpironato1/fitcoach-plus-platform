@@ -1,14 +1,16 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/modules/auth';
 import { Calendar, User, Activity, Trophy, Clock, Target, Utensils, TrendingUp } from 'lucide-react';
 import { MenstrualCycleCard } from '@/components/ui/menstrual-cycle-card';
 import { GenderSelection } from '@/components/ui/gender-selection';
 
-export default function StudentDashboard() {
-  const { profile } = useAuth();
+export default function StudentDashboardDemo() {
+  // Mock profile data for demo
+  const mockProfile = {
+    first_name: 'Maria',
+    last_name: 'Silva'
+  };
   
   // Simulated student profile data - in real app this would come from the database
   const [studentProfile, setStudentProfile] = useState({
@@ -45,7 +47,7 @@ export default function StudentDashboard() {
       <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Olá, {profile?.first_name}!
+            Olá, {mockProfile?.first_name}!
           </h1>
           <p className="text-sm sm:text-base text-gray-600">Acompanhe seu progresso e próximas atividades</p>
         </div>

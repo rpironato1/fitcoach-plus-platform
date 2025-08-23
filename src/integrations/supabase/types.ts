@@ -382,7 +382,9 @@ export type Database = {
       student_profiles: {
         Row: {
           created_at: string
+          gender: string | null
           id: string
+          menstrual_cycle_tracking: boolean
           start_date: string
           status: Database["public"]["Enums"]["student_status"]
           trainer_id: string
@@ -390,7 +392,9 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          gender?: string | null
           id: string
+          menstrual_cycle_tracking?: boolean
           start_date?: string
           status?: Database["public"]["Enums"]["student_status"]
           trainer_id: string
@@ -398,7 +402,9 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          gender?: string | null
           id?: string
+          menstrual_cycle_tracking?: boolean
           start_date?: string
           status?: Database["public"]["Enums"]["student_status"]
           trainer_id?: string
