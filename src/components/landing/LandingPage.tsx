@@ -10,6 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Users, Dumbbell, Calendar, ChefHat, Trophy, Star, ArrowRight, 
   CheckCircle, PlayCircle, Shield, Zap, Heart, TrendingUp,
@@ -20,6 +21,28 @@ export function LandingPage() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
+  const { toast } = useToast();
+
+  const handleDemoClick = () => {
+    toast({
+      title: "Demo em breve! 🚀",
+      description: "Nossa demo interativa estará disponível em breve. Por enquanto, explore nossa plataforma criando uma conta gratuita!",
+    });
+  };
+
+  const handleExperimentarClick = () => {
+    toast({
+      title: "Crie sua conta gratuita! ✨",
+      description: "Para experimentar este recurso, crie sua conta gratuita e comece a usar o FitCoach hoje mesmo!",
+    });
+  };
+
+  const handlePricingClick = (planName: string) => {
+    toast({
+      title: `Plano ${planName} selecionado! 💼`,
+      description: "Entre em contato conosco ou crie sua conta para ativar este plano e começar a transformar seu negócio!",
+    });
+  };
 
   const features = [
     {
@@ -232,7 +255,7 @@ export function LandingPage() {
                 <PlayCircle className="h-5 w-5 mr-2" />
                 Começar Grátis
               </Button>
-              <Button size="lg" variant="outline" className="border-2">
+              <Button size="lg" variant="outline" className="border-2" onClick={handleDemoClick}>
                 <Globe className="h-5 w-5 mr-2" />
                 Ver Demo
               </Button>
@@ -341,7 +364,7 @@ export function LandingPage() {
                           <h3 className="text-2xl lg:text-3xl font-bold mb-4">{feature.title}</h3>
                           <p className="text-gray-600 text-lg leading-relaxed">{feature.description}</p>
                         </div>
-                        <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600">
+                        <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600" onClick={handleExperimentarClick}>
                           Experimentar Agora
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
@@ -484,7 +507,7 @@ export function LandingPage() {
                   <Button 
                     className={`w-full py-6 text-lg ${plan.popular ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700' : ''}`}
                     variant={plan.button as "default" | "outline"}
-                    onClick={() => setIsRegisterOpen(true)}
+                    onClick={() => plan.name === 'Free' ? setIsRegisterOpen(true) : handlePricingClick(plan.name)}
                   >
                     {plan.name === 'Free' ? 'Começar Grátis' : 'Escolher Plano'}
                   </Button>
@@ -544,7 +567,7 @@ export function LandingPage() {
                 <PlayCircle className="h-5 w-5 mr-2" />
                 Começar Grátis Agora
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 text-lg px-8 py-6">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 text-lg px-8 py-6" onClick={handleDemoClick}>
                 <Clock className="h-5 w-5 mr-2" />
                 Agendar Demo
               </Button>
