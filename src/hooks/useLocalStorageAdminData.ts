@@ -46,7 +46,7 @@ interface AdminActivity {
   type: 'trainer_signup' | 'payment_processed' | 'session_completed' | 'system_update';
   description: string;
   created_at: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 }
 
 export function useLocalStorageAdminStats() {

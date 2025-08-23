@@ -135,8 +135,8 @@ export default function StudentDashboard() {
                 <Badge variant="outline" className="text-xs">Agendado</Badge>
               </div>
             </div>
-            {/* Empty state */}
-            {false && (
+            {/* Empty state - disabled for demo */}
+            {/* {!hasUpcomingSessions && (
               <div className="text-center py-6 sm:py-8">
                 <Clock className="h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
                 <p className="text-sm sm:text-base text-gray-500">Nenhuma sessão agendada</p>
@@ -144,7 +144,7 @@ export default function StudentDashboard() {
                   Entre em contato com seu personal trainer para agendar
                 </p>
               </div>
-            )}
+            )} */}
           </CardContent>
         </Card>
 
