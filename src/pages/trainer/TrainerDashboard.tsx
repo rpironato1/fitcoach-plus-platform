@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/modules/auth';
+import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
 import { useDashboardStats, useUpcomingSessions, useRecentActivity } from '@/hooks/useDashboardData';
 import { useLocalStorageDashboardStats, useLocalStorageUpcomingSessions, useLocalStorageRecentActivity } from '@/hooks/useLocalStorageDashboardData';
 import { DataSourceManager } from '@/components/trainer/DataSourceManager';

@@ -1,7 +1,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/modules/auth';
+import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
 import { useToast } from '@/hooks/use-toast';
 
 interface DietPlan {
