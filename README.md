@@ -1,4 +1,44 @@
-# Welcome to your Lovable project
+# FitCoach Plus Platform
+
+Sistema completo de gestão para personal trainers e alunos, com painel administrativo integrado.
+
+## 🔐 Credenciais de Teste
+
+Para acessar as diferentes dashboards da aplicação, use as seguintes credenciais:
+
+### Dashboard do Personal Trainer
+- **Email:** trainer@fitcoach.com
+- **Senha:** trainer123
+- **Funcionalidades:** Gerenciamento de alunos, sessões, dietas e treinos
+
+### Dashboard do Aluno
+- **Email:** student@fitcoach.com
+- **Senha:** student123
+- **Funcionalidades:** Visualização de treinos, dietas e progresso
+
+### Dashboard Administrativo
+- **Email:** admin@fitcoach.com
+- **Senha:** admin123
+- **Funcionalidades:** Visão geral do sistema, gestão de trainers, pagamentos e configurações
+
+## 💾 Modo de Teste LocalStorage
+
+Todas as dashboards incluem um **DataSourceManager** que permite alternar entre dados do Supabase e dados locais para teste:
+
+- **Dados Completos**: Dataset completo com múltiplos alunos, sessões e pagamentos
+- **Dados Mínimos**: Dataset reduzido para testes específicos
+- **Dados Vazios**: Para testar estados vazios da aplicação
+
+Os dados localStorage são estruturados em JSON compatível com Supabase, permitindo migração fácil.
+
+## 🚀 Tecnologias
+
+- **Frontend:** React + TypeScript + Vite
+- **UI:** shadcn/ui + Tailwind CSS
+- **Backend:** Supabase
+- **Autenticação:** Supabase Auth
+- **Estado:** TanStack Query
+- **Testes:** Vitest + Testing Library
 
 ## Project info
 
