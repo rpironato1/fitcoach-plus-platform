@@ -94,37 +94,37 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
       {/* Data Source Manager */}
       <DataSourceManager 
         useLocalStorage={useLocalStorage}
         onToggleDataSource={setUseLocalStorage}
       />
 
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard Administrativo</h1>
-          <p className="text-gray-600">Visão geral completa do sistema FitCoach</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard Administrativo</h1>
+          <p className="text-sm sm:text-base text-gray-600">Visão geral completa do sistema FitCoach</p>
           {useLocalStorage && (
             <Badge variant="outline" className="mt-2">
               📊 Usando dados localStorage para teste
             </Badge>
           )}
         </div>
-        <Badge className="bg-red-100 text-red-800">
+        <Badge className="bg-red-100 text-red-800 self-start sm:self-auto">
           Administrador
         </Badge>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Trainers Ativos</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.activeTrainers || 0}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stats?.activeTrainers || 0}</div>
             <p className="text-xs text-muted-foreground">cadastrados na plataforma</p>
           </CardContent>
         </Card>
@@ -135,7 +135,7 @@ export default function AdminDashboard() {
             <Building className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalStudents || 0}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stats?.totalStudents || 0}</div>
             <p className="text-xs text-muted-foreground">na plataforma</p>
           </CardContent>
         </Card>
@@ -146,7 +146,7 @@ export default function AdminDashboard() {
             <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-xl sm:text-2xl font-bold">
               R$ {((stats?.totalRevenue || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </div>
             <p className="text-xs text-muted-foreground">processada</p>
@@ -159,7 +159,7 @@ export default function AdminDashboard() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-xl sm:text-2xl font-bold">
               R$ {((stats?.monthlyRevenue || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </div>
             <p className="text-xs text-muted-foreground">últimos 30 dias</p>
@@ -168,14 +168,14 @@ export default function AdminDashboard() {
       </div>
 
       {/* Secondary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Sessões Totais</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalSessions || 0}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stats?.totalSessions || 0}</div>
             <p className="text-xs text-muted-foreground">realizadas</p>
           </CardContent>
         </Card>
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
             <UserCheck className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.weeklySignups || 0}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stats?.weeklySignups || 0}</div>
             <p className="text-xs text-muted-foreground">esta semana</p>
           </CardContent>
         </Card>
@@ -197,18 +197,18 @@ export default function AdminDashboard() {
             <Star className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.averageSessionsPerTrainer || 0}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stats?.averageSessionsPerTrainer || 0}</div>
             <p className="text-xs text-muted-foreground">por trainer</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Pagamentos Recentes</CardTitle>
-            <CardDescription>Últimas transações processadas</CardDescription>
+            <CardTitle className="text-base sm:text-lg">Pagamentos Recentes</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Últimas transações processadas</CardDescription>
           </CardHeader>
           <CardContent>
             {paymentsLoading ? (
@@ -221,25 +221,25 @@ export default function AdminDashboard() {
                 ))}
               </div>
             ) : recentPayments && recentPayments.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {recentPayments.slice(0, 5).map((payment) => (
-                  <div key={payment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <p className="font-medium">R$ {((payment.amount || 0) / 100).toFixed(2)}</p>
-                      <p className="text-sm text-gray-500">
+                  <div key={payment.id} className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-sm sm:text-base">R$ {((payment.amount || 0) / 100).toFixed(2)}</p>
+                      <p className="text-xs sm:text-sm text-gray-500 truncate">
                         {payment.trainer_name || payment.method || 'Cartão de Crédito'}
                       </p>
                     </div>
-                    <Badge className={payment.status === 'succeeded' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
+                    <Badge className={`text-xs ${payment.status === 'succeeded' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
                       {payment.status === 'succeeded' ? 'Sucesso' : payment.status}
                     </Badge>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
-                <CreditCard className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500">Nenhum pagamento recente</p>
+              <div className="text-center py-6 sm:py-8">
+                <CreditCard className="h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
+                <p className="text-sm sm:text-base text-gray-500">Nenhum pagamento recente</p>
               </div>
             )}
           </CardContent>
@@ -247,8 +247,8 @@ export default function AdminDashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Atividade Recente</CardTitle>
-            <CardDescription>Últimas ações no sistema</CardDescription>
+            <CardTitle className="text-base sm:text-lg">Atividade Recente</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Últimas ações no sistema</CardDescription>
           </CardHeader>
           <CardContent>
             {activityLoading ? (
@@ -261,14 +261,14 @@ export default function AdminDashboard() {
                 ))}
               </div>
             ) : recentActivity && recentActivity.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {recentActivity.slice(0, 8).map((activity) => (
-                  <div key={activity.id} className="flex items-start space-x-3">
+                  <div key={activity.id} className="flex items-start space-x-2 sm:space-x-3">
                     <div className="mt-1">
                       {getActivityIcon(activity.type)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-900">{activity.description}</p>
+                      <p className="text-xs sm:text-sm text-gray-900">{activity.description}</p>
                       <p className="text-xs text-gray-500">
                         {formatDistanceToNow(new Date(activity.created_at), {
                           addSuffix: true,
@@ -280,9 +280,9 @@ export default function AdminDashboard() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
-                <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500">Nenhuma atividade recente</p>
+              <div className="text-center py-6 sm:py-8">
+                <Activity className="h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
+                <p className="text-sm sm:text-base text-gray-500">Nenhuma atividade recente</p>
               </div>
             )}
           </CardContent>
@@ -290,28 +290,28 @@ export default function AdminDashboard() {
       </div>
 
       {/* System Health and Settings */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertCircle className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5" />
               Status do Sistema
             </CardTitle>
-            <CardDescription>Monitoramento dos serviços</CardDescription>
+            <CardDescription className="text-xs sm:text-sm">Monitoramento dos serviços</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               <div className="flex items-center gap-2">
                 <div className={`w-3 h-3 rounded-full ${stats?.systemHealth?.database === 'online' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                <span>Database: {stats?.systemHealth?.database || 'Online'}</span>
+                <span className="text-xs sm:text-sm">Database: {stats?.systemHealth?.database || 'Online'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className={`w-3 h-3 rounded-full ${stats?.systemHealth?.auth === 'online' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                <span>Auth: {stats?.systemHealth?.auth || 'Online'}</span>
+                <span className="text-xs sm:text-sm">Auth: {stats?.systemHealth?.auth || 'Online'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className={`w-3 h-3 rounded-full ${stats?.systemHealth?.storage === 'online' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                <span>Storage: {stats?.systemHealth?.storage || 'Online'}</span>
+                <span className="text-xs sm:text-sm">Storage: {stats?.systemHealth?.storage || 'Online'}</span>
               </div>
             </div>
           </CardContent>
@@ -319,8 +319,8 @@ export default function AdminDashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Configurações do Sistema</CardTitle>
-            <CardDescription>Status das configurações principais</CardDescription>
+            <CardTitle className="text-base sm:text-lg">Configurações do Sistema</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Status das configurações principais</CardDescription>
           </CardHeader>
           <CardContent>
             {settingsLoading ? (
@@ -333,12 +333,12 @@ export default function AdminDashboard() {
                 ))}
               </div>
             ) : settings && settings.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {settings.slice(0, 4).map((setting) => (
                   <div key={setting.id} className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-sm">{setting.description}</p>
-                      <p className="text-xs text-gray-500">{setting.key}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-xs sm:text-sm">{setting.description}</p>
+                      <p className="text-xs text-gray-500 truncate">{setting.key}</p>
                     </div>
                     <Badge variant="outline" className="text-xs">
                       {setting.value}
@@ -348,8 +348,8 @@ export default function AdminDashboard() {
               </div>
             ) : (
               <div className="text-center py-4">
-                <Settings className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">Configurações não disponíveis</p>
+                <Settings className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 mx-auto mb-2" />
+                <p className="text-xs sm:text-sm text-gray-500">Configurações não disponíveis</p>
               </div>
             )}
           </CardContent>
