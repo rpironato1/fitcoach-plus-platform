@@ -17,8 +17,8 @@ import { Database, Trash2, Download, Upload, User, Users, Settings } from 'lucid
 
 export function LocalStorageManager() {
   const [useLocalStorage, setUseLocalStorage] = useState(false);
-  const [currentData, setCurrentData] = useState<any>(null);
-  const [authSession, setAuthSession] = useState<any>(null);
+  const [currentData, setCurrentData] = useState<Record<string, unknown> | null>(null);
+  const [authSession, setAuthSession] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
     checkCurrentMode();

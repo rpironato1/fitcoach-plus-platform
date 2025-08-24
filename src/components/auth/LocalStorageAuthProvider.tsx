@@ -5,7 +5,7 @@
  * and data management. Useful for testing and development.
  */
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { Database } from '@/integrations/supabase/types';
 import { localStorageService, LocalStorageUser, LocalStorageAuthSession } from '@/services/localStorageService';
 
@@ -33,29 +33,7 @@ export function LocalStorageAuthProvider({ children }: { children: React.ReactNo
   const [studentProfile, setStudentProfile] = useState<StudentProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    initializeAuth();
-  }, []);
-
-  const initializeAuth = async () => {
-    try {
-      // Initialize localStorage data if needed
-      localStorageService.initializeData();
-      
-      // Check for existing session
-      const session = localStorageService.getCurrentSession();
-      if (session) {
-        setUser(session.user);
-        await loadUserProfile(session.user.id);
-      }
-    } catch (error) {
-      console.error('Error initializing auth:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadUserProfile = async (userId: string) => {
+  const loadUserProfile = useCallback(async (userId: string) => {
     try {
       const profileData = localStorageService.getProfileByUserId(userId);
       
@@ -73,7 +51,25 @@ export function LocalStorageAuthProvider({ children }: { children: React.ReactNo
     } catch (error) {
       console.error('Error loading user profile:', error);
     }
-  };
+  }, []);
+
+  const initializeAuth = useCallback(async () => {
+    try {
+      // Initialize localStorage data if needed
+      localStorageService.initializeData();
+      
+      // Check for existing session
+      const session = localStorageService.getCurrentSession();
+      if (session) {
+        setUser(session.user);
+        await loadUserProfile(session.user.id);
+      }
+    } catch (error) {
+      console.error('Error initializing auth:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [loadUserProfile]);
 
   const signIn = async (email: string, password: string) => {
     try {
