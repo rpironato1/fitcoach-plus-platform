@@ -257,9 +257,9 @@ declare global {
       testMinimalData: () => void;
       testEmptyData: () => void;
       clearAll: () => void;
-      exportData: () => any;
-      getStatus: () => any;
-      getDemoCredentials: () => any;
+      exportData: () => Record<string, unknown>;
+      getStatus: () => Record<string, unknown>;
+      getDemoCredentials: () => Record<string, unknown>;
     };
   }
 }
