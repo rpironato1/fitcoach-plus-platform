@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/modules/auth';
+import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
 
 interface DashboardStats {
   activeStudents: number;

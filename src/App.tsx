@@ -5,9 +5,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { AuthProvider, useAuth, ProtectedRoute } from "@/modules/auth";
+import { AdaptiveAuthProvider, useAuth } from "@/components/auth/AdaptiveAuthProvider";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { setupModules } from "@/core";
 import { Navbar } from "@/components/layout/Navbar";
+import { LocalStorageModeBanner } from "@/components/layout/LocalStorageModeBanner";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { LandingPage } from "@/components/landing/LandingPage";
 import TrainerDashboard from "@/pages/trainer/TrainerDashboard";
@@ -16,11 +18,13 @@ import SessionsPage from "@/pages/trainer/SessionsPage";
 import DietPlansPage from "@/pages/trainer/DietPlansPage";
 import WorkoutsPage from "@/pages/trainer/WorkoutsPage";
 import StudentDashboard from "@/pages/student/StudentDashboard";
+import StudentDashboardDemo from "@/pages/student/StudentDashboardDemo";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import TrainersManagement from "@/pages/admin/TrainersManagement";
 import PaymentsManagement from "@/pages/admin/PaymentsManagement";
 import ReportsPage from "@/pages/admin/ReportsPage";
 import SystemSettings from "@/pages/admin/SystemSettings";
+import { LocalStorageManager } from "@/components/admin/LocalStorageManager";
 import NotFound from "./pages/NotFound";
 
 // Import localStorage demo utilities (development only)
@@ -38,6 +42,7 @@ const queryClient = new QueryClient({
 // Componente de Layout para rotas de Admin
 const AdminRoutes = () => (
   <ProtectedRoute requiredRole="admin">
+    <LocalStorageModeBanner />
     <AdminLayout>
       <Outlet />
     </AdminLayout>
@@ -47,6 +52,7 @@ const AdminRoutes = () => (
 // Componente de Layout para rotas de Trainer
 const TrainerRoutes = () => (
   <ProtectedRoute requiredRole="trainer">
+    <LocalStorageModeBanner />
     <Navbar />
     <Outlet />
   </ProtectedRoute>
@@ -55,6 +61,7 @@ const TrainerRoutes = () => (
 // Componente de Layout para rotas de Student
 const StudentRoutes = () => (
   <ProtectedRoute requiredRole="student">
+    <LocalStorageModeBanner />
     <Navbar />
     <Outlet />
   </ProtectedRoute>
@@ -93,11 +100,32 @@ function AppContent() {
   return (
     <Routes>
       {/* Rota Pública */}
-      <Route path="/" element={!user ? <LandingPage /> : <Navigate to={
+      <Route path="/" element={!user ? (
+        <>
+          <LocalStorageModeBanner />
+          <LandingPage />
+        </>
+      ) : <Navigate to={
         profile?.role === 'admin' ? '/admin' :
         profile?.role === 'trainer' ? '/trainer' :
         profile?.role === 'student' ? '/student' : '/'
       } replace />} />
+
+      {/* Demo Route - No Authentication Required */}
+      <Route path="/student-demo" element={
+        <>
+          <LocalStorageModeBanner />
+          <StudentDashboardDemo />
+        </>
+      } />
+      
+      {/* LocalStorage Manager - No Authentication Required */}
+      <Route path="/localStorage-manager" element={
+        <>
+          <LocalStorageModeBanner />
+          <LocalStorageManager />
+        </>
+      } />
 
       {/* Rotas de Admin Agrupadas */}
       <Route path="/admin" element={<AdminRoutes />}>
@@ -106,6 +134,7 @@ function AppContent() {
         <Route path="payments" element={<PaymentsManagement />} />
         <Route path="reports" element={<ReportsPage />} />
         <Route path="settings" element={<SystemSettings />} />
+        <Route path="localStorage" element={<LocalStorageManager />} />
       </Route>
 
       {/* Rotas de Trainer Agrupadas */}
@@ -139,9 +168,9 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AuthProvider>
+          <AdaptiveAuthProvider>
             <AppContent />
-          </AuthProvider>
+          </AdaptiveAuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

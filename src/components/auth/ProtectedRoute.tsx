@@ -1,7 +1,8 @@
 
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from './AuthProvider';
+import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { localStorageService } from '@/services/localStorageService';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -9,10 +10,13 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
-  const { user, profile, loading } = useAuth();
+  const useLocalStorage = localStorageService.shouldUseLocalStorage();
+  
+  // Use the appropriate hook based on storage type
+  const authContext = useAuth();
   const location = useLocation();
 
-  if (loading) {
+  if (authContext.loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -23,11 +27,11 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
     );
   }
 
-  if (!user || !profile) {
+  if (!authContext.user || !authContext.profile) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 
-  if (requiredRole && profile.role !== requiredRole) {
+  if (requiredRole && authContext.profile.role !== requiredRole) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 
