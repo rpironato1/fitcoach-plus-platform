@@ -19,7 +19,7 @@ All colors MUST be HSL.
   --secondary: 237.7640 70.3057% 44.9020%;
   --secondary-foreground: 0 0% 100%;
   --muted: 0 0% 96.0784%;
-  --muted-foreground: 0 0% 45.0980%;
+  --muted-foreground: 0 0% 39.2157%; /* #646464 - WCAG AA compliant contrast ratio 4.58:1 */
   --accent: 0 0% 96.0784%;
   --accent-foreground: 0 0% 9.0196%;
   --destructive: 357.1429 100% 45.2941%;
