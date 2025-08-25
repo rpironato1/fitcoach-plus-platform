@@ -84,7 +84,7 @@ export const AllButtonVariants: Story = {
           <ul className="text-sm text-green-700 space-y-1">
             <li>• All buttons have descriptive aria-labels</li>
             <li>• Focus indicators with 2px blue ring</li>
-            <li>• Proper color contrast ratios (>4.5:1)</li>
+            <li>• Proper color contrast ratios (&gt;4.5:1)</li>
             <li>• Keyboard navigable (Tab/Enter/Space)</li>
             <li>• Screen reader compatible</li>
           </ul>
