@@ -51,6 +51,28 @@ const preview: Preview = {
         },
       ],
     },
+    a11y: {
+      config: {
+        rules: [
+          {
+            id: 'color-contrast',
+            enabled: true,
+          },
+          {
+            id: 'focus-order-semantics',
+            enabled: true,
+          },
+          {
+            id: 'landmark-banner-is-top-level',
+            enabled: true,
+          }
+        ],
+      },
+      options: {
+        checks: { 'color-contrast': { options: { noScroll: true } } },
+        restoreScroll: true,
+      },
+    },
   },
   globalTypes: {
     theme: {
