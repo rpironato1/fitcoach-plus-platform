@@ -31,3 +31,6 @@ playwright-report/
 # Test outputs
 junit.xml
 results.json
+
+*storybook.log
+storybook-static
