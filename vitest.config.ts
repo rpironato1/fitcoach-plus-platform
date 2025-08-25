@@ -9,6 +9,9 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
+    ui: {
+      port: 8032,
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

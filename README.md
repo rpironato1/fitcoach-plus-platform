@@ -101,6 +101,8 @@ npm install
 npm run dev
 ```
 
+> 📋 **Para informações detalhadas sobre desenvolvimento, arquitetura modular e configuração avançada, consulte o [Guia de Desenvolvimento](./DEVELOPMENT.md)**
+
 ### Scripts Disponíveis
 
 ```bash
