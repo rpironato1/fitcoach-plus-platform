@@ -918,6 +918,21 @@ class LocalStorageService {
   }
 
   /**
+   * Get current trainer ID from session or return demo trainer ID
+   */
+  getCurrentTrainerId(): string {
+    const session = this.getCurrentSession();
+    if (session) {
+      const profile = this.getProfileByUserId(session.user.id);
+      if (profile && profile.role === 'trainer') {
+        return session.user.id;
+      }
+    }
+    // Default to demo trainer for testing
+    return this.DEMO_TRAINER_ID;
+  }
+
+  /**
    * Get demo credentials for easy testing
    */
   getDemoCredentials() {
