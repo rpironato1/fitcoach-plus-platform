@@ -75,9 +75,17 @@ async function loginAs(page, role) {
 }
 
 // Generate tests for each page and viewport combination
+// Only run screenshot tests in chromium to avoid duplication
 for (const viewport of viewports) {
   for (const route of pageRoutes) {
-    test(`Screenshot: ${route.name} - ${viewport.name}`, async ({ page }) => {
+    test(`Screenshot: ${route.name} - ${viewport.name}`, { 
+      tag: '@screenshot' 
+    }, async ({ page, browserName }) => {
+      // Skip screenshots for non-chromium browsers in CI
+      if (process.env.CI && browserName !== 'chromium') {
+        test.skip();
+      }
+      
       // Set viewport
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       
@@ -87,16 +95,19 @@ for (const viewport of viewports) {
       }
       
       // Navigate to the route
-      await page.goto(`http://localhost:8030${route.path}`);
-      await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(3000);
+      await page.goto(`http://localhost:8030${route.path}`, { 
+        timeout: 15000,
+        waitUntil: 'networkidle' 
+      });
+      await page.waitForTimeout(2000);
       
       // Take screenshot
       const screenshotPath = `screenshots/${viewport.name}/${route.name}-${viewport.name}.png`;
       await page.screenshot({ 
         path: screenshotPath, 
         fullPage: true,
-        animations: 'disabled' 
+        animations: 'disabled',
+        timeout: 10000
       });
       
       console.log(`✅ Captured: ${route.name}-${viewport.name}.png`);

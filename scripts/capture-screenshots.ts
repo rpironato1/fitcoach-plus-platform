@@ -69,7 +69,7 @@ async function loginAs(page: Page, role: 'admin' | 'trainer' | 'student') {
   await page.waitForTimeout(2000);
 }
 
-async function captureScreenshot(page: Page, route: any, viewport: any) {
+async function captureScreenshot(page: Page, route: { name: string; path: string; requiresAuth: boolean }, viewport: { name: string; width: number; height: number }) {
   const screenshotDir = path.join(process.cwd(), 'screenshots', viewport.name);
   fs.mkdirSync(screenshotDir, { recursive: true });
   
@@ -106,7 +106,7 @@ async function captureScreenshot(page: Page, route: any, viewport: any) {
 async function startDevServer() {
   const { spawn } = await import('child_process');
   
-  return new Promise<any>((resolve) => {
+  return new Promise<{ kill: () => void }>((resolve) => {
     const server = spawn('npm', ['run', 'dev'], {
       stdio: 'pipe',
       cwd: process.cwd()
