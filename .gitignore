@@ -34,3 +34,11 @@ results.json
 
 *storybook.log
 storybook-static
+
+# Lighthouse reports
+lighthouse*.html
+lighthouse*.json
+contrast-test.json
+
+# Temporary files
+/tmp
