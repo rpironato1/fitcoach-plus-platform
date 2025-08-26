@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__sequential-Thinking__sequentialthinking",
+      "mcp__memory__create_entities"
+    ]
+  },
+  "outputStyle": "turnbold-metodologia"
+}
