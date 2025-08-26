@@ -71,6 +71,10 @@ export function LocalStorageAuthProvider({ children }: { children: React.ReactNo
     }
   }, [loadUserProfile]);
 
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
