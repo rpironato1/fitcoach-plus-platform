@@ -5,7 +5,7 @@
  * based on the localStorage flag 'fitcoach_use_localStorage'
  */
 
-import { ReactNode, createContext, useContext, useMemo } from 'react';
+import { ReactNode, createContext, useContext, useMemo, useState, useEffect } from 'react';
 import { AuthProvider, useAuth as useSupabaseAuth } from './AuthProvider';
 import { LocalStorageAuthProvider, useLocalStorageAuth } from './LocalStorageAuthProvider';
 import { localStorageService } from '@/services/localStorageService';
@@ -31,7 +31,27 @@ function DualAuthProvider({ children, useLocalStorage }: { children: ReactNode; 
 }
 
 export function AdaptiveAuthProvider({ children }: AdaptiveAuthProviderProps) {
-  const useLocalStorage = localStorageService.shouldUseLocalStorage();
+  const [useLocalStorage, setUseLocalStorage] = useState(() => 
+    localStorageService.shouldUseLocalStorage()
+  );
+
+  useEffect(() => {
+    // Listen for localStorage changes
+    const handleStorageChange = () => {
+      setUseLocalStorage(localStorageService.shouldUseLocalStorage());
+    };
+
+    // Listen for both storage events and custom events
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also listen for direct changes to the localStorage
+    const checkInterval = setInterval(handleStorageChange, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(checkInterval);
+    };
+  }, []);
   
   return (
     <DualAuthProvider useLocalStorage={useLocalStorage}>
