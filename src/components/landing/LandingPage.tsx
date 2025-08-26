@@ -307,7 +307,7 @@ export function LandingPage() {
                   <span className="text-sm">Meta Mensal</span>
                   <span className="text-sm font-semibold">80%</span>
                 </div>
-                <Progress value={80} className="h-2" />
+                <Progress value={80} className="h-2" aria-label="Meta mensal: 80% concluído" />
               </div>
               
               <div className="flex items-center gap-2 text-sm text-green-600">
@@ -387,7 +387,7 @@ export function LandingPage() {
                                 <span className="text-sm">Eficiência</span>
                                 <span className="text-sm">95%</span>
                               </div>
-                              <Progress value={95} className="bg-white/20" />
+                              <Progress value={95} className="bg-white/20" aria-label="Eficiência do treino: 95%" />
                             </div>
                           </div>
                         </div>
