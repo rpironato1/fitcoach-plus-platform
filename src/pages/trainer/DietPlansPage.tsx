@@ -1,13 +1,15 @@
 
+import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
 import { DietStatsCards } from '@/components/trainer/DietStatsCards';
 import { CreateDietDialog } from '@/components/trainer/CreateDietDialog';
 import { DietPlansList } from '@/components/trainer/DietPlansList';
 import { useDietPlans } from '@/hooks/useDietPlans';
 
 export default function DietPlansPage() {
+  const { profile } = useAuth();
   const { students, dietPlans, isLoading, createDietPlan, isCreatingDiet } = useDietPlans();
 
-  if (isLoading) {
+  if (isLoading || !profile) {
     return (
       <div className="p-6">
         <div className="animate-pulse space-y-4">

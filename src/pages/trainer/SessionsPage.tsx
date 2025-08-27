@@ -1,12 +1,14 @@
 
+import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
 import { ScheduleSessionDialog } from '@/components/trainer/ScheduleSessionDialog';
 import { SessionsList } from '@/components/trainer/SessionsList';
 import { useSessions } from '@/hooks/useSessions';
 
 export default function SessionsPage() {
+  const { profile } = useAuth();
   const { students, sessions, isLoading, createSession, isCreatingSession } = useSessions();
 
-  if (isLoading) {
+  if (isLoading || !profile) {
     return (
       <div className="p-6">
         <div className="animate-pulse space-y-4">

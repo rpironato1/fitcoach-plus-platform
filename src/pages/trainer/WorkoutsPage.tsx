@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
 import { useWorkoutPlans, useWorkoutSessions } from '@/hooks/useWorkouts';
 import { Plus, Dumbbell, Users, Calendar, Clock, Target } from 'lucide-react';
 import { format } from 'date-fns';
@@ -9,6 +10,7 @@ import { ptBR } from 'date-fns/locale';
 import CreateWorkoutPlanDialog from '@/components/workouts/CreateWorkoutPlanDialog';
 
 export default function WorkoutsPage() {
+  const { profile, trainerProfile } = useAuth();
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const { data: workoutPlans, isLoading: plansLoading } = useWorkoutPlans();
   const { data: workoutSessions, isLoading: sessionsLoading } = useWorkoutSessions();
@@ -41,7 +43,7 @@ export default function WorkoutsPage() {
     }
   };
 
-  if (plansLoading || sessionsLoading) {
+  if (plansLoading || sessionsLoading || !profile) {
     return (
       <div className="p-6 space-y-6">
         <div className="animate-pulse">

@@ -548,47 +548,135 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="container mx-auto px-4 relative">
-          <div className="text-center space-y-8 max-w-4xl mx-auto">
-            <div className="space-y-4">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-                Pronto para transformar
-                <span className="block">seu negócio?</span>
-              </h2>
-              <p className="text-xl sm:text-2xl opacity-90 max-w-2xl mx-auto">
-                Junte-se a mais de 2.500 Personal Trainers que já estão revolucionando suas carreiras com o FitCoach
+      {/* CTA Section - Espetacular e Full Width */}
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Gradiente Animado */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 via-pink-600 to-orange-500 animate-gradient-xy"></div>
+        
+        {/* Overlay com Pattern Animado */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-purple-900/20"></div>
+        
+        {/* Efeitos de Brilho Animados */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        
+        {/* Partículas Decorativas */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-2 h-2 bg-white/30 rounded-full animate-bounce"></div>
+          <div className="absolute top-40 right-20 w-3 h-3 bg-white/20 rounded-full animate-bounce delay-500"></div>
+          <div className="absolute bottom-32 left-1/3 w-2 h-2 bg-white/40 rounded-full animate-bounce delay-1000"></div>
+          <div className="absolute bottom-20 right-1/3 w-4 h-4 bg-white/10 rounded-full animate-pulse"></div>
+        </div>
+        
+        {/* Conteúdo Principal */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-20 text-center">
+          <div className="space-y-12">
+            {/* Badge Superior */}
+            <div className="flex justify-center">
+              <Badge className="bg-white/20 backdrop-blur-sm border-white/30 text-white px-6 py-2 text-lg font-medium">
+                <Star className="w-5 h-5 mr-2" />
+                Mais de 2.500 Personal Trainers confiam em nós
+              </Badge>
+            </div>
+            
+            {/* Título Principal Espetacular */}
+            <div className="space-y-6">
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-black leading-tight">
+                <span className="block text-white drop-shadow-2xl">
+                  PRONTO PARA
+                </span>
+                <span className="block bg-gradient-to-r from-yellow-300 via-white to-yellow-300 bg-clip-text text-transparent animate-pulse">
+                  TRANSFORMAR
+                </span>
+                <span className="block text-white drop-shadow-2xl">
+                  SEU NEGÓCIO?
+                </span>
+              </h1>
+              
+              <p className="text-2xl sm:text-3xl lg:text-4xl text-white/90 max-w-5xl mx-auto leading-relaxed font-light">
+                Junte-se à revolução do fitness digital e 
+                <span className="font-bold bg-gradient-to-r from-yellow-300 to-white bg-clip-text text-transparent"> multiplique sua receita </span>
+                com a plataforma mais avançada do Brasil
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" onClick={() => setIsRegisterOpen(true)} className="bg-white text-gray-900 hover:bg-gray-100 shadow-xl text-lg px-8 py-6">
-                <PlayCircle className="h-5 w-5 mr-2" />
-                Começar Grátis Agora
+            {/* Call to Action Buttons Espetaculares */}
+            <div className="flex flex-col lg:flex-row gap-6 justify-center items-center pt-8">
+              <Button 
+                size="lg" 
+                onClick={() => setIsRegisterOpen(true)} 
+                className="bg-white text-gray-900 hover:bg-yellow-300 hover:text-gray-900 shadow-2xl text-2xl font-bold px-16 py-8 rounded-2xl transition-all duration-300 transform hover:scale-110 hover:shadow-yellow-300/50"
+              >
+                <PlayCircle className="h-8 w-8 mr-4" />
+                COMEÇAR GRÁTIS AGORA
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 text-lg px-8 py-6" onClick={handleDemoClick}>
-                <Clock className="h-5 w-5 mr-2" />
-                Agendar Demo
+              
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-4 border-white text-white hover:bg-white hover:text-gray-900 text-2xl font-bold px-16 py-8 rounded-2xl transition-all duration-300 transform hover:scale-110 backdrop-blur-sm bg-white/10" 
+                onClick={handleDemoClick}
+              >
+                <Clock className="h-8 w-8 mr-4" />
+                VER DEMO EXCLUSIVA
               </Button>
             </div>
             
-            <div className="flex items-center justify-center gap-8 text-sm opacity-80">
-              <div className="flex items-center gap-2">
-                <Shield className="h-4 w-4" />
-                Dados 100% Seguros
+            {/* Estatísticas Impressionantes */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-16">
+              <div className="text-center space-y-4">
+                <div className="text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
+                  2.500+
+                </div>
+                <div className="text-xl text-white/80 font-medium">
+                  Personal Trainers
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Zap className="h-4 w-4" />
-                Setup em 2 minutos
+              <div className="text-center space-y-4">
+                <div className="text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
+                  R$ 10M+
+                </div>
+                <div className="text-xl text-white/80 font-medium">
+                  Processados na Plataforma
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Target className="h-4 w-4" />
-                Sem compromisso
+              <div className="text-center space-y-4">
+                <div className="text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
+                  99.9%
+                </div>
+                <div className="text-xl text-white/80 font-medium">
+                  Uptime Garantido
+                </div>
+              </div>
+            </div>
+            
+            {/* Benefícios de Segurança */}
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-12 pt-12 text-lg">
+              <div className="flex items-center gap-4 text-white/90">
+                <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                  <Shield className="h-6 w-6" />
+                </div>
+                <span className="font-semibold">Dados 100% Seguros</span>
+              </div>
+              <div className="flex items-center gap-4 text-white/90">
+                <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                  <Zap className="h-6 w-6" />
+                </div>
+                <span className="font-semibold">Setup em 2 Minutos</span>
+              </div>
+              <div className="flex items-center gap-4 text-white/90">
+                <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                  <Target className="h-6 w-6" />
+                </div>
+                <span className="font-semibold">Sem Compromisso</span>
               </div>
             </div>
           </div>
+        </div>
+        
+        {/* Seta Decorativa */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-6 border-r-2 border-b-2 border-white/60 transform rotate-45"></div>
         </div>
       </section>
 
@@ -619,30 +707,30 @@ export function LandingPage() {
             <div>
               <h3 className="font-semibold mb-4">Produto</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Recursos</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Preços</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Integrações</a></li>
+                <li><a href="/features" className="hover:text-white transition-colors">Recursos</a></li>
+                <li><a href="/pricing" className="hover:text-white transition-colors">Preços</a></li>
+                <li><a href="/api-docs" className="hover:text-white transition-colors">API</a></li>
+                <li><a href="/integrations" className="hover:text-white transition-colors">Integrações</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-semibold mb-4">Empresa</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Sobre</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Carreiras</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Imprensa</a></li>
+                <li><a href="/about" className="hover:text-white transition-colors">Sobre</a></li>
+                <li><a href="/blog" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="/careers" className="hover:text-white transition-colors">Carreiras</a></li>
+                <li><a href="/press" className="hover:text-white transition-colors">Imprensa</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-semibold mb-4">Suporte</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Central de Ajuda</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contato</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Comunidade</a></li>
+                <li><a href="/help" className="hover:text-white transition-colors">Central de Ajuda</a></li>
+                <li><a href="/contact" className="hover:text-white transition-colors">Contato</a></li>
+                <li><a href="https://status.fitcoach.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Status</a></li>
+                <li><a href="/community" className="hover:text-white transition-colors">Comunidade</a></li>
               </ul>
             </div>
           </div>
@@ -652,9 +740,9 @@ export function LandingPage() {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-400">
             <p>&copy; 2024 FitCoach. Todos os direitos reservados.</p>
             <div className="flex gap-6 text-sm">
-              <a href="#" className="hover:text-white transition-colors">Privacidade</a>
-              <a href="#" className="hover:text-white transition-colors">Termos</a>
-              <a href="#" className="hover:text-white transition-colors">Cookies</a>
+              <a href="/privacy" className="hover:text-white transition-colors">Privacidade</a>
+              <a href="/terms" className="hover:text-white transition-colors">Termos</a>
+              <a href="/cookies" className="hover:text-white transition-colors">Cookies</a>
             </div>
           </div>
         </div>
