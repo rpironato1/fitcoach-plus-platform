@@ -2,8 +2,10 @@
   "permissions": {
     "allow": [
       "mcp__sequential-Thinking__sequentialthinking",
-      "mcp__memory__create_entities"
+      "mcp__memory__create_entities",
+      "mcp__serena__list_dir",
+      "mcp__serena__activate_project"
     ]
   },
-  "outputStyle": "test-analysis-reporter"
+  "outputStyle": "turnbold-playwright-human-simulator"
 }
