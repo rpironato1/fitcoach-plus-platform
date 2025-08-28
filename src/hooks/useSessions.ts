@@ -1,7 +1,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
 import { useToast } from '@/hooks/use-toast';
 
 interface Session {

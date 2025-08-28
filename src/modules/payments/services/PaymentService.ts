@@ -1,4 +1,3 @@
-import { supabase } from '@/integrations/supabase/client';
 import type { 
   Subscription,
   PaymentIntent,
@@ -6,6 +5,8 @@ import type {
   CreateSubscriptionResponse,
   TrainerPlan
 } from '../types';
+export { IPaymentService } from './LocalStoragePaymentService';
+export { LocalStoragePaymentService as PaymentService } from './LocalStoragePaymentService';
 
 export interface IPaymentService {
   // Subscription methods

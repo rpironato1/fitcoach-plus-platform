@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { useAuth } from '@/components/auth/LocalStorageAuthProvider';
 import { toast } from 'sonner';
 import { container } from '@/core/container';
 import type { IWorkoutService } from '../services/WorkoutService';

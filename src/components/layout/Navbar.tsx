@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
 import { Dumbbell, User, LogOut, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';

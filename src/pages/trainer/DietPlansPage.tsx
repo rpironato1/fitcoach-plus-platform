@@ -1,5 +1,5 @@
 
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
 import { DietStatsCards } from '@/components/trainer/DietStatsCards';
 import { CreateDietDialog } from '@/components/trainer/CreateDietDialog';
 import { DietPlansList } from '@/components/trainer/DietPlansList';

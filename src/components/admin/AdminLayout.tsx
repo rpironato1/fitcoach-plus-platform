@@ -11,7 +11,7 @@ import {
   CreditCard,
   LogOut
 } from 'lucide-react';
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
 
 interface AdminLayoutProps {
   children?: ReactNode;

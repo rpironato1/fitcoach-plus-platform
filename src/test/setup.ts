@@ -44,7 +44,32 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
-// Mock do AuthProvider
+// Mock do LocalStorageAuthProvider
+vi.mock('@/components/auth/LocalStorageAuthProvider', () => ({
+  LocalStorageAuthProvider: ({ children }: { children: React.ReactNode }) => children,
+  useAuth: vi.fn(() => ({
+    user: null,
+    profile: null,
+    trainerProfile: null,
+    studentProfile: null,
+    loading: false,
+    signIn: vi.fn(),
+    signUp: vi.fn(),
+    signOut: vi.fn(),
+  })),
+  useLocalStorageAuth: vi.fn(() => ({
+    user: null,
+    profile: null,
+    trainerProfile: null,
+    studentProfile: null,
+    loading: false,
+    signIn: vi.fn(),
+    signUp: vi.fn(),
+    signOut: vi.fn(),
+  })),
+}))
+
+// Mock do AuthProvider (for backwards compatibility)
 vi.mock('@/components/auth/AuthProvider', () => ({
   AuthProvider: ({ children }: { children: React.ReactNode }) => children,
   useAuth: vi.fn(() => ({

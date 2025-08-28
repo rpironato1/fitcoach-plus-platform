@@ -1,5 +1,5 @@
 
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
 import { StudentStatsCards } from '@/components/trainer/StudentStatsCards';
 import { AddStudentDialog } from '@/components/trainer/AddStudentDialog';
 import { StudentsList } from '@/components/trainer/StudentsList';

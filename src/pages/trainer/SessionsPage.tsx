@@ -1,5 +1,5 @@
 
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
 import { ScheduleSessionDialog } from '@/components/trainer/ScheduleSessionDialog';
 import { SessionsList } from '@/components/trainer/SessionsList';
 import { useSessions } from '@/hooks/useSessions';

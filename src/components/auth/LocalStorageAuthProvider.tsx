@@ -1,12 +1,12 @@
 /**
  * LocalStorage Auth Provider
  * 
- * Alternative to SupabaseAuthProvider that uses localStorage for authentication
- * and data management. Useful for testing and development.
+ * LocalStorage-only authentication provider that uses localStorage for authentication
+ * and data management. No external dependencies.
  */
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { Database } from '@/integrations/supabase/types';
+import { Database } from '@/types/database';
 import { localStorageService, LocalStorageUser, LocalStorageAuthSession } from '@/services/localStorageService';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
@@ -152,3 +152,6 @@ export function useLocalStorageAuth() {
   }
   return context;
 }
+
+// Export as useAuth for compatibility
+export const useAuth = useLocalStorageAuth;

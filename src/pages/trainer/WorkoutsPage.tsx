@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
 import { useWorkoutPlans, useWorkoutSessions } from '@/hooks/useWorkouts';
 import { Plus, Dumbbell, Users, Calendar, Clock, Target } from 'lucide-react';
 import { format } from 'date-fns';

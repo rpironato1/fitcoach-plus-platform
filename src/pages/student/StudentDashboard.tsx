@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
+import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
 import { Calendar, User, Activity, Trophy, Clock, Target, Utensils, TrendingUp } from 'lucide-react';
 import { MenstrualCycleCard } from '@/components/ui/menstrual-cycle-card';
 import { GenderSelection } from '@/components/ui/gender-selection';
