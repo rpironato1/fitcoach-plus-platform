@@ -5,19 +5,29 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TrainersList } from './TrainersList';
 import React from 'react';
 
-// Mock the hooks
+// Mock React Query and hooks
+const mockGetTrainers = vi.fn();
+const mockUpdateTrainer = vi.fn();
+const mockDeleteTrainer = vi.fn();
+
+const mockUseTrainersManagement = vi.fn(() => ({
+  trainers: [],
+  isLoading: false,
+  error: null,
+  updateTrainer: mockUpdateTrainer,
+  deleteTrainer: mockDeleteTrainer,
+}));
+
+const mockToast = vi.fn();
+const mockUseToast = vi.fn(() => ({ toast: mockToast }));
+
 vi.mock('../../hooks/useTrainersManagement', () => ({
-  useTrainersManagement: vi.fn(),
+  useTrainersManagement: mockUseTrainersManagement,
 }));
 
 vi.mock('../../hooks/use-toast', () => ({
-  useToast: vi.fn(),
+  useToast: mockUseToast,
 }));
-
-const mockUseTrainersManagement = vi.mocked(vi.importMock('../../hooks/useTrainersManagement').useTrainersManagement);
-const mockUseToast = vi.mocked(vi.importMock('../../hooks/use-toast').useToast);
-
-const mockToast = vi.fn();
 
 describe('TrainersList', () => {
   let queryClient: QueryClient;
@@ -33,7 +43,11 @@ describe('TrainersList', () => {
     });
     user = userEvent.setup();
     
-    mockUseToast.mockReturnValue({ toast: mockToast });
+    // Reset the mock functions
+    mockGetTrainers.mockClear();
+    mockUpdateTrainer.mockClear();
+    mockDeleteTrainer.mockClear();
+    mockToast.mockClear();
   });
 
   const wrapper = ({ children }: { children: React.ReactNode }) => (

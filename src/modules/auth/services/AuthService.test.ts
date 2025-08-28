@@ -1,13 +1,9 @@
-/**
- * Comprehensive test suite for AuthService
- * Testing critical authentication functionality - 100% coverage target
- */
-
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SupabaseAuthService, SupabaseProfileService } from './AuthService';
+import { supabase } from '@/integrations/supabase/client';
 
-vi.mock('@/integrations/supabase/client', () => {
-  const mockSupabase = {
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
     auth: {
       signInWithPassword: vi.fn(),
       signUp: vi.fn(),
@@ -22,10 +18,11 @@ vi.mock('@/integrations/supabase/client', () => {
         })),
       })),
     })),
-  };
-  
-  return { supabase: mockSupabase };
-});
+  },
+}));
+
+// Get the mocked supabase instance
+const mockSupabase = vi.mocked(supabase);
 
 describe('SupabaseAuthService', () => {
   let authService: SupabaseAuthService;

@@ -6,19 +6,23 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { z } from 'zod';
 import React from 'react';
 
-// Mock the hooks
+// Mock React Query
+const mockCreateWorkout = vi.fn();
+const mockUseWorkouts = vi.fn(() => ({
+  createWorkout: mockCreateWorkout,
+  isLoading: false,
+}));
+
+const mockToast = vi.fn();
+const mockUseToast = vi.fn(() => ({ toast: mockToast }));
+
 vi.mock('../../hooks/useWorkouts', () => ({
-  useWorkouts: vi.fn(),
+  useWorkouts: mockUseWorkouts,
 }));
 
 vi.mock('../../hooks/use-toast', () => ({
-  useToast: vi.fn(),
+  useToast: mockUseToast,
 }));
-
-const mockUseWorkouts = vi.mocked(vi.importMock('../../hooks/useWorkouts').useWorkouts);
-const mockUseToast = vi.mocked(vi.importMock('../../hooks/use-toast').useToast);
-
-const mockToast = vi.fn();
 
 // Workout validation schema using zod
 const workoutSchema = z.object({
@@ -64,15 +68,9 @@ describe('CreateWorkoutPlanDialog', () => {
     });
     user = userEvent.setup();
     
-    mockUseToast.mockReturnValue({ toast: mockToast });
-    mockUseWorkouts.mockReturnValue({
-      createWorkoutMutation: { 
-        mutate: mockCreateWorkout, 
-        isLoading: false,
-        isSuccess: false,
-        error: null 
-      },
-    });
+    // Reset the mock functions
+    mockCreateWorkout.mockClear();
+    mockToast.mockClear();
   });
 
   const wrapper = ({ children }: { children: React.ReactNode }) => (

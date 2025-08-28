@@ -1,14 +1,9 @@
-/**
- * Comprehensive test suite for LocalStorageAuthService
- * Testing localStorage-based authentication - 100% coverage target
- */
-
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { LocalStorageAuthService, LocalStorageProfileService } from './LocalStorageAuthService';
 import { localStorageService } from '@/services/localStorageService';
 
-vi.mock('@/services/localStorageService', () => {
-  const mockLocalStorageService = {
+vi.mock('@/services/localStorageService', () => ({
+  localStorageService: {
     signIn: vi.fn(),
     signUp: vi.fn(),
     signOut: vi.fn(),
@@ -16,18 +11,19 @@ vi.mock('@/services/localStorageService', () => {
     getProfileByUserId: vi.fn(),
     getTrainerProfileByUserId: vi.fn(),
     getStudentProfileByUserId: vi.fn(),
-  };
-  
-  return { localStorageService: mockLocalStorageService };
-});
+  },
+}));
+
+// Get the mocked localStorageService instance
+const mockLocalStorageService = vi.mocked(localStorageService);
 
 describe('LocalStorageAuthService', () => {
   let authService: LocalStorageAuthService;
-  let mockLocalStorageService: any;
 
   beforeEach(() => {
     authService = new LocalStorageAuthService();
-    mockLocalStorageService = vi.mocked(localStorageService);
+    // Reset mocks
+    vi.clearAllMocks();
     vi.clearAllMocks();
     vi.useFakeTimers();
   });

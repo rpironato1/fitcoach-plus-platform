@@ -236,7 +236,8 @@ describe('Input Component', () => {
       render(<Input data-testid="test-input" />);
       
       const input = screen.getByTestId('test-input') as HTMLInputElement;
-      const specialChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+      // Use characters that don't conflict with user-event keyboard syntax
+      const specialChars = '!@#$%^&*()_+-=';
       
       await user.type(input, specialChars);
       expect(input.value).toBe(specialChars);

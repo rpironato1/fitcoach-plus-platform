@@ -1,20 +1,17 @@
-/**
- * Comprehensive test suite for useAuth hook
- * Testing critical authentication hook functionality - 100% coverage target
- */
-
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, waitFor, act } from '@testing-library/react';
 import { useAuth } from './useAuth';
+import { container } from '@/core';
 
-vi.mock('@/core', () => {
-  const mockContainer = {
+vi.mock('@/core', () => ({
+  container: {
     isBound: vi.fn(),
     resolve: vi.fn(),
-  };
-  
-  return { container: mockContainer };
-});
+  },
+}));
+
+// Get the mocked container instance
+const mockContainer = vi.mocked(container);
 
 // Mock services
 const mockAuthService = {

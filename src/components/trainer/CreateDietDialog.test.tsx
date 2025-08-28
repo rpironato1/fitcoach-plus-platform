@@ -6,19 +6,23 @@ import { CreateDietDialog } from './CreateDietDialog';
 import { z } from 'zod';
 import React from 'react';
 
-// Mock the hooks
+// Mock React Query
+const mockCreateDietPlan = vi.fn();
+const mockUseDietPlans = vi.fn(() => ({
+  createDietPlan: mockCreateDietPlan,
+  isLoading: false,
+}));
+
+const mockToast = vi.fn();
+const mockUseToast = vi.fn(() => ({ toast: mockToast }));
+
 vi.mock('../../hooks/useDietPlans', () => ({
-  useDietPlans: vi.fn(),
+  useDietPlans: mockUseDietPlans,
 }));
 
 vi.mock('../../hooks/use-toast', () => ({
-  useToast: vi.fn(),
+  useToast: mockUseToast,
 }));
-
-const mockUseDietPlans = vi.mocked(vi.importMock('../../hooks/useDietPlans').useDietPlans);
-const mockUseToast = vi.mocked(vi.importMock('../../hooks/use-toast').useToast);
-
-const mockToast = vi.fn();
 
 // Diet plan validation schema using zod
 const mealSchema = z.object({
@@ -85,15 +89,9 @@ describe('CreateDietDialog', () => {
     });
     user = userEvent.setup();
     
-    mockUseToast.mockReturnValue({ toast: mockToast });
-    mockUseDietPlans.mockReturnValue({
-      createDietPlanMutation: { 
-        mutate: mockCreateDietPlan, 
-        isLoading: false,
-        isSuccess: false,
-        error: null 
-      },
-    });
+    // Reset the mock functions
+    mockCreateDietPlan.mockClear();
+    mockToast.mockClear();
   });
 
   const wrapper = ({ children }: { children: React.ReactNode }) => (
