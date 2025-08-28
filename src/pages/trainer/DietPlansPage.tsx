@@ -1,13 +1,13 @@
-
-import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
-import { DietStatsCards } from '@/components/trainer/DietStatsCards';
-import { CreateDietDialog } from '@/components/trainer/CreateDietDialog';
-import { DietPlansList } from '@/components/trainer/DietPlansList';
-import { useDietPlans } from '@/hooks/useDietPlans';
+import { useLocalStorageAuth as useAuth } from "@/components/auth/LocalStorageAuthProvider";
+import { DietStatsCards } from "@/components/trainer/DietStatsCards";
+import { CreateDietDialog } from "@/components/trainer/CreateDietDialog";
+import { DietPlansList } from "@/components/trainer/DietPlansList";
+import { useDietPlans } from "@/hooks/useDietPlans";
 
 export default function DietPlansPage() {
   const { profile } = useAuth();
-  const { students, dietPlans, isLoading, createDietPlan, isCreatingDiet } = useDietPlans();
+  const { students, dietPlans, isLoading, createDietPlan, isCreatingDiet } =
+    useDietPlans();
 
   if (isLoading || !profile) {
     return (

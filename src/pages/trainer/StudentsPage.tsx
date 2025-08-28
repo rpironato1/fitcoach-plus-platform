@@ -1,24 +1,34 @@
-
-import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
-import { StudentStatsCards } from '@/components/trainer/StudentStatsCards';
-import { AddStudentDialog } from '@/components/trainer/AddStudentDialog';
-import { StudentsList } from '@/components/trainer/StudentsList';
-import { useStudents } from '@/hooks/useStudents';
+import { useLocalStorageAuth as useAuth } from "@/components/auth/LocalStorageAuthProvider";
+import { StudentStatsCards } from "@/components/trainer/StudentStatsCards";
+import { AddStudentDialog } from "@/components/trainer/AddStudentDialog";
+import { StudentsList } from "@/components/trainer/StudentsList";
+import { useStudents } from "@/hooks/useStudents";
 
 export default function StudentsPage() {
   const { profile, trainerProfile } = useAuth();
-  const { students, isLoading, addStudent, isAddingStudent, updateStatus } = useStudents(profile?.id);
+  const { students, isLoading, addStudent, isAddingStudent, updateStatus } =
+    useStudents(profile?.id);
 
-  const handleAddStudent = (studentData: { email: string; firstName: string; lastName: string; phone: string }) => {
+  const handleAddStudent = (studentData: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+  }) => {
     addStudent(studentData);
   };
 
-  const handleUpdateStatus = (studentId: string, status: 'active' | 'paused' | 'cancelled') => {
+  const handleUpdateStatus = (
+    studentId: string,
+    status: "active" | "paused" | "cancelled"
+  ) => {
     updateStatus({ studentId, status });
   };
 
-  const activeStudentsCount = students?.filter(s => s.status === 'active').length || 0;
-  const canAddStudent = trainerProfile?.plan !== 'free' || activeStudentsCount < 3;
+  const activeStudentsCount =
+    students?.filter((s) => s.status === "active").length || 0;
+  const canAddStudent =
+    trainerProfile?.plan !== "free" || activeStudentsCount < 3;
 
   if (isLoading) {
     return (

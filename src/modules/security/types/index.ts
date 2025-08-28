@@ -16,7 +16,7 @@ export interface RateLimitStatus {
 export interface LGPDConsent {
   id: string;
   user_id: string;
-  consent_type: 'data_processing' | 'marketing' | 'analytics' | 'cookies';
+  consent_type: "data_processing" | "marketing" | "analytics" | "cookies";
   consented: boolean;
   consent_date: string;
   ip_address?: string;
@@ -27,7 +27,7 @@ export interface LGPDConsent {
 export interface DataExportRequest {
   id: string;
   user_id: string;
-  status: 'pending' | 'processing' | 'completed' | 'failed';
+  status: "pending" | "processing" | "completed" | "failed";
   requested_at: string;
   completed_at?: string;
   download_url?: string;
@@ -38,7 +38,7 @@ export interface DataExportRequest {
 export interface DataDeletionRequest {
   id: string;
   user_id: string;
-  status: 'pending' | 'approved' | 'processing' | 'completed' | 'rejected';
+  status: "pending" | "approved" | "processing" | "completed" | "rejected";
   requested_at: string;
   processed_at?: string;
   reason?: string;
@@ -48,12 +48,18 @@ export interface DataDeletionRequest {
 export interface SecurityLog {
   id: string;
   user_id?: string;
-  event_type: 'login' | 'logout' | 'failed_login' | 'password_change' | 'data_access' | 'rate_limit_exceeded';
+  event_type:
+    | "login"
+    | "logout"
+    | "failed_login"
+    | "password_change"
+    | "data_access"
+    | "rate_limit_exceeded";
   details: Record<string, unknown>;
   ip_address: string;
   user_agent: string;
   timestamp: string;
-  risk_level: 'low' | 'medium' | 'high';
+  risk_level: "low" | "medium" | "high";
 }
 
 export interface PrivacySettings {
@@ -62,7 +68,7 @@ export interface PrivacySettings {
   data_processing_consent: boolean;
   marketing_consent: boolean;
   analytics_consent: boolean;
-  profile_visibility: 'public' | 'private' | 'trainers_only';
+  profile_visibility: "public" | "private" | "trainers_only";
   data_retention_days: number;
   newsletter_consent: boolean;
   updated_at: string;
@@ -83,8 +89,12 @@ export interface AuditLog {
 
 export interface SecurityAlert {
   id: string;
-  type: 'suspicious_login' | 'rate_limit_exceeded' | 'data_breach_attempt' | 'unusual_activity';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  type:
+    | "suspicious_login"
+    | "rate_limit_exceeded"
+    | "data_breach_attempt"
+    | "unusual_activity";
+  severity: "low" | "medium" | "high" | "critical";
   user_id?: string;
   description: string;
   details: Record<string, unknown>;
@@ -95,7 +105,7 @@ export interface SecurityAlert {
 
 export interface ComplianceReport {
   id: string;
-  report_type: 'lgpd_compliance' | 'data_audit' | 'security_assessment';
+  report_type: "lgpd_compliance" | "data_audit" | "security_assessment";
   period_start: string;
   period_end: string;
   generated_at: string;

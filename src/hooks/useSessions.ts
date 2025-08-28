@@ -1,8 +1,7 @@
-
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
-import { useToast } from '@/hooks/use-toast';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useLocalStorageAuth as useAuth } from "@/components/auth/LocalStorageAuthProvider";
+import { useToast } from "@/hooks/use-toast";
 
 interface Session {
   id: string;
@@ -31,63 +30,63 @@ export function useSessions() {
   const queryClient = useQueryClient();
 
   const { data: students, isLoading: studentsLoading } = useQuery({
-    queryKey: ['students-for-sessions', profile?.id],
+    queryKey: ["students-for-sessions", profile?.id],
     queryFn: async () => {
       if (!profile?.id) return [];
 
       const { data: studentsData, error } = await supabase
-        .from('student_profiles')
-        .select('*')
-        .eq('trainer_id', profile.id)
-        .eq('status', 'active');
+        .from("student_profiles")
+        .select("*")
+        .eq("trainer_id", profile.id)
+        .eq("status", "active");
 
       if (error) throw error;
 
       // Buscar profiles dos estudantes
       const { data: profilesData } = await supabase
-        .from('profiles')
-        .select('id, first_name, last_name');
+        .from("profiles")
+        .select("id, first_name, last_name");
 
       // Combinar os dados
-      const studentsWithProfiles = studentsData?.map(student => ({
+      const studentsWithProfiles = studentsData?.map((student) => ({
         ...student,
-        profiles: profilesData?.find(p => p.id === student.id) || null
+        profiles: profilesData?.find((p) => p.id === student.id) || null,
       }));
 
       return studentsWithProfiles as Student[];
     },
-    enabled: !!profile?.id
+    enabled: !!profile?.id,
   });
 
   const { data: sessions, isLoading: sessionsLoading } = useQuery({
-    queryKey: ['sessions', profile?.id],
+    queryKey: ["sessions", profile?.id],
     queryFn: async () => {
       if (!profile?.id) return [];
 
       const { data: sessionsData, error } = await supabase
-        .from('sessions')
-        .select('*')
-        .eq('trainer_id', profile.id)
-        .order('scheduled_at', { ascending: true });
+        .from("sessions")
+        .select("*")
+        .eq("trainer_id", profile.id)
+        .order("scheduled_at", { ascending: true });
 
       if (error) throw error;
 
       // Buscar nomes dos estudantes
       const { data: profilesData } = await supabase
-        .from('profiles')
-        .select('id, first_name, last_name');
+        .from("profiles")
+        .select("id, first_name, last_name");
 
       // Combinar dados das sessões com nomes dos estudantes
-      const sessionsWithNames = sessionsData?.map(session => ({
+      const sessionsWithNames = sessionsData?.map((session) => ({
         ...session,
-        student_name: profilesData?.find(p => p.id === session.student_id)
-          ? `${profilesData.find(p => p.id === session.student_id)?.first_name} ${profilesData.find(p => p.id === session.student_id)?.last_name}`
-          : 'Aluno não encontrado'
+        student_name: profilesData?.find((p) => p.id === session.student_id)
+          ? `${profilesData.find((p) => p.id === session.student_id)?.first_name} ${profilesData.find((p) => p.id === session.student_id)?.last_name}`
+          : "Aluno não encontrado",
       }));
 
       return sessionsWithNames as Session[];
     },
-    enabled: !!profile?.id
+    enabled: !!profile?.id,
   });
 
   const createSession = useMutation({
@@ -97,33 +96,31 @@ export function useSessions() {
       durationMinutes: number;
       notes?: string;
     }) => {
-      const { error } = await supabase
-        .from('sessions')
-        .insert({
-          trainer_id: profile!.id,
-          student_id: sessionData.studentId,
-          scheduled_at: sessionData.scheduledAt,
-          duration_minutes: sessionData.durationMinutes,
-          notes: sessionData.notes,
-          status: 'scheduled'
-        });
+      const { error } = await supabase.from("sessions").insert({
+        trainer_id: profile!.id,
+        student_id: sessionData.studentId,
+        scheduled_at: sessionData.scheduledAt,
+        duration_minutes: sessionData.durationMinutes,
+        notes: sessionData.notes,
+        status: "scheduled",
+      });
 
       if (error) throw error;
     },
     onSuccess: () => {
       toast({
-        title: 'Sucesso',
-        description: 'Sessão agendada com sucesso!'
+        title: "Sucesso",
+        description: "Sessão agendada com sucesso!",
       });
-      queryClient.invalidateQueries({ queryKey: ['sessions'] });
+      queryClient.invalidateQueries({ queryKey: ["sessions"] });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Erro',
-        description: error.message || 'Erro ao agendar sessão.',
-        variant: 'destructive'
+        title: "Erro",
+        description: error.message || "Erro ao agendar sessão.",
+        variant: "destructive",
       });
-    }
+    },
   });
 
   return {
@@ -131,6 +128,6 @@ export function useSessions() {
     sessions,
     isLoading: studentsLoading || sessionsLoading,
     createSession: createSession.mutate,
-    isCreatingSession: createSession.isPending
+    isCreatingSession: createSession.isPending,
   };
 }

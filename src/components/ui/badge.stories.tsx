@@ -1,26 +1,27 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Badge } from './badge';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Badge } from "./badge";
 
 /**
  * Badge component - Small status indicators and labels
  */
 const meta: Meta<typeof Badge> = {
-  title: 'UI/Badge',
+  title: "UI/Badge",
   component: Badge,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'Small, rounded status indicators or labels. Perfect for showing status, categories, or important information.',
+        component:
+          "Small, rounded status indicators or labels. Perfect for showing status, categories, or important information.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: { type: 'select' },
-      options: ['default', 'secondary', 'destructive', 'outline'],
-      description: 'Visual style variant of the badge',
+      control: { type: "select" },
+      options: ["default", "secondary", "destructive", "outline"],
+      description: "Visual style variant of the badge",
     },
   },
 };
@@ -33,8 +34,8 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   args: {
-    children: 'Mais Popular',
-    variant: 'default',
+    children: "Mais Popular",
+    variant: "default",
   },
 };
 
@@ -43,8 +44,8 @@ export const Default: Story = {
  */
 export const Secondary: Story = {
   args: {
-    children: 'Novo',
-    variant: 'secondary',
+    children: "Novo",
+    variant: "secondary",
   },
 };
 
@@ -53,8 +54,8 @@ export const Secondary: Story = {
  */
 export const Destructive: Story = {
   args: {
-    children: 'Expirado',
-    variant: 'destructive',
+    children: "Expirado",
+    variant: "destructive",
   },
 };
 
@@ -63,8 +64,8 @@ export const Destructive: Story = {
  */
 export const Outline: Story = {
   args: {
-    children: 'Premium',
-    variant: 'outline',
+    children: "Premium",
+    variant: "outline",
   },
 };
 
@@ -83,7 +84,8 @@ export const AllVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Overview of all available badge variants with consistent styling and proper contrast.',
+        story:
+          "Overview of all available badge variants with consistent styling and proper contrast.",
       },
     },
   },
@@ -116,10 +118,10 @@ export const UsageExamples: Story = {
     </div>
   ),
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
-        story: 'Real-world examples of badge usage in different contexts.',
+        story: "Real-world examples of badge usage in different contexts.",
       },
     },
   },

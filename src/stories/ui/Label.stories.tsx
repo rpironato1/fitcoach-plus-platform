@@ -1,21 +1,21 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Label } from '../../components/ui/label';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Label } from "../../components/ui/label";
 
 const meta: Meta<typeof Label> = {
-  title: 'UI Components/Label',
+  title: "UI Components/Label",
   component: Label,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A form label component with proper accessibility support.',
+        component: "A form label component with proper accessibility support.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     children: {
-      control: 'text',
+      control: "text",
     },
   },
 };
@@ -25,19 +25,19 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: 'Email address',
+    children: "Email address",
   },
 };
 
 export const Required: Story = {
   args: {
-    children: 'Password *',
+    children: "Password *",
   },
 };
 
 export const WithHtmlFor: Story = {
   args: {
-    htmlFor: 'email',
-    children: 'Email',
+    htmlFor: "email",
+    children: "Email",
   },
 };

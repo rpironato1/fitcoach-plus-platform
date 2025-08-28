@@ -24,99 +24,109 @@
 
 @layer base {
   :root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 0%; /* WCAG AAA: Preto puro - contrast ratio 21:1 */
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 0%; /* WCAG AAA: Preto puro - contrast ratio 21:1 */
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 0%; /* WCAG AAA: Garantindo máximo contraste */
-  --primary: 237.7640 70.3057% 35%; /* WCAG AA: Escurecido para contraste 4.5:1+ */
-  --primary-foreground: 0 0% 100%;
-  --secondary: 237.7640 70.3057% 35%; /* WCAG AA: Escurecido para contraste 4.5:1+ */
-  --secondary-foreground: 0 0% 100%;
-  --muted: 0 0% 96.0784%;
-  --muted-foreground: 0 0% 25%; /* WCAG AAA: Escurecido para contrast ratio 7:1 */
-  --accent: 0 0% 96.0784%;
-  --accent-foreground: 0 0% 0%; /* WCAG AAA: Preto puro para máximo contraste */
-  --destructive: 357.1429 100% 35%; /* WCAG AA: Escurecido para contraste seguro */
-  --destructive-foreground: 0 0% 100%;
-  --border: 0 0% 70%; /* WCAG AA: Escurecido para melhor visibilidade */
-  --input: 0 0% 70%; /* WCAG AA: Escurecido para melhor definição */
-  --ring: 0 0% 40%; /* WCAG AA: Focus states com contraste adequado */
-  --chart-1: 211.6364 100% 78.4314%;
-  --chart-2: 217.3404 91.2621% 59.6078%;
-  --chart-3: 221.5842 86.3248% 54.1176%;
-  --chart-4: 223.7500 78.6885% 47.8431%;
-  --chart-5: 226.4789 69.6078% 40%;
-  --sidebar: 0 0% 98.0392%;
-  --sidebar-foreground: 0 0% 3.9216%;
-  --sidebar-primary: 0 0% 9.0196%;
-  --sidebar-primary-foreground: 0 0% 98.0392%;
-  --sidebar-accent: 0 0% 96.0784%;
-  --sidebar-accent-foreground: 0 0% 9.0196%;
-  --sidebar-border: 0 0% 89.8039%;
-  --sidebar-ring: 0 0% 63.1373%;
-  --font-sans: Geist, sans-serif;
-  --font-serif: Inter, sans-serif;
-  --font-mono: Inter, sans-serif;
-  --radius: 0.625rem;
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
-  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  --tracking-normal: 0em;
-  --spacing: 0.25rem;
-}
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%; /* WCAG AAA: Preto puro - contrast ratio 21:1 */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%; /* WCAG AAA: Preto puro - contrast ratio 21:1 */
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%; /* WCAG AAA: Garantindo máximo contraste */
+    --primary: 237.764 70.3057% 35%; /* WCAG AA: Escurecido para contraste 4.5:1+ */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 237.764 70.3057% 35%; /* WCAG AA: Escurecido para contraste 4.5:1+ */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 96.0784%;
+    --muted-foreground: 0 0% 25%; /* WCAG AAA: Escurecido para contrast ratio 7:1 */
+    --accent: 0 0% 96.0784%;
+    --accent-foreground: 0 0% 0%; /* WCAG AAA: Preto puro para máximo contraste */
+    --destructive: 357.1429 100% 35%; /* WCAG AA: Escurecido para contraste seguro */
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 70%; /* WCAG AA: Escurecido para melhor visibilidade */
+    --input: 0 0% 70%; /* WCAG AA: Escurecido para melhor definição */
+    --ring: 0 0% 40%; /* WCAG AA: Focus states com contraste adequado */
+    --chart-1: 211.6364 100% 78.4314%;
+    --chart-2: 217.3404 91.2621% 59.6078%;
+    --chart-3: 221.5842 86.3248% 54.1176%;
+    --chart-4: 223.75 78.6885% 47.8431%;
+    --chart-5: 226.4789 69.6078% 40%;
+    --sidebar: 0 0% 98.0392%;
+    --sidebar-foreground: 0 0% 3.9216%;
+    --sidebar-primary: 0 0% 9.0196%;
+    --sidebar-primary-foreground: 0 0% 98.0392%;
+    --sidebar-accent: 0 0% 96.0784%;
+    --sidebar-accent-foreground: 0 0% 9.0196%;
+    --sidebar-border: 0 0% 89.8039%;
+    --sidebar-ring: 0 0% 63.1373%;
+    --font-sans: Geist, sans-serif;
+    --font-serif: Inter, sans-serif;
+    --font-mono: Inter, sans-serif;
+    --radius: 0.625rem;
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-sm:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow-md:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+    --shadow-lg:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+    --shadow-xl:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+    --tracking-normal: 0em;
+    --spacing: 0.25rem;
+  }
 
-.dark {
-  --background: 0 0% 3%; /* WCAG AA: Melhor contraste que preto puro */
-  --foreground: 0 0% 98%; /* WCAG AAA: Quase branco para máximo contraste */
-  --card: 0 0% 8%; /* WCAG AA: Cards com contraste adequado */
-  --card-foreground: 0 0% 98%;
-  --popover: 0 0% 10%; /* WCAG AA: Popovers distinguíveis */
-  --popover-foreground: 0 0% 98%;
-  --primary: 237.7640 70% 55%; /* WCAG AA: Ajustado para modo escuro */
-  --primary-foreground: 0 0% 0%;
-  --secondary: 237.7640 50% 45%; /* WCAG AA: Contraste adequado */
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 12%; /* WCAG AA: Áreas muted visíveis */
-  --muted-foreground: 0 0% 70%; /* WCAG AA: Texto muted legível */
-  --accent: 0 0% 15%; /* WCAG AA: Áreas de destaque */
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 80% 55%; /* WCAG AA: Vermelho com contraste seguro */
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 25%; /* WCAG AA: Bordas visíveis em modo escuro */
-  --input: 0 0% 20%; /* WCAG AA: Inputs destacados */
-  --ring: 0 0% 60%; /* WCAG AA: Focus rings bem visíveis */
-  --chart-1: 211.6364 100% 78.4314%;
-  --chart-2: 217.3404 91.2621% 59.6078%;
-  --chart-3: 221.5842 86.3248% 54.1176%;
-  --chart-4: 223.7500 78.6885% 47.8431%;
-  --chart-5: 226.4789 69.6078% 40%;
-  --sidebar: 0 0% 9.0196%;
-  --sidebar-foreground: 0 0% 98.0392%;
-  --sidebar-primary: 225.4286 84.0000% 49.0196%;
-  --sidebar-primary-foreground: 0 0% 98.0392%;
-  --sidebar-accent: 0 0% 14.9020%;
-  --sidebar-accent-foreground: 0 0% 98.0392%;
-  --sidebar-border: 0 0% 15.6863%;
-  --sidebar-ring: 0 0% 32.1569%;
-  --font-sans: Geist, sans-serif;
-  --font-serif: Inter, sans-serif;
-  --font-mono: Inter, sans-serif;
-  --radius: 0.625rem;
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
-  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  .dark {
+    --background: 0 0% 3%; /* WCAG AA: Melhor contraste que preto puro */
+    --foreground: 0 0% 98%; /* WCAG AAA: Quase branco para máximo contraste */
+    --card: 0 0% 8%; /* WCAG AA: Cards com contraste adequado */
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 10%; /* WCAG AA: Popovers distinguíveis */
+    --popover-foreground: 0 0% 98%;
+    --primary: 237.764 70% 55%; /* WCAG AA: Ajustado para modo escuro */
+    --primary-foreground: 0 0% 0%;
+    --secondary: 237.764 50% 45%; /* WCAG AA: Contraste adequado */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 12%; /* WCAG AA: Áreas muted visíveis */
+    --muted-foreground: 0 0% 70%; /* WCAG AA: Texto muted legível */
+    --accent: 0 0% 15%; /* WCAG AA: Áreas de destaque */
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 80% 55%; /* WCAG AA: Vermelho com contraste seguro */
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 25%; /* WCAG AA: Bordas visíveis em modo escuro */
+    --input: 0 0% 20%; /* WCAG AA: Inputs destacados */
+    --ring: 0 0% 60%; /* WCAG AA: Focus rings bem visíveis */
+    --chart-1: 211.6364 100% 78.4314%;
+    --chart-2: 217.3404 91.2621% 59.6078%;
+    --chart-3: 221.5842 86.3248% 54.1176%;
+    --chart-4: 223.75 78.6885% 47.8431%;
+    --chart-5: 226.4789 69.6078% 40%;
+    --sidebar: 0 0% 9.0196%;
+    --sidebar-foreground: 0 0% 98.0392%;
+    --sidebar-primary: 225.4286 84% 49.0196%;
+    --sidebar-primary-foreground: 0 0% 98.0392%;
+    --sidebar-accent: 0 0% 14.902%;
+    --sidebar-accent-foreground: 0 0% 98.0392%;
+    --sidebar-border: 0 0% 15.6863%;
+    --sidebar-ring: 0 0% 32.1569%;
+    --font-sans: Geist, sans-serif;
+    --font-serif: Inter, sans-serif;
+    --font-mono: Inter, sans-serif;
+    --radius: 0.625rem;
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-sm:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow-md:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+    --shadow-lg:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+    --shadow-xl:
+      0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   }
 }
 
@@ -124,7 +134,7 @@
   /* =============================================================================
      RESET E CONFIGURAÇÕES GLOBAIS DE ACESSIBILIDADE
      ============================================================================= */
-  
+
   * {
     border-color: hsl(var(--border));
   }
@@ -142,7 +152,7 @@
   /* =============================================================================
      ESTADOS DE FOCO PARA NAVEGAÇÃO POR TECLADO (WCAG 2.4.7)
      ============================================================================= */
-  
+
   /* Focus ring global para todos os elementos interativos */
   *:focus {
     outline: 2px solid hsl(var(--ring));
@@ -157,20 +167,30 @@
   a:focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
-    box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+    box-shadow:
+      0 0 0 2px hsl(var(--background)),
+      0 0 0 4px hsl(var(--ring));
   }
 
   /* =============================================================================
      MELHORIAS DE LEGIBILIDADE E USABILIDADE
      ============================================================================= */
-  
+
   /* Garantir que texto seja sempre legível */
-  p, span, div, label {
+  p,
+  span,
+  div,
+  label {
     color: hsl(var(--foreground));
   }
 
   /* Headings com hierarquia visual clara */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: hsl(var(--foreground));
     font-weight: 600;
     line-height: 1.2;
@@ -191,7 +211,7 @@
   /* =============================================================================
      COMPONENTES ESPECÍFICOS DE ACESSIBILIDADE
      ============================================================================= */
-  
+
   /* Screen reader only content */
   .sr-only {
     position: absolute;
@@ -225,8 +245,9 @@
   /* =============================================================================
      ESTADOS PARA ELEMENTOS DESABILITADOS
      ============================================================================= */
-  
-  [disabled], .disabled {
+
+  [disabled],
+  .disabled {
     opacity: 0.6;
     cursor: not-allowed;
   }
@@ -234,9 +255,11 @@
   /* =============================================================================
      CONFIGURAÇÕES DE MOTION E ANIMAÇÕES (WCAG 2.3.3)
      ============================================================================= */
-  
+
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
@@ -245,7 +268,8 @@
 
   /* ===== ANIMAÇÕES ESPETACULARES PARA CTA ===== */
   @keyframes gradient-xy {
-    0%, 100% {
+    0%,
+    100% {
       background-size: 400% 400%;
       background-position: left center;
     }
@@ -261,8 +285,13 @@
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
   }
 
   .animate-float {
@@ -270,8 +299,15 @@
   }
 
   @keyframes glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
-    50% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(255, 255, 255, 0.2); }
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+    50% {
+      box-shadow:
+        0 0 40px rgba(255, 255, 255, 0.4),
+        0 0 60px rgba(255, 255, 255, 0.2);
+    }
   }
 
   .animate-glow {

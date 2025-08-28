@@ -1,11 +1,11 @@
-import { 
-  Container, 
-  BindingBuilder, 
-  ServiceBinding, 
-  ServiceConstructor, 
-  ServiceFactory, 
-  ServiceLifetime 
-} from './types';
+import {
+  Container,
+  BindingBuilder,
+  ServiceBinding,
+  ServiceConstructor,
+  ServiceFactory,
+  ServiceLifetime,
+} from "./types";
 
 class DIBindingBuilder<T> implements BindingBuilder<T> {
   constructor(
@@ -15,25 +15,25 @@ class DIBindingBuilder<T> implements BindingBuilder<T> {
 
   to(implementation: ServiceConstructor<T>): void {
     this.container.register(this.token, {
-      type: 'constructor',
+      type: "constructor",
       value: implementation,
-      lifetime: ServiceLifetime.Transient
+      lifetime: ServiceLifetime.Transient,
     });
   }
 
   toFactory(factory: ServiceFactory<T>): void {
     this.container.register(this.token, {
-      type: 'factory',
+      type: "factory",
       value: factory,
-      lifetime: ServiceLifetime.Transient
+      lifetime: ServiceLifetime.Transient,
     });
   }
 
   toValue(value: T): void {
     this.container.register(this.token, {
-      type: 'value',
+      type: "value",
       value,
-      lifetime: ServiceLifetime.Singleton
+      lifetime: ServiceLifetime.Singleton,
     });
   }
 }
@@ -51,7 +51,7 @@ class DIContainer implements Container {
 
   resolve<T>(token: string): T {
     const binding = this.bindings.get(token);
-    
+
     if (!binding) {
       throw new Error(`No binding found for token: ${token}`);
     }
@@ -64,22 +64,22 @@ class DIContainer implements Container {
     let instance: T;
 
     switch (binding.type) {
-      case 'constructor': {
+      case "constructor": {
         const Constructor = binding.value as ServiceConstructor<T>;
         instance = new Constructor();
         break;
       }
-        
-      case 'factory': {
+
+      case "factory": {
         const factory = binding.value as ServiceFactory<T>;
         instance = factory();
         break;
       }
-        
-      case 'value':
+
+      case "value":
         instance = binding.value as T;
         break;
-        
+
       default:
         throw new Error(`Unknown binding type for token: ${token}`);
     }

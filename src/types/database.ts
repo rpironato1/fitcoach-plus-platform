@@ -1,6 +1,6 @@
 /**
  * Simplified Database Types for LocalStorage-only Implementation
- * 
+ *
  * These types replace the Supabase-generated types and are optimized
  * for localStorage usage.
  */
@@ -11,7 +11,7 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   public: {
@@ -22,7 +22,7 @@ export type Database = {
           first_name: string;
           last_name: string;
           phone: string | null;
-          role: 'admin' | 'trainer' | 'student';
+          role: "admin" | "trainer" | "student";
           created_at: string;
           updated_at: string;
         };
@@ -31,7 +31,7 @@ export type Database = {
           first_name: string;
           last_name: string;
           phone?: string | null;
-          role: 'admin' | 'trainer' | 'student';
+          role: "admin" | "trainer" | "student";
           created_at?: string;
           updated_at?: string;
         };
@@ -40,7 +40,7 @@ export type Database = {
           first_name?: string;
           last_name?: string;
           phone?: string | null;
-          role?: 'admin' | 'trainer' | 'student';
+          role?: "admin" | "trainer" | "student";
           created_at?: string;
           updated_at?: string;
         };
@@ -49,7 +49,7 @@ export type Database = {
       trainer_profiles: {
         Row: {
           id: string;
-          plan: 'free' | 'pro' | 'elite';
+          plan: "free" | "pro" | "elite";
           max_students: number;
           ai_credits: number;
           active_until: string | null;
@@ -61,7 +61,7 @@ export type Database = {
         };
         Insert: {
           id?: string;
-          plan?: 'free' | 'pro' | 'elite';
+          plan?: "free" | "pro" | "elite";
           max_students?: number;
           ai_credits?: number;
           active_until?: string | null;
@@ -73,7 +73,7 @@ export type Database = {
         };
         Update: {
           id?: string;
-          plan?: 'free' | 'pro' | 'elite';
+          plan?: "free" | "pro" | "elite";
           max_students?: number;
           ai_credits?: number;
           active_until?: string | null;
@@ -120,4 +120,4 @@ export type Database = {
       };
     };
   };
-}
+};

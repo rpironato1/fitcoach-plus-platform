@@ -1,39 +1,47 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./button";
 
 /**
  * Button component - Standard interactive element with multiple variants and sizes
  */
 const meta: Meta<typeof Button> = {
-  title: 'UI/Button',
+  title: "UI/Button",
   component: Button,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A versatile button component with multiple variants, sizes, and states. Built with accessibility in mind and following WCAG guidelines.',
+        component:
+          "A versatile button component with multiple variants, sizes, and states. Built with accessibility in mind and following WCAG guidelines.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: { type: 'select' },
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
-      description: 'Visual style variant of the button',
+      control: { type: "select" },
+      options: [
+        "default",
+        "destructive",
+        "outline",
+        "secondary",
+        "ghost",
+        "link",
+      ],
+      description: "Visual style variant of the button",
     },
     size: {
-      control: { type: 'select' },
-      options: ['default', 'sm', 'lg', 'icon'],
-      description: 'Size variant of the button',
+      control: { type: "select" },
+      options: ["default", "sm", "lg", "icon"],
+      description: "Size variant of the button",
     },
     asChild: {
-      control: { type: 'boolean' },
-      description: 'Renders as a child component (using Slot)',
+      control: { type: "boolean" },
+      description: "Renders as a child component (using Slot)",
     },
     disabled: {
-      control: { type: 'boolean' },
-      description: 'Disables the button',
+      control: { type: "boolean" },
+      description: "Disables the button",
     },
   },
 };
@@ -46,9 +54,9 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   args: {
-    children: 'Começar Grátis',
-    variant: 'default',
-    size: 'default',
+    children: "Começar Grátis",
+    variant: "default",
+    size: "default",
   },
 };
 
@@ -57,20 +65,20 @@ export const Default: Story = {
  */
 export const Secondary: Story = {
   args: {
-    children: 'Ver Demo',
-    variant: 'secondary',
-    size: 'default',
+    children: "Ver Demo",
+    variant: "secondary",
+    size: "default",
   },
 };
 
 /**
- * Outline button variant  
+ * Outline button variant
  */
 export const Outline: Story = {
   args: {
-    children: 'Escolher Plano',
-    variant: 'outline',
-    size: 'default',
+    children: "Escolher Plano",
+    variant: "outline",
+    size: "default",
   },
 };
 
@@ -79,9 +87,9 @@ export const Outline: Story = {
  */
 export const Destructive: Story = {
   args: {
-    children: 'Deletar',
-    variant: 'destructive',
-    size: 'default',
+    children: "Deletar",
+    variant: "destructive",
+    size: "default",
   },
 };
 
@@ -90,9 +98,9 @@ export const Destructive: Story = {
  */
 export const Ghost: Story = {
   args: {
-    children: 'Cancelar',
-    variant: 'ghost',
-    size: 'default',
+    children: "Cancelar",
+    variant: "ghost",
+    size: "default",
   },
 };
 
@@ -101,9 +109,9 @@ export const Ghost: Story = {
  */
 export const Link: Story = {
   args: {
-    children: 'Saiba mais',
-    variant: 'link',
-    size: 'default',
+    children: "Saiba mais",
+    variant: "link",
+    size: "default",
   },
 };
 
@@ -112,9 +120,9 @@ export const Link: Story = {
  */
 export const Small: Story = {
   args: {
-    children: 'Pequeno',
-    variant: 'default',
-    size: 'sm',
+    children: "Pequeno",
+    variant: "default",
+    size: "sm",
   },
 };
 
@@ -123,9 +131,9 @@ export const Small: Story = {
  */
 export const Large: Story = {
   args: {
-    children: 'Grande',
-    variant: 'default',
-    size: 'lg',
+    children: "Grande",
+    variant: "default",
+    size: "lg",
   },
 };
 
@@ -134,9 +142,9 @@ export const Large: Story = {
  */
 export const Icon: Story = {
   args: {
-    children: '🔍',
-    variant: 'default',
-    size: 'icon',
+    children: "🔍",
+    variant: "default",
+    size: "icon",
   },
 };
 
@@ -145,9 +153,9 @@ export const Icon: Story = {
  */
 export const Disabled: Story = {
   args: {
-    children: 'Desabilitado',
-    variant: 'default',
-    size: 'default',
+    children: "Desabilitado",
+    variant: "default",
+    size: "default",
     disabled: true,
   },
 };
@@ -169,7 +177,8 @@ export const AllVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Overview of all available button variants with consistent styling.',
+        story:
+          "Overview of all available button variants with consistent styling.",
       },
     },
   },
@@ -190,7 +199,8 @@ export const AllSizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Overview of all available button sizes ensuring proper text readability.',
+        story:
+          "Overview of all available button sizes ensuring proper text readability.",
       },
     },
   },

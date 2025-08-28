@@ -10,11 +10,11 @@ export {
   useAssignWorkoutToStudent,
   useWorkoutSessions,
   useCreateWorkoutSession,
-} from './hooks/useWorkouts';
+} from "./hooks/useWorkouts";
 
 // Services
-export { SupabaseWorkoutService } from './services/WorkoutService';
-export type { IWorkoutService } from './services/WorkoutService';
+export { SupabaseWorkoutService } from "./services/WorkoutService";
+export type { IWorkoutService } from "./services/WorkoutService";
 
 // Types
 export type {
@@ -24,7 +24,7 @@ export type {
   WorkoutSession,
   WorkoutPlanExerciseRaw,
   WorkoutSessionRaw,
-} from './types';
+} from "./types";
 
 // Utils
 export {
@@ -34,4 +34,4 @@ export {
   extractMuscleGroups,
   formatWorkoutDuration,
   getDifficultyText,
-} from './utils';
+} from "./utils";

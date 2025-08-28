@@ -7,19 +7,21 @@ Esta pasta contém screenshots de todas as páginas e módulos do FitCoach Plus 
 ```
 screenshots/
 ├── desktop/          # Desktop (1920x1080)
-├── tablet/           # Tablet (768x1024)  
+├── tablet/           # Tablet (768x1024)
 └── mobile/           # Mobile (375x667)
 ```
 
 ## 📱 Páginas Capturadas
 
 ### 🏠 Páginas Públicas
-- **landing-page**: Página inicial do FitCoach Plus  
+
+- **landing-page**: Página inicial do FitCoach Plus
 - **student-demo**: Demo da dashboard do estudante (sem autenticação)
 - **localstorage-manager**: Gerenciador de localStorage para testes
 - **not-found**: Página 404
 
 ### 👨‍💼 Dashboard Admin
+
 - **admin-dashboard**: Dashboard principal do administrador
 - **admin-trainers**: Gerenciamento de personal trainers
 - **admin-payments**: Gerenciamento de pagamentos
@@ -28,6 +30,7 @@ screenshots/
 - **admin-localstorage**: Gerenciador localStorage admin
 
 ### 🏃‍♂️ Dashboard Trainer
+
 - **trainer-dashboard**: Dashboard principal do personal trainer
 - **trainer-students**: Gerenciamento de alunos
 - **trainer-sessions**: Agendamento de sessões
@@ -35,6 +38,7 @@ screenshots/
 - **trainer-workouts**: Criação de planos de treino
 
 ### 🎯 Dashboard Student
+
 - **student-dashboard**: Dashboard principal do estudante
   - Feature de ciclo menstrual com adaptação de treinos
   - Planos alimentares personalizados
@@ -53,6 +57,7 @@ Para capturar as screenshots das áreas autenticadas:
 ## Screenshots Disponíveis
 
 ### Landing Page
+
 1. **screenshots-landing-page-desktop.png** - Landing page completa em resolução desktop (1920x1080)
    - Mostra o hero section com gradientes animados
    - Seção de recursos com tabs interativos usando ReactBits
@@ -67,16 +72,19 @@ Para capturar as screenshots das áreas autenticadas:
    - Navegação colapsável e elementos touch-friendly
 
 ### Dashboards
+
 **Nota importante**: Os dashboards (Admin, Student, e Personal Trainer) requerem autenticação para acesso. O sistema de proteção de rotas está funcionando corretamente, redirecionando usuários não autenticados para a landing page.
 
 ## 📊 Detalhes Técnicos
 
 ### Resoluções Testadas
+
 - **Desktop**: 1920x1080 (Full HD)
 - **Tablet**: 768x1024 (iPad Portrait)
 - **Mobile**: 375x667 (iPhone SE)
 
 ### Browsers Suportados
+
 - ✅ Chrome/Chromium
 - ✅ Firefox
 - ✅ Safari/WebKit
@@ -84,6 +92,7 @@ Para capturar as screenshots das áreas autenticadas:
 - ✅ Mobile Safari
 
 ### Recursos Validados
+
 - 🎨 Design responsivo em todos os breakpoints
 - ♿ Acessibilidade WCAG AA (contraste 4.58:1)
 - 🌸 Feature especial: Ciclo menstrual feminino
@@ -93,6 +102,7 @@ Para capturar as screenshots das áreas autenticadas:
 ## Funcionalidades Verificadas ✅
 
 ### Landing Page
+
 - ✅ Design responsivo mobile-first
 - ✅ Componentes ReactBits funcionando (Tabs, Carousel, Accordion, Progress, Badge)
 - ✅ Animações e transições suaves
@@ -101,6 +111,7 @@ Para capturar as screenshots das áreas autenticadas:
 - ✅ Paleta de cores azul/roxo mantida
 
 ### Sistema Geral
+
 - ✅ Build limpo sem erros
 - ✅ Testes passando (36/36)
 - ✅ Lint warnings resolvidos (apenas avisos de fast-refresh)
@@ -124,12 +135,14 @@ npm run dev
 ## 📈 Performance Lighthouse
 
 Durante os testes, o platform alcançou scores excelentes:
+
 - 🥇 **Performance**: 99/100
 - 🥇 **Acessibilidade**: 96/100 (WCAG AA)
 - 🥇 **Melhores Práticas**: 100/100
 - 🥇 **SEO**: 100/100
 
 ## Qualidade do Código
+
 - Lint: ✅ Apenas avisos de fast-refresh (não bloqueantes)
 - Build: ✅ Sucesso
 - Tests: ✅ 36 testes passando

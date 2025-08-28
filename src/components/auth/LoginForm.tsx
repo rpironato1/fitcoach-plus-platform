@@ -1,18 +1,17 @@
-
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useAuth } from '@/components/auth/LocalStorageAuthProvider';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuth } from "@/components/auth/LocalStorageAuthProvider";
+import { useToast } from "@/hooks/use-toast";
 
 interface LoginFormProps {
   onSuccess?: () => void;
 }
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useAuth();
   const { toast } = useToast();
@@ -24,17 +23,18 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     try {
       await signIn(email, password);
       toast({
-        title: 'Sucesso!',
-        description: 'Login realizado com sucesso.',
+        title: "Sucesso!",
+        description: "Login realizado com sucesso.",
       });
       onSuccess?.();
     } catch (error) {
-      console.error('Login error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Credenciais inválidas.';
+      console.error("Login error:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Credenciais inválidas.";
       toast({
-        title: 'Erro no login',
+        title: "Erro no login",
         description: errorMessage,
-        variant: 'destructive',
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -68,7 +68,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         />
       </div>
       <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? 'Entrando...' : 'Entrar'}
+        {isLoading ? "Entrando..." : "Entrar"}
       </Button>
     </form>
   );

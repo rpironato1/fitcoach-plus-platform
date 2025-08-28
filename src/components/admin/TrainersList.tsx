@@ -1,15 +1,24 @@
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { TrainerCard } from './TrainerCard';
-import { Trainer } from '@/hooks/useTrainersManagement';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { TrainerCard } from "./TrainerCard";
+import { Trainer } from "@/hooks/useTrainersManagement";
 
 interface TrainersListProps {
   trainers: Trainer[];
-  onUpdatePlan: (trainerId: string, plan: 'free' | 'pro' | 'elite') => void;
+  onUpdatePlan: (trainerId: string, plan: "free" | "pro" | "elite") => void;
   onDeleteTrainer: (trainerId: string) => void;
 }
 
-export function TrainersList({ trainers, onUpdatePlan, onDeleteTrainer }: TrainersListProps) {
+export function TrainersList({
+  trainers,
+  onUpdatePlan,
+  onDeleteTrainer,
+}: TrainersListProps) {
   return (
     <Card>
       <CardHeader>

@@ -1,7 +1,6 @@
-
-import { useTrainersManagement } from '@/hooks/useTrainersManagement';
-import { TrainersFilters } from '@/components/admin/TrainersFilters';
-import { TrainersList } from '@/components/admin/TrainersList';
+import { useTrainersManagement } from "@/hooks/useTrainersManagement";
+import { TrainersFilters } from "@/components/admin/TrainersFilters";
+import { TrainersList } from "@/components/admin/TrainersList";
 
 export default function TrainersManagement() {
   const {
@@ -12,10 +11,13 @@ export default function TrainersManagement() {
     filterPlan,
     setFilterPlan,
     updateTrainerPlan,
-    deleteTrainer
+    deleteTrainer,
   } = useTrainersManagement();
 
-  const handleUpdatePlan = (trainerId: string, plan: 'free' | 'pro' | 'elite') => {
+  const handleUpdatePlan = (
+    trainerId: string,
+    plan: "free" | "pro" | "elite"
+  ) => {
     updateTrainerPlan.mutate({ trainerId, plan });
   };
 
@@ -38,7 +40,9 @@ export default function TrainersManagement() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Gerenciar Trainers</h1>
-        <p className="text-gray-600">Administre todos os trainers cadastrados na plataforma</p>
+        <p className="text-gray-600">
+          Administre todos os trainers cadastrados na plataforma
+        </p>
       </div>
 
       <TrainersFilters

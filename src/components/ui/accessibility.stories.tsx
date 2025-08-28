@@ -1,22 +1,29 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './button';
-import { Badge } from './badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./button";
+import { Badge } from "./badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./card";
 
 /**
  * Accessibility Standards - WCAG compliance and accessibility features
  */
 const meta: Meta = {
-  title: 'Design System/Accessibility',
+  title: "Design System/Accessibility",
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
-        component: 'Comprehensive accessibility standards and compliance demonstrations for the FitCoach Plus Platform.',
+        component:
+          "Comprehensive accessibility standards and compliance demonstrations for the FitCoach Plus Platform.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -29,7 +36,9 @@ export const ColorContrast: Story = {
   render: () => (
     <div className="space-y-6">
       <section>
-        <h2 className="text-2xl font-bold mb-4">Contraste de Cores - WCAG AA Compliant</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          Contraste de Cores - WCAG AA Compliant
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">✅ Contrastes Aprovados</h3>
@@ -37,29 +46,43 @@ export const ColorContrast: Story = {
               <div className="bg-primary text-primary-foreground p-4 rounded-lg">
                 <p className="font-medium">Primary Background</p>
                 <p className="text-sm">Contraste: 4.52:1 (WCAG AA ✅)</p>
-                <Button size="sm" className="mt-2">Texto Legível</Button>
+                <Button size="sm" className="mt-2">
+                  Texto Legível
+                </Button>
               </div>
               <div className="bg-secondary text-secondary-foreground p-4 rounded-lg">
                 <p className="font-medium">Secondary Background</p>
                 <p className="text-sm">Contraste: 4.52:1 (WCAG AA ✅)</p>
-                <Button variant="secondary" size="sm" className="mt-2">Texto Legível</Button>
+                <Button variant="secondary" size="sm" className="mt-2">
+                  Texto Legível
+                </Button>
               </div>
               <div className="bg-destructive text-destructive-foreground p-4 rounded-lg">
                 <p className="font-medium">Destructive Background</p>
                 <p className="text-sm">Contraste: 5.12:1 (WCAG AA ✅)</p>
-                <Button variant="destructive" size="sm" className="mt-2">Texto Legível</Button>
+                <Button variant="destructive" size="sm" className="mt-2">
+                  Texto Legível
+                </Button>
               </div>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">📊 Métricas de Contraste</h3>
             <div className="bg-muted p-4 rounded-lg">
               <ul className="space-y-2 text-sm">
-                <li><strong>WCAG AA Normal:</strong> Mínimo 4.5:1</li>
-                <li><strong>WCAG AA Large:</strong> Mínimo 3.0:1</li>
-                <li><strong>WCAG AAA Normal:</strong> Mínimo 7.0:1</li>
-                <li><strong>WCAG AAA Large:</strong> Mínimo 4.5:1</li>
+                <li>
+                  <strong>WCAG AA Normal:</strong> Mínimo 4.5:1
+                </li>
+                <li>
+                  <strong>WCAG AA Large:</strong> Mínimo 3.0:1
+                </li>
+                <li>
+                  <strong>WCAG AAA Normal:</strong> Mínimo 7.0:1
+                </li>
+                <li>
+                  <strong>WCAG AAA Large:</strong> Mínimo 4.5:1
+                </li>
               </ul>
               <div className="mt-4 p-3 bg-green-50 rounded">
                 <p className="text-green-800 font-medium">
@@ -75,7 +98,8 @@ export const ColorContrast: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Color contrast validation ensuring all text is readable according to WCAG AA standards.',
+        story:
+          "Color contrast validation ensuring all text is readable according to WCAG AA standards.",
       },
     },
   },
@@ -97,10 +121,12 @@ export const KeyboardNavigation: Story = {
             Todos os elementos interativos são acessíveis via teclado
           </p>
         </div>
-        
+
         <div className="space-y-4">
           <div>
-            <h3 className="text-lg font-semibold mb-3">Elementos Focalizáveis</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              Elementos Focalizáveis
+            </h3>
             <div className="flex flex-wrap gap-3">
               <Button>Botão 1</Button>
               <Button variant="secondary">Botão 2</Button>
@@ -108,7 +134,7 @@ export const KeyboardNavigation: Story = {
               <Button variant="ghost">Botão 4</Button>
             </div>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-3">Indicadores de Foco</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -125,7 +151,7 @@ export const KeyboardNavigation: Story = {
                   </Button>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Ordem de Tabulação</CardTitle>
@@ -151,7 +177,8 @@ export const KeyboardNavigation: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Keyboard navigation patterns and focus management for accessible user interaction.',
+        story:
+          "Keyboard navigation patterns and focus management for accessible user interaction.",
       },
     },
   },
@@ -165,7 +192,7 @@ export const TextReadability: Story = {
     <div className="space-y-6">
       <section>
         <h2 className="text-2xl font-bold mb-4">Legibilidade de Texto</h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h3 className="text-lg font-semibold mb-3">Tamanhos Mínimos</h3>
@@ -196,9 +223,11 @@ export const TextReadability: Story = {
               </div>
             </div>
           </div>
-          
+
           <div>
-            <h3 className="text-lg font-semibold mb-3">Botões com Texto Legível</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              Botões com Texto Legível
+            </h3>
             <div className="space-y-3">
               <div>
                 <p className="text-sm mb-2">Tamanho Pequeno (14px)</p>
@@ -213,9 +242,11 @@ export const TextReadability: Story = {
                 <Button size="lg">Texto Grande</Button>
               </div>
             </div>
-            
+
             <div className="mt-6 p-4 bg-green-50 rounded-lg">
-              <h4 className="font-medium text-green-800 mb-2">✅ Padrões Atendidos</h4>
+              <h4 className="font-medium text-green-800 mb-2">
+                ✅ Padrões Atendidos
+              </h4>
               <ul className="text-sm text-green-700 space-y-1">
                 <li>• Tamanho mínimo de 14px para texto de interface</li>
                 <li>• Tamanho padrão de 16px para melhor leitura</li>
@@ -231,7 +262,8 @@ export const TextReadability: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Text sizing standards ensuring optimal readability across all interface elements.',
+        story:
+          "Text sizing standards ensuring optimal readability across all interface elements.",
       },
     },
   },
@@ -245,23 +277,26 @@ export const ScreenReaderSupport: Story = {
     <div className="space-y-6">
       <section>
         <h2 className="text-2xl font-bold mb-4">Suporte a Leitores de Tela</h2>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <h3 className="text-lg font-semibold mb-3">Componentes com ARIA</h3>
             <div className="space-y-4">
               <div className="p-4 border rounded-lg">
-                <Button 
+                <Button
                   aria-label="Começar treino gratuito agora"
                   aria-describedby="button-description"
                 >
                   Começar Grátis
                 </Button>
-                <p id="button-description" className="text-sm text-muted-foreground mt-2">
+                <p
+                  id="button-description"
+                  className="text-sm text-muted-foreground mt-2"
+                >
                   Inicia um período de teste gratuito de 7 dias
                 </p>
               </div>
-              
+
               <div className="p-4 border rounded-lg">
                 <div role="status" aria-live="polite">
                   <Badge variant="default" aria-label="Status mais popular">
@@ -274,9 +309,11 @@ export const ScreenReaderSupport: Story = {
               </div>
             </div>
           </div>
-          
+
           <div>
-            <h3 className="text-lg font-semibold mb-3">Landmarks e Estrutura</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              Landmarks e Estrutura
+            </h3>
             <div className="p-4 border rounded-lg">
               <div className="space-y-3 text-sm">
                 <div className="p-2 bg-blue-50 rounded">
@@ -298,9 +335,11 @@ export const ScreenReaderSupport: Story = {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <h4 className="font-medium text-blue-800 mb-2">🔊 Recursos para Leitores de Tela</h4>
+          <h4 className="font-medium text-blue-800 mb-2">
+            🔊 Recursos para Leitores de Tela
+          </h4>
           <ul className="text-sm text-blue-700 space-y-1">
             <li>• Todas as imagens têm texto alternativo</li>
             <li>• Botões têm labels descritivos</li>
@@ -316,7 +355,8 @@ export const ScreenReaderSupport: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Screen reader compatibility and ARIA implementation for comprehensive accessibility.',
+        story:
+          "Screen reader compatibility and ARIA implementation for comprehensive accessibility.",
       },
     },
   },

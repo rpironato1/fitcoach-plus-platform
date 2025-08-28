@@ -1,21 +1,28 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/ui/table";
 
 const meta: Meta<typeof Table> = {
-  title: 'UI Components/Table',
+  title: "UI Components/Table",
   component: Table,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A table component for displaying tabular data.',
+        component: "A table component for displaying tabular data.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <div style={{ width: '600px' }}>
+      <div style={{ width: "600px" }}>
         <Story />
       </div>
     ),

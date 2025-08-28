@@ -1,10 +1,16 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { Heart, Calendar, Info } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Heart, Calendar, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -12,30 +18,35 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
 interface MenstrualCycleCardProps {
   isEnabled: boolean;
   onToggle: (enabled: boolean) => void;
 }
 
-export function MenstrualCycleCard({ isEnabled, onToggle }: MenstrualCycleCardProps) {
+export function MenstrualCycleCard({
+  isEnabled,
+  onToggle,
+}: MenstrualCycleCardProps) {
   const [localEnabled, setLocalEnabled] = useState(isEnabled);
   const { toast } = useToast();
 
   const handleToggle = (checked: boolean) => {
     setLocalEnabled(checked);
     onToggle(checked);
-    
+
     if (checked) {
       toast({
         title: "Treino adaptado ativado! 💪",
-        description: "Seus treinos e dietas serão personalizados considerando seu ciclo menstrual para melhor performance.",
+        description:
+          "Seus treinos e dietas serão personalizados considerando seu ciclo menstrual para melhor performance.",
       });
     } else {
       toast({
         title: "Configuração desativada",
-        description: "Os treinos voltarão ao padrão sem considerar o ciclo menstrual.",
+        description:
+          "Os treinos voltarão ao padrão sem considerar o ciclo menstrual.",
       });
     }
   };
@@ -46,7 +57,9 @@ export function MenstrualCycleCard({ isEnabled, onToggle }: MenstrualCycleCardPr
         <div className="flex items-center space-x-2">
           <Heart className="h-5 w-5 text-pink-500" />
           <div>
-            <CardTitle className="text-sm sm:text-base">Treino Adaptado ao Ciclo</CardTitle>
+            <CardTitle className="text-sm sm:text-base">
+              Treino Adaptado ao Ciclo
+            </CardTitle>
             <CardDescription className="text-xs sm:text-sm">
               Personalize treinos e dietas baseado no seu ciclo menstrual
             </CardDescription>
@@ -67,24 +80,50 @@ export function MenstrualCycleCard({ isEnabled, onToggle }: MenstrualCycleCardPr
                 </DialogTitle>
                 <DialogDescription className="space-y-3 text-sm">
                   <p>
-                    <strong>Como funciona:</strong> Nossa IA considera as diferentes fases do seu ciclo menstrual para criar treinos mais eficazes.
+                    <strong>Como funciona:</strong> Nossa IA considera as
+                    diferentes fases do seu ciclo menstrual para criar treinos
+                    mais eficazes.
                   </p>
                   <div className="space-y-2">
-                    <p><strong>🌙 Fase Menstrual (dias 1-5):</strong></p>
-                    <p className="text-xs text-gray-600 ml-4">• Treinos mais leves, foco em alongamento e yoga</p>
-                    <p className="text-xs text-gray-600 ml-4">• Dieta rica em ferro e magnésio</p>
-                    
-                    <p><strong>🌱 Fase Folicular (dias 6-14):</strong></p>
-                    <p className="text-xs text-gray-600 ml-4">• Energia crescente, treinos de intensidade moderada</p>
-                    <p className="text-xs text-gray-600 ml-4">• Boa fase para novos exercícios</p>
-                    
-                    <p><strong>🌸 Ovulação (dias 14-16):</strong></p>
-                    <p className="text-xs text-gray-600 ml-4">• Pico de energia, treinos intensos e força</p>
-                    <p className="text-xs text-gray-600 ml-4">• Máxima performance física</p>
-                    
-                    <p><strong>🍂 Fase Lútea (dias 17-28):</strong></p>
-                    <p className="text-xs text-gray-600 ml-4">• Redução gradual, foco em resistência</p>
-                    <p className="text-xs text-gray-600 ml-4">• Dieta com redução de sódio e açúcar</p>
+                    <p>
+                      <strong>🌙 Fase Menstrual (dias 1-5):</strong>
+                    </p>
+                    <p className="text-xs text-gray-600 ml-4">
+                      • Treinos mais leves, foco em alongamento e yoga
+                    </p>
+                    <p className="text-xs text-gray-600 ml-4">
+                      • Dieta rica em ferro e magnésio
+                    </p>
+
+                    <p>
+                      <strong>🌱 Fase Folicular (dias 6-14):</strong>
+                    </p>
+                    <p className="text-xs text-gray-600 ml-4">
+                      • Energia crescente, treinos de intensidade moderada
+                    </p>
+                    <p className="text-xs text-gray-600 ml-4">
+                      • Boa fase para novos exercícios
+                    </p>
+
+                    <p>
+                      <strong>🌸 Ovulação (dias 14-16):</strong>
+                    </p>
+                    <p className="text-xs text-gray-600 ml-4">
+                      • Pico de energia, treinos intensos e força
+                    </p>
+                    <p className="text-xs text-gray-600 ml-4">
+                      • Máxima performance física
+                    </p>
+
+                    <p>
+                      <strong>🍂 Fase Lútea (dias 17-28):</strong>
+                    </p>
+                    <p className="text-xs text-gray-600 ml-4">
+                      • Redução gradual, foco em resistência
+                    </p>
+                    <p className="text-xs text-gray-600 ml-4">
+                      • Dieta com redução de sódio e açúcar
+                    </p>
                   </div>
                 </DialogDescription>
               </DialogHeader>
@@ -108,8 +147,9 @@ export function MenstrualCycleCard({ isEnabled, onToggle }: MenstrualCycleCardPr
               </Badge>
             </div>
             <div className="text-xs text-gray-500 bg-pink-50/50 p-2 rounded-lg">
-              <strong>💡 Dica:</strong> A IA considerará sua fase do ciclo ao gerar treinos e dietas nos planos pagos. 
-              Mantenha um calendário menstrual atualizado para melhores resultados.
+              <strong>💡 Dica:</strong> A IA considerará sua fase do ciclo ao
+              gerar treinos e dietas nos planos pagos. Mantenha um calendário
+              menstrual atualizado para melhores resultados.
             </div>
           </div>
         ) : (

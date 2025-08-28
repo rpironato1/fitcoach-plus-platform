@@ -7,15 +7,15 @@
 
 ## 1. Backend / Segurança
 
-| Prioridade                             | Item                                                    | Detalhe técnico                                                                                                           | Pronto quando…                                                      |
-| -------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 🔴 Crítico                             | **Endpoint LGPD – exclusão de conta**                   | `DELETE /user` → seta `deleted_at`, anonimiza PII, revoga tokens                                                          | Retorna 204 e usuário some das queries normais (row‑level‑security) |
-| 🔴 Crítico                             | **Rate‑limit e brute‑force**                            | Middleware Express (e.g. `rate-limiter-flexible`) – 100 req/15 min por IP; apply only to auth routes                      | 429 para excesso, acessos legítimos OK                              |
-| 🔴 Crítico                             | **CSRF & CORS lock**                                    | Adicionar `helmet`, tokens CSRF para rotas `POST /stripe/webhook` etc.                                                    | Tests E2E sem falha de CSRF                                         |
-| 🟠 Alto                                | **2FA TOTP (trainer/admin)**                            | Campo `is2FAEnabled` em `User`; rota `/enable‑2fa`, `/verify‑2fa`                                                         | Login exige TOTP depois de senha                                    |
-| 🟠 Alto                                | **Webhook **``                                          | Listener Stripe → `POST /webhooks/stripe`; on refund:   `Payment.status = refunded`, `StudentPlan.remainingSessions += X` | Unit‑test com payload de refund passa                               |
-| 🟢 Médio                               | **Dynamic fee (pricing\_rules)**                        | Nova tabela `pricing_rules` (`trainerId`, `method`, `markupPct`, `validFrom→To`)                                          |                                                                     |
-| Alterar cálculo de `fee = base + rule` | PaymentIntent gravado com markup correto conforme regra |                                                                                                                           |                                                                     |
+| Prioridade                             | Item                                                    | Detalhe técnico                                                                                                          | Pronto quando…                                                      |
+| -------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| 🔴 Crítico                             | **Endpoint LGPD – exclusão de conta**                   | `DELETE /user` → seta `deleted_at`, anonimiza PII, revoga tokens                                                         | Retorna 204 e usuário some das queries normais (row‑level‑security) |
+| 🔴 Crítico                             | **Rate‑limit e brute‑force**                            | Middleware Express (e.g. `rate-limiter-flexible`) – 100 req/15 min por IP; apply only to auth routes                     | 429 para excesso, acessos legítimos OK                              |
+| 🔴 Crítico                             | **CSRF & CORS lock**                                    | Adicionar `helmet`, tokens CSRF para rotas `POST /stripe/webhook` etc.                                                   | Tests E2E sem falha de CSRF                                         |
+| 🟠 Alto                                | **2FA TOTP (trainer/admin)**                            | Campo `is2FAEnabled` em `User`; rota `/enable‑2fa`, `/verify‑2fa`                                                        | Login exige TOTP depois de senha                                    |
+| 🟠 Alto                                | **Webhook **``                                          | Listener Stripe → `POST /webhooks/stripe`; on refund:  `Payment.status = refunded`, `StudentPlan.remainingSessions += X` | Unit‑test com payload de refund passa                               |
+| 🟢 Médio                               | **Dynamic fee (pricing_rules)**                         | Nova tabela `pricing_rules` (`trainerId`, `method`, `markupPct`, `validFrom→To`)                                         |                                                                     |
+| Alterar cálculo de `fee = base + rule` | PaymentIntent gravado com markup correto conforme regra |                                                                                                                          |                                                                     |
 
 ---
 
@@ -52,7 +52,7 @@
 ## 4. Front‑end / UI novos
 
 - **Admin portal **``
-  - Lista trainers, botão *Impersonate*, ver logs Stripe.
+  - Lista trainers, botão _Impersonate_, ver logs Stripe.
 - **Modal “Upgrade”** (Free → Pro)
   - Trigger quando `students > maxStudents` **ou** `thisMonthMarkup > 50`.
 - **Questionário PAR‑Q**
@@ -76,7 +76,7 @@
 ## 6. DevOps
 
 - **Logflare** integration: Winston transport → Logflare.
-- **Backup script** (pg\_dump nightly) – mas código só para painel de restore opcional.
+- **Backup script** (pg_dump nightly) – mas código só para painel de restore opcional.
 - **Dockerfile multistage** otimizado (`node:20-alpine`).
 
 ---
@@ -86,4 +86,3 @@
 -
 
 > **Meta**: merge em `sprint-sec-hardening`; cobertura > 80 % statements.
-

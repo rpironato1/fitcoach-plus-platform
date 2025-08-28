@@ -1,14 +1,16 @@
-
-import { ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useLocalStorageAuth } from '@/components/auth/LocalStorageAuthProvider';
+import { ReactNode } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useLocalStorageAuth } from "@/components/auth/LocalStorageAuthProvider";
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  requiredRole?: 'admin' | 'trainer' | 'student';
+  requiredRole?: "admin" | "trainer" | "student";
 }
 
-export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
+export function ProtectedRoute({
+  children,
+  requiredRole,
+}: ProtectedRouteProps) {
   const authContext = useLocalStorageAuth();
   const location = useLocation();
 

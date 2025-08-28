@@ -1,22 +1,33 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
 
 const meta: Meta<typeof Tabs> = {
-  title: 'UI Components/Tabs',
+  title: "UI Components/Tabs",
   component: Tabs,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A tabs component for organizing content into sections.',
+        component: "A tabs component for organizing content into sections.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <div style={{ width: '500px' }}>
+      <div style={{ width: "500px" }}>
         <Story />
       </div>
     ),

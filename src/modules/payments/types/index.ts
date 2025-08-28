@@ -1,5 +1,5 @@
 // Payment Module Types
-export type TrainerPlan = 'free' | 'pro' | 'elite';
+export type TrainerPlan = "free" | "pro" | "elite";
 
 export interface PlanLimits {
   maxStudents: number;
@@ -18,7 +18,7 @@ export interface Subscription {
   id: string;
   trainer_id: string;
   plan: TrainerPlan;
-  status: 'active' | 'canceled' | 'past_due' | 'trialing';
+  status: "active" | "canceled" | "past_due" | "trialing";
   current_period_start: string;
   current_period_end: string;
   cancel_at_period_end: boolean;

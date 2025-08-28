@@ -2,16 +2,16 @@
  * Test suite for localStorage dashboard implementation
  */
 
-import React from 'react';
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { localStorageService } from '@/services/localStorageService';
-import { 
-  useLocalStorageDashboardStats, 
-  useLocalStorageUpcomingSessions, 
-  useLocalStorageRecentActivity 
-} from '@/hooks/useLocalStorageDashboardData';
+import React from "react";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { renderHook, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { localStorageService } from "@/services/localStorageService";
+import {
+  useLocalStorageDashboardStats,
+  useLocalStorageUpcomingSessions,
+  useLocalStorageRecentActivity,
+} from "@/hooks/useLocalStorageDashboardData";
 
 // Mock localStorage
 const mockLocalStorage = (() => {
@@ -30,7 +30,7 @@ const mockLocalStorage = (() => {
   };
 })();
 
-Object.defineProperty(window, 'localStorage', {
+Object.defineProperty(window, "localStorage", {
   value: mockLocalStorage,
 });
 
@@ -49,7 +49,7 @@ const createWrapper = () => {
   );
 };
 
-describe('LocalStorage Dashboard Implementation', () => {
+describe("LocalStorage Dashboard Implementation", () => {
   beforeEach(() => {
     localStorage.clear();
   });
@@ -58,38 +58,38 @@ describe('LocalStorage Dashboard Implementation', () => {
     localStorage.clear();
   });
 
-  describe('LocalStorage Service', () => {
-    it('should initialize data correctly', () => {
+  describe("LocalStorage Service", () => {
+    it("should initialize data correctly", () => {
       localStorageService.initializeData();
       const data = localStorageService.getData();
-      
+
       expect(data).toBeDefined();
       expect(data?.trainer_profiles).toHaveLength(1);
       expect(data?.students.length).toBeGreaterThan(0);
       expect(data?.sessions.length).toBeGreaterThan(0);
     });
 
-    it('should handle data variations', () => {
-      localStorageService.addDataVariation('empty');
+    it("should handle data variations", () => {
+      localStorageService.addDataVariation("empty");
       const emptyData = localStorageService.getData();
       expect(emptyData?.students).toHaveLength(0);
       expect(emptyData?.sessions).toHaveLength(0);
 
-      localStorageService.addDataVariation('minimal');
+      localStorageService.addDataVariation("minimal");
       const minimalData = localStorageService.getData();
       expect(minimalData?.students).toHaveLength(1);
       expect(minimalData?.sessions.length).toBeLessThanOrEqual(2);
 
-      localStorageService.addDataVariation('full');
+      localStorageService.addDataVariation("full");
       const fullData = localStorageService.getData();
       expect(fullData?.students.length).toBeGreaterThan(1);
       expect(fullData?.sessions.length).toBeGreaterThan(2);
     });
 
-    it('should export data for Supabase migration', () => {
+    it("should export data for Supabase migration", () => {
       localStorageService.initializeData();
       const exportedData = localStorageService.exportForSupabase();
-      
+
       expect(exportedData).toBeDefined();
       const parsed = JSON.parse(exportedData);
       expect(parsed.trainer_profiles).toBeDefined();
@@ -98,19 +98,19 @@ describe('LocalStorage Dashboard Implementation', () => {
       expect(parsed.payment_intents).toBeDefined();
     });
 
-    it('should clear data', () => {
+    it("should clear data", () => {
       localStorageService.initializeData();
       expect(localStorageService.getData()).toBeDefined();
-      
+
       localStorageService.clearData();
       expect(localStorageService.getData()).toBeNull();
     });
   });
 
-  describe('Dashboard Stats Hook', () => {
-    it('should return correct dashboard statistics', async () => {
+  describe("Dashboard Stats Hook", () => {
+    it("should return correct dashboard statistics", async () => {
       const wrapper = createWrapper();
-      
+
       const { result } = renderHook(() => useLocalStorageDashboardStats(), {
         wrapper,
       });
@@ -129,10 +129,10 @@ describe('LocalStorage Dashboard Implementation', () => {
       expect(stats?.aiCredits).toBeGreaterThanOrEqual(0);
     });
 
-    it('should handle empty data scenario', async () => {
-      localStorageService.addDataVariation('empty');
+    it("should handle empty data scenario", async () => {
+      localStorageService.addDataVariation("empty");
       const wrapper = createWrapper();
-      
+
       const { result } = renderHook(() => useLocalStorageDashboardStats(), {
         wrapper,
       });
@@ -149,10 +149,10 @@ describe('LocalStorage Dashboard Implementation', () => {
     });
   });
 
-  describe('Upcoming Sessions Hook', () => {
-    it('should return upcoming sessions', async () => {
+  describe("Upcoming Sessions Hook", () => {
+    it("should return upcoming sessions", async () => {
       const wrapper = createWrapper();
-      
+
       const { result } = renderHook(() => useLocalStorageUpcomingSessions(), {
         wrapper,
       });
@@ -164,19 +164,19 @@ describe('LocalStorage Dashboard Implementation', () => {
       const sessions = result.current.data;
       expect(sessions).toBeDefined();
       expect(Array.isArray(sessions)).toBe(true);
-      
+
       if (sessions && sessions.length > 0) {
-        expect(sessions[0]).toHaveProperty('id');
-        expect(sessions[0]).toHaveProperty('student_name');
-        expect(sessions[0]).toHaveProperty('scheduled_at');
-        expect(sessions[0]).toHaveProperty('duration_minutes');
-        expect(sessions[0]).toHaveProperty('status');
+        expect(sessions[0]).toHaveProperty("id");
+        expect(sessions[0]).toHaveProperty("student_name");
+        expect(sessions[0]).toHaveProperty("scheduled_at");
+        expect(sessions[0]).toHaveProperty("duration_minutes");
+        expect(sessions[0]).toHaveProperty("status");
       }
     });
 
-    it('should return sessions sorted by date', async () => {
+    it("should return sessions sorted by date", async () => {
       const wrapper = createWrapper();
-      
+
       const { result } = renderHook(() => useLocalStorageUpcomingSessions(), {
         wrapper,
       });
@@ -196,10 +196,10 @@ describe('LocalStorage Dashboard Implementation', () => {
     });
   });
 
-  describe('Recent Activity Hook', () => {
-    it('should return recent activities', async () => {
+  describe("Recent Activity Hook", () => {
+    it("should return recent activities", async () => {
       const wrapper = createWrapper();
-      
+
       const { result } = renderHook(() => useLocalStorageRecentActivity(), {
         wrapper,
       });
@@ -211,22 +211,27 @@ describe('LocalStorage Dashboard Implementation', () => {
       const activities = result.current.data;
       expect(activities).toBeDefined();
       expect(Array.isArray(activities)).toBe(true);
-      
+
       if (activities && activities.length > 0) {
-        expect(activities[0]).toHaveProperty('id');
-        expect(activities[0]).toHaveProperty('type');
-        expect(activities[0]).toHaveProperty('description');
-        expect(activities[0]).toHaveProperty('created_at');
-        
+        expect(activities[0]).toHaveProperty("id");
+        expect(activities[0]).toHaveProperty("type");
+        expect(activities[0]).toHaveProperty("description");
+        expect(activities[0]).toHaveProperty("created_at");
+
         // Check valid activity types
-        const validTypes = ['session_completed', 'student_added', 'workout_assigned', 'diet_created'];
+        const validTypes = [
+          "session_completed",
+          "student_added",
+          "workout_assigned",
+          "diet_created",
+        ];
         expect(validTypes).toContain(activities[0].type);
       }
     });
 
-    it('should return activities sorted by date (newest first)', async () => {
+    it("should return activities sorted by date (newest first)", async () => {
       const wrapper = createWrapper();
-      
+
       const { result } = renderHook(() => useLocalStorageRecentActivity(), {
         wrapper,
       });
@@ -240,43 +245,47 @@ describe('LocalStorage Dashboard Implementation', () => {
         for (let i = 1; i < activities.length; i++) {
           const prevDate = new Date(activities[i - 1].created_at);
           const currentDate = new Date(activities[i].created_at);
-          expect(prevDate.getTime()).toBeGreaterThanOrEqual(currentDate.getTime());
+          expect(prevDate.getTime()).toBeGreaterThanOrEqual(
+            currentDate.getTime()
+          );
         }
       }
     });
   });
 
-  describe('Data Compatibility', () => {
-    it('should maintain JSON structure compatible with Supabase', () => {
+  describe("Data Compatibility", () => {
+    it("should maintain JSON structure compatible with Supabase", () => {
       localStorageService.initializeData();
       const data = localStorageService.getData();
-      
-      // Check that all required fields exist and have correct types
-      expect(data?.trainer_profiles[0]).toHaveProperty('id');
-      expect(data?.trainer_profiles[0]).toHaveProperty('plan');
-      expect(data?.trainer_profiles[0]).toHaveProperty('max_students');
-      expect(data?.trainer_profiles[0]).toHaveProperty('ai_credits');
-      expect(data?.trainer_profiles[0]).toHaveProperty('created_at');
-      expect(data?.trainer_profiles[0]).toHaveProperty('updated_at');
 
-      expect(typeof data?.trainer_profiles[0].max_students).toBe('number');
-      expect(typeof data?.trainer_profiles[0].ai_credits).toBe('number');
-      expect(['free', 'pro', 'elite']).toContain(data?.trainer_profiles[0].plan);
+      // Check that all required fields exist and have correct types
+      expect(data?.trainer_profiles[0]).toHaveProperty("id");
+      expect(data?.trainer_profiles[0]).toHaveProperty("plan");
+      expect(data?.trainer_profiles[0]).toHaveProperty("max_students");
+      expect(data?.trainer_profiles[0]).toHaveProperty("ai_credits");
+      expect(data?.trainer_profiles[0]).toHaveProperty("created_at");
+      expect(data?.trainer_profiles[0]).toHaveProperty("updated_at");
+
+      expect(typeof data?.trainer_profiles[0].max_students).toBe("number");
+      expect(typeof data?.trainer_profiles[0].ai_credits).toBe("number");
+      expect(["free", "pro", "elite"]).toContain(
+        data?.trainer_profiles[0].plan
+      );
     });
 
-    it('should export valid JSON for Supabase import', () => {
+    it("should export valid JSON for Supabase import", () => {
       localStorageService.initializeData();
       const exportedData = localStorageService.exportForSupabase();
-      
+
       expect(() => JSON.parse(exportedData)).not.toThrow();
-      
+
       const parsed = JSON.parse(exportedData);
-      expect(parsed).toHaveProperty('trainer_profiles');
-      expect(parsed).toHaveProperty('student_profiles');
-      expect(parsed).toHaveProperty('sessions');
-      expect(parsed).toHaveProperty('payment_intents');
-      expect(parsed).toHaveProperty('diet_plans');
-      expect(parsed).toHaveProperty('workout_plans');
+      expect(parsed).toHaveProperty("trainer_profiles");
+      expect(parsed).toHaveProperty("student_profiles");
+      expect(parsed).toHaveProperty("sessions");
+      expect(parsed).toHaveProperty("payment_intents");
+      expect(parsed).toHaveProperty("diet_plans");
+      expect(parsed).toHaveProperty("workout_plans");
     });
   });
 });

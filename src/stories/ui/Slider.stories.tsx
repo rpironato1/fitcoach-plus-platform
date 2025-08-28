@@ -1,35 +1,35 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Slider } from '../../components/ui/slider';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Slider } from "../../components/ui/slider";
 
 const meta: Meta<typeof Slider> = {
-  title: 'UI Components/Slider',
+  title: "UI Components/Slider",
   component: Slider,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A slider component for selecting a value from a range.',
+        component: "A slider component for selecting a value from a range.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     min: {
-      control: 'number',
+      control: "number",
     },
     max: {
-      control: 'number',
+      control: "number",
     },
     step: {
-      control: 'number',
+      control: "number",
     },
     disabled: {
-      control: 'boolean',
+      control: "boolean",
     },
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '300px' }}>
+      <div style={{ width: "300px" }}>
         <Story />
       </div>
     ),

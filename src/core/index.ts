@@ -1,2 +1,2 @@
-export * from './container';
-export { setupModules } from './setup';
+export * from "./container";
+export { setupModules } from "./setup";

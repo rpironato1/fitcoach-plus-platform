@@ -1,26 +1,33 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 
 const meta: Meta<typeof Select> = {
-  title: 'UI Components/Select',
+  title: "UI Components/Select",
   component: Select,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A select dropdown component with accessible keyboard navigation.',
+        component:
+          "A select dropdown component with accessible keyboard navigation.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     disabled: {
-      control: 'boolean',
+      control: "boolean",
     },
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '300px' }}>
+      <div style={{ width: "300px" }}>
         <Story />
       </div>
     ),

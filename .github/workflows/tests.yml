@@ -1,55 +1,85 @@
-name: 🧪 Tests & Quality Assurance
+name: 🧪 Complete Quality Assurance & CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: "18"
+  FORCE_COLOR: 3
 
 jobs:
-  # Testes de qualidade de código
+  # Code Quality and Linting
   quality:
-    name: 🔍 Code Quality
+    name: 🔍 Code Quality & Linting
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Checkout
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
       - name: 📥 Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: 🔍 TypeScript check
-        run: npm run typecheck
+      - name: 🎨 Run lint checks
+        run: npm run check:lint
 
-      - name: 🔍 ESLint
-        run: npm run lint
+      - name: 🔍 Run type checking
+        run: npm run check:types
 
-  # Testes unitários e de integração
-  unit-tests:
-    name: 🧪 Unit & Integration Tests
+  # Security Auditing
+  security:
+    name: 🔒 Security Audit
     runs-on: ubuntu-latest
-    needs: quality
     steps:
-      - name: 📥 Checkout
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📥 Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: 🔒 Run security audit
+        run: npm audit --audit-level=moderate
+
+      # Note: Snyk test requires API token - skipping in CI for now
+      # - name: 🛡️ Run Snyk security scan
+      #   run: npx snyk test
+      #   env:
+      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  # Unit and Integration Tests
+  tests:
+    name: 🧪 Unit & Integration Tests
+    runs-on: ubuntu-latest
+    needs: [quality]
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
       - name: 📥 Install dependencies
         run: npm ci --legacy-peer-deps
 
       - name: 🧪 Run tests with coverage
-        run: npm run test:coverage
+        run: npm run check:test
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -58,26 +88,29 @@ jobs:
           flags: unittests
           name: codecov-umbrella
 
-  # Build test
+  # Build and Bundle Analysis
   build:
-    name: 🏗️ Build Test
+    name: 🏗️ Build & Bundle Analysis
     runs-on: ubuntu-latest
-    needs: [unit-tests]
+    needs: [tests]
     steps:
-      - name: 📥 Checkout
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
       - name: 📥 Install dependencies
         run: npm ci --legacy-peer-deps
 
       - name: 🏗️ Build project
         run: npm run build
+
+      - name: 📦 Check bundle size
+        run: npm run check:bundle
 
       - name: 📤 Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -86,67 +119,122 @@ jobs:
           path: dist/
           retention-days: 7
 
-  # Accessibility and Performance Testing
-  accessibility:
-    name: ♿ Accessibility & Performance Tests
+  # E2E Testing with Playwright
+  e2e:
+    name: 🎭 End-to-End Tests
     runs-on: ubuntu-latest
     needs: [build]
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit, "Mobile Chrome"]
     steps:
-      - name: 📥 Checkout
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
       - name: 📥 Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: 🏗️ Build project
-        run: npm run build
+      - name: 📥 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install ${{ matrix.browser }}
 
       - name: 🚀 Start preview server
         run: npm run preview &
-        
+
       - name: ⏳ Wait for server
         run: |
           echo "Waiting for server to start..."
-          timeout 30 bash -c 'until nc -z localhost 8031; do sleep 1; done'
+          timeout 60 bash -c 'until nc -z localhost 8031; do sleep 1; done'
           echo "Server is ready!"
 
-      - name: ♿ Run Lighthouse accessibility audit
-        run: npx lighthouse http://localhost:8031 --output=html --output=json --output-path=./lighthouse-accessibility --chrome-flags="--headless --no-sandbox" --preset=desktop --only-categories=accessibility
+      - name: 🎭 Run E2E tests
+        run: npx playwright test --project=${{ matrix.browser }}
+        env:
+          CI: true
 
-      - name: 🎯 Run Lighthouse performance audit  
-        run: npx lighthouse http://localhost:8031 --output=html --output=json --output-path=./lighthouse-performance --chrome-flags="--headless --no-sandbox" --preset=perf
+      - name: 📊 Upload E2E test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-results-${{ matrix.browser }}
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 7
+
+  # Performance and Accessibility Testing
+  lighthouse:
+    name: ⚡ Performance & Accessibility
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📥 Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: 📥 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: 🚀 Start preview server
+        run: npm run preview &
+
+      - name: ⏳ Wait for server
+        run: |
+          echo "Waiting for server to start..."
+          timeout 60 bash -c 'until nc -z localhost 8031; do sleep 1; done'
+          echo "Server is ready!"
+
+      - name: ♿ Run accessibility audit
+        run: npm run check:a11y
+
+      - name: ⚡ Run performance audit
+        run: npm run check:perf
 
       - name: 📊 Upload Lighthouse reports
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-reports
           path: |
-            lighthouse-accessibility.report.html
-            lighthouse-performance.report.html
-            lighthouse-accessibility.report.json
-            lighthouse-performance.report.json
+            lighthouse-accessibility.*
+            lighthouse-performance.*
           retention-days: 30
 
-  # Storybook accessibility testing
-  storybook-a11y:
-    name: 📖 Storybook Accessibility
+  # Storybook Testing
+  storybook:
+    name: 📖 Storybook Testing
     runs-on: ubuntu-latest
     needs: [quality]
     steps:
-      - name: 📥 Checkout
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
       - name: 📥 Install dependencies
         run: npm ci --legacy-peer-deps
@@ -156,11 +244,11 @@ jobs:
 
       - name: 🚀 Start Storybook server
         run: npx http-server storybook-static -p 6006 &
-        
+
       - name: ⏳ Wait for Storybook
         run: |
           echo "Waiting for Storybook to start..."
-          timeout 30 bash -c 'until nc -z localhost 6006; do sleep 1; done'
+          timeout 60 bash -c 'until nc -z localhost 6006; do sleep 1; done'
           echo "Storybook is ready!"
 
       - name: ♿ Run Storybook accessibility audit
@@ -169,7 +257,37 @@ jobs:
       - name: 📊 Upload Storybook reports
         uses: actions/upload-artifact@v4
         with:
-          name: storybook-reports  
+          name: storybook-reports
           path: |
-            lighthouse-storybook.html
+            lighthouse-storybook.*
+            storybook-static/
           retention-days: 30
+
+  # Final CI Check - All Tests Must Pass
+  ci-success:
+    name: ✅ CI Success Gate
+    runs-on: ubuntu-latest
+    needs: [quality, security, tests, build, e2e, lighthouse, storybook]
+    if: always()
+    steps:
+      - name: ✅ Check all jobs status
+        run: |
+          if [[ "${{ needs.quality.result }}" == "success" && \
+                "${{ needs.security.result }}" == "success" && \
+                "${{ needs.tests.result }}" == "success" && \
+                "${{ needs.build.result }}" == "success" && \
+                "${{ needs.e2e.result }}" == "success" && \
+                "${{ needs.lighthouse.result }}" == "success" && \
+                "${{ needs.storybook.result }}" == "success" ]]; then
+            echo "🎉 All CI checks passed successfully!"
+            echo "✅ Code Quality: PASSED"
+            echo "🔒 Security: PASSED" 
+            echo "🧪 Tests: PASSED"
+            echo "🏗️ Build: PASSED"
+            echo "🎭 E2E: PASSED"
+            echo "⚡ Performance: PASSED"
+            echo "📖 Storybook: PASSED"
+          else
+            echo "❌ Some CI checks failed"
+            exit 1
+          fi

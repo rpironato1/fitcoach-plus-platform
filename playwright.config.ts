@@ -1,10 +1,10 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: './tests/e2e',
+  testDir: "./tests/e2e",
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -14,7 +14,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : 2,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env.CI ? 'github' : 'html',
+  reporter: process.env.CI ? "github" : "html",
   /* Global timeout for each test */
   timeout: 30000,
   /* Global timeout for each expect */
@@ -24,59 +24,61 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:8030',
+    baseURL: "http://localhost:8030",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-    
+    trace: "on-first-retry",
+
     /* Take screenshot on failure */
-    screenshot: 'only-on-failure',
-    
+    screenshot: "only-on-failure",
+
     /* Record video on failure */
-    video: 'retain-on-failure',
-    
+    video: "retain-on-failure",
+
     /* Timeout for navigation and waiting actions */
     navigationTimeout: 15000,
     actionTimeout: 10000,
   },
 
   /* Configure projects for major browsers - Simplified for CI */
-  projects: process.env.CI ? [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-  ] : [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+  projects: process.env.CI
+    ? [
+        {
+          name: "chromium",
+          use: { ...devices["Desktop Chrome"] },
+        },
+      ]
+    : [
+        {
+          name: "chromium",
+          use: { ...devices["Desktop Chrome"] },
+        },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+        {
+          name: "firefox",
+          use: { ...devices["Desktop Firefox"] },
+        },
 
-    {
-      name: 'webkit', 
-      use: { ...devices['Desktop Safari'] },
-    },
+        {
+          name: "webkit",
+          use: { ...devices["Desktop Safari"] },
+        },
 
-    /* Test against mobile viewports. */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
-  ],
+        /* Test against mobile viewports. */
+        {
+          name: "Mobile Chrome",
+          use: { ...devices["Pixel 5"] },
+        },
+        {
+          name: "Mobile Safari",
+          use: { ...devices["iPhone 12"] },
+        },
+      ],
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:8030',
+    command: "npm run dev",
+    url: "http://localhost:8030",
     reuseExistingServer: true,
   },
 });

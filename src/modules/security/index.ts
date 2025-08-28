@@ -14,11 +14,11 @@ export {
   useRateLimit,
   useLGPDCompliance,
   useSecurityDashboard,
-} from './hooks/useSecurity';
+} from "./hooks/useSecurity";
 
 // Services
-export { SupabaseSecurityService } from './services/SecurityService';
-export type { ISecurityService } from './services/SecurityService';
+export { SupabaseSecurityService } from "./services/SecurityService";
+export type { ISecurityService } from "./services/SecurityService";
 
 // Types
 export type {
@@ -32,7 +32,7 @@ export type {
   AuditLog,
   SecurityAlert,
   ComplianceReport,
-} from './types';
+} from "./types";
 
 // Utils
 export {
@@ -48,4 +48,4 @@ export {
   formatAuditAction,
   getDataRetentionPeriods,
   maskSensitiveData,
-} from './utils';
+} from "./utils";

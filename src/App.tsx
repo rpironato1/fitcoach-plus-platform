@@ -1,11 +1,19 @@
-
 import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { LocalStorageAuthProvider, useLocalStorageAuth } from "@/components/auth/LocalStorageAuthProvider";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import {
+  LocalStorageAuthProvider,
+  useLocalStorageAuth,
+} from "@/components/auth/LocalStorageAuthProvider";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { setupModules } from "@/core";
 import { Navbar } from "@/components/layout/Navbar";
@@ -25,6 +33,7 @@ import ReportsPage from "@/pages/admin/ReportsPage";
 import SystemSettings from "@/pages/admin/SystemSettings";
 import { LocalStorageManager } from "@/components/admin/LocalStorageManager";
 import NotFound from "./pages/NotFound";
+import { initSentry } from "@/sentry";
 
 // Import localStorage demo utilities (development only)
 import "@/utils/localStorageDemo";
@@ -82,13 +91,13 @@ function AppContent() {
     const role = profile.role;
     const currentPath = window.location.pathname;
 
-    if (role === 'admin' && !currentPath.startsWith('/admin')) {
+    if (role === "admin" && !currentPath.startsWith("/admin")) {
       return <Navigate to="/admin" replace />;
     }
-    if (role === 'trainer' && !currentPath.startsWith('/trainer')) {
+    if (role === "trainer" && !currentPath.startsWith("/trainer")) {
       return <Navigate to="/trainer" replace />;
     }
-    if (role === 'student' && !currentPath.startsWith('/student')) {
+    if (role === "student" && !currentPath.startsWith("/student")) {
       return <Navigate to="/student" replace />;
     }
   }
@@ -96,17 +105,31 @@ function AppContent() {
   return (
     <Routes>
       {/* Rota Pública */}
-      <Route path="/" element={!user ? (
-        <LandingPage />
-      ) : <Navigate to={
-        profile?.role === 'admin' ? '/admin' :
-        profile?.role === 'trainer' ? '/trainer' :
-        profile?.role === 'student' ? '/student' : '/'
-      } replace />} />
+      <Route
+        path="/"
+        element={
+          !user ? (
+            <LandingPage />
+          ) : (
+            <Navigate
+              to={
+                profile?.role === "admin"
+                  ? "/admin"
+                  : profile?.role === "trainer"
+                    ? "/trainer"
+                    : profile?.role === "student"
+                      ? "/student"
+                      : "/"
+              }
+              replace
+            />
+          )
+        }
+      />
 
       {/* Demo Route - No Authentication Required */}
       <Route path="/student-demo" element={<StudentDashboardDemo />} />
-      
+
       {/* LocalStorage Manager - No Authentication Required */}
       <Route path="/localStorage-manager" element={<LocalStorageManager />} />
 
@@ -142,6 +165,7 @@ function AppContent() {
 
 const App = () => {
   useEffect(() => {
+    initSentry();
     setupModules();
   }, []);
 

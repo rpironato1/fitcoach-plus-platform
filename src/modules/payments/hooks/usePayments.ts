@@ -1,13 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '@/modules/auth';
-import { toast } from 'sonner';
-import { container } from '@/core/container';
-import type { IPaymentService } from '../services/PaymentService';
-import type { CreateSubscriptionRequest, TrainerPlan } from '../types';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/modules/auth";
+import { toast } from "sonner";
+import { container } from "@/core/container";
+import type { IPaymentService } from "../services/PaymentService";
+import type { CreateSubscriptionRequest, TrainerPlan } from "../types";
 
 // Get payment service from DI container
 const getPaymentService = (): IPaymentService => {
-  return container.resolve<IPaymentService>('PaymentService');
+  return container.resolve<IPaymentService>("PaymentService");
 };
 
 // Subscription hooks
@@ -16,9 +16,9 @@ export function useSubscription() {
   const paymentService = getPaymentService();
 
   return useQuery({
-    queryKey: ['subscription', profile?.id],
+    queryKey: ["subscription", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return paymentService.getSubscription(profile.id);
     },
     enabled: !!profile?.id,
@@ -31,18 +31,18 @@ export function useCreateSubscription() {
 
   return useMutation({
     mutationFn: (request: CreateSubscriptionRequest) => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return paymentService.createSubscription(profile.id, request);
     },
     onSuccess: (data) => {
-      toast.success('Redirecionando para o checkout...');
+      toast.success("Redirecionando para o checkout...");
       // Redirect to Stripe checkout
       if (data.url) {
         window.location.href = data.url;
       }
     },
     onError: (error) => {
-      toast.error('Erro ao criar assinatura: ' + error.message);
+      toast.error("Erro ao criar assinatura: " + error.message);
     },
   });
 }
@@ -52,14 +52,14 @@ export function useCancelSubscription() {
   const paymentService = getPaymentService();
 
   return useMutation({
-    mutationFn: (subscriptionId: string) => 
+    mutationFn: (subscriptionId: string) =>
       paymentService.cancelSubscription(subscriptionId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['subscription'] });
-      toast.success('Assinatura cancelada com sucesso');
+      queryClient.invalidateQueries({ queryKey: ["subscription"] });
+      toast.success("Assinatura cancelada com sucesso");
     },
     onError: (error) => {
-      toast.error('Erro ao cancelar assinatura: ' + error.message);
+      toast.error("Erro ao cancelar assinatura: " + error.message);
     },
   });
 }
@@ -72,16 +72,16 @@ export function useUpdateTrainerPlan() {
 
   return useMutation({
     mutationFn: (plan: TrainerPlan) => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return paymentService.updateTrainerPlan(profile.id, plan);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['auth'] });
-      queryClient.invalidateQueries({ queryKey: ['subscription'] });
-      toast.success('Plano atualizado com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ["auth"] });
+      queryClient.invalidateQueries({ queryKey: ["subscription"] });
+      toast.success("Plano atualizado com sucesso!");
     },
     onError: (error) => {
-      toast.error('Erro ao atualizar plano: ' + error.message);
+      toast.error("Erro ao atualizar plano: " + error.message);
     },
   });
 }
@@ -91,9 +91,9 @@ export function useCheckPlanLimits() {
   const paymentService = getPaymentService();
 
   return useQuery({
-    queryKey: ['plan-limits', profile?.id],
+    queryKey: ["plan-limits", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return paymentService.checkPlanLimits(profile.id);
     },
     enabled: !!profile?.id,
@@ -108,7 +108,7 @@ export function usePlanLimits() {
     free: {
       maxStudents: 3,
       aiCredits: 0,
-      features: ['Gestão básica de alunos', 'Agendamento simples'],
+      features: ["Gestão básica de alunos", "Agendamento simples"],
       feePercentage: 1.5, // 1.5% platform fee
       monthlyPrice: 0,
       yearlyPrice: 0,
@@ -116,7 +116,11 @@ export function usePlanLimits() {
     pro: {
       maxStudents: 40,
       aiCredits: 50,
-      features: ['Até 40 alunos', '50 créditos IA/mês', 'Planos de dieta com IA'],
+      features: [
+        "Até 40 alunos",
+        "50 créditos IA/mês",
+        "Planos de dieta com IA",
+      ],
       feePercentage: 1.0, // 1.0% platform fee
       monthlyPrice: 2900, // R$ 29.90 in cents
       yearlyPrice: 29000, // R$ 290.00 in cents (2 months free)
@@ -124,14 +128,18 @@ export function usePlanLimits() {
     elite: {
       maxStudents: 0, // Unlimited
       aiCredits: 100,
-      features: ['Alunos ilimitados', '100 créditos IA/mês', 'Recursos avançados'],
+      features: [
+        "Alunos ilimitados",
+        "100 créditos IA/mês",
+        "Recursos avançados",
+      ],
       feePercentage: 0.5, // 0.5% platform fee
       monthlyPrice: 4900, // R$ 49.90 in cents
       yearlyPrice: 49000, // R$ 490.00 in cents (2 months free)
-    }
+    },
   };
 
-  const currentPlan = trainerProfile?.plan || 'free';
+  const currentPlan = trainerProfile?.plan || "free";
   const limits = planLimits[currentPlan];
 
   return {
@@ -141,8 +149,11 @@ export function usePlanLimits() {
     maxStudents: trainerProfile?.max_students || limits.maxStudents,
     aiCredits: trainerProfile?.ai_credits || limits.aiCredits,
     canAddStudents: (currentStudentCount: number) => {
-      if (currentPlan === 'elite') return true;
-      return currentStudentCount < (trainerProfile?.max_students || limits.maxStudents);
+      if (currentPlan === "elite") return true;
+      return (
+        currentStudentCount <
+        (trainerProfile?.max_students || limits.maxStudents)
+      );
     },
     canUseAI: () => (trainerProfile?.ai_credits || 0) > 0,
     getPlatformFee: () => limits.feePercentage || 1.5,
@@ -154,13 +165,17 @@ export function useCreatePaymentIntent() {
   const paymentService = getPaymentService();
 
   return useMutation({
-    mutationFn: ({ amount, currency, metadata }: { 
-      amount: number; 
-      currency: string; 
-      metadata?: Record<string, string>; 
+    mutationFn: ({
+      amount,
+      currency,
+      metadata,
+    }: {
+      amount: number;
+      currency: string;
+      metadata?: Record<string, string>;
     }) => paymentService.createPaymentIntent(amount, currency, metadata),
     onError: (error) => {
-      toast.error('Erro ao criar intenção de pagamento: ' + error.message);
+      toast.error("Erro ao criar intenção de pagamento: " + error.message);
     },
   });
 }

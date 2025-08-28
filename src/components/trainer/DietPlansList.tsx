@@ -1,8 +1,13 @@
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ChefHat, User, Calendar } from 'lucide-react';
-import { EmptyState } from '@/components/ui/EmptyState';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ChefHat, User, Calendar } from "lucide-react";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 interface DietPlan {
   id: string;
@@ -37,7 +42,10 @@ export function DietPlansList({ dietPlans }: DietPlansListProps) {
             />
           ) : (
             dietPlans.map((plan) => (
-              <div key={plan.id} className="flex items-center justify-between p-4 border rounded-lg">
+              <div
+                key={plan.id}
+                className="flex items-center justify-between p-4 border rounded-lg"
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                     <ChefHat className="h-6 w-6 text-green-600" />
@@ -47,11 +55,11 @@ export function DietPlansList({ dietPlans }: DietPlansListProps) {
                     <div className="flex items-center gap-4 text-sm text-gray-600">
                       <span className="flex items-center gap-1">
                         <User className="h-3 w-3" />
-                        {plan.student_name || 'Aluno não encontrado'}
+                        {plan.student_name || "Aluno não encontrado"}
                       </span>
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {new Date(plan.created_at).toLocaleDateString('pt-BR')}
+                        {new Date(plan.created_at).toLocaleDateString("pt-BR")}
                       </span>
                       {plan.total_calories && (
                         <span>{plan.total_calories} kcal</span>
@@ -60,8 +68,14 @@ export function DietPlansList({ dietPlans }: DietPlansListProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge className={plan.is_paid ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}>
-                    {plan.is_paid ? 'Pago' : 'Gratuito'}
+                  <Badge
+                    className={
+                      plan.is_paid
+                        ? "bg-green-100 text-green-800"
+                        : "bg-blue-100 text-blue-800"
+                    }
+                  >
+                    {plan.is_paid ? "Pago" : "Gratuito"}
                   </Badge>
                 </div>
               </div>

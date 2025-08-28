@@ -1,30 +1,45 @@
-
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Plus } from 'lucide-react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Plus } from "lucide-react";
 
 interface AddStudentDialogProps {
-  onAddStudent: (data: { email: string; firstName: string; lastName: string; phone: string }) => void;
+  onAddStudent: (data: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+  }) => void;
   isLoading: boolean;
   canAddStudent: boolean;
 }
 
-export function AddStudentDialog({ onAddStudent, isLoading, canAddStudent }: AddStudentDialogProps) {
+export function AddStudentDialog({
+  onAddStudent,
+  isLoading,
+  canAddStudent,
+}: AddStudentDialogProps) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-    phone: ''
+    email: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onAddStudent(formData);
-    setFormData({ email: '', firstName: '', lastName: '', phone: '' });
+    setFormData({ email: "", firstName: "", lastName: "", phone: "" });
     setOpen(false);
   };
 
@@ -50,7 +65,12 @@ export function AddStudentDialog({ onAddStudent, isLoading, canAddStudent }: Add
               <Input
                 id="firstName"
                 value={formData.firstName}
-                onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    firstName: e.target.value,
+                  }))
+                }
                 required
               />
             </div>
@@ -59,7 +79,9 @@ export function AddStudentDialog({ onAddStudent, isLoading, canAddStudent }: Add
               <Input
                 id="lastName"
                 value={formData.lastName}
-                onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, lastName: e.target.value }))
+                }
                 required
               />
             </div>
@@ -70,7 +92,9 @@ export function AddStudentDialog({ onAddStudent, isLoading, canAddStudent }: Add
               id="email"
               type="email"
               value={formData.email}
-              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, email: e.target.value }))
+              }
               required
             />
           </div>
@@ -80,15 +104,21 @@ export function AddStudentDialog({ onAddStudent, isLoading, canAddStudent }: Add
               id="phone"
               type="tel"
               value={formData.phone}
-              onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, phone: e.target.value }))
+              }
             />
           </div>
           <div className="flex gap-2 justify-end">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+            >
               Cancelar
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Adicionando...' : 'Adicionar Aluno'}
+              {isLoading ? "Adicionando..." : "Adicionar Aluno"}
             </Button>
           </div>
         </form>

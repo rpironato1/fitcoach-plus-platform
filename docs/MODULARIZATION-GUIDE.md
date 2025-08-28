@@ -1,6 +1,7 @@
 # 🏗️ FitCoach Plus Platform - Guia de Modularização e Desenvolvimento
 
 ## 📋 Índice
+
 - [Visão Geral da Arquitetura](#-visão-geral-da-arquitetura)
 - [Sistema de Módulos](#-sistema-de-módulos)
 - [Comunicação Entre Módulos](#-comunicação-entre-módulos)
@@ -21,16 +22,17 @@ O FitCoach Plus Platform utiliza uma arquitetura modular avançada baseada em **
 
 - ✅ **Modularidade**: Código organizado em módulos independentes
 - ✅ **Escalabilidade**: Fácil adição de novos recursos e módulos
-- ✅ **Testabilidade**: Módulos isolados e facilmente testáveis  
+- ✅ **Testabilidade**: Módulos isolados e facilmente testáveis
 - ✅ **Manutenibilidade**: Separação clara de responsabilidades
 - ✅ **Flexibilidade**: Troca fácil de implementações (Supabase ↔ LocalStorage)
 
 ### Stack Tecnológica Principal
+
 ```typescript
 Frontend: React 18 + TypeScript + Vite
 UI/UX: RadixUI + ShadCN + TailwindCSS (ReactBits)
 Backend: Supabase + Edge Functions
-Estado: TanStack Query + React Context  
+Estado: TanStack Query + React Context
 Roteamento: React Router v6 + Role-Based Protection
 DI Container: Custom TypeScript Implementation
 Testes: Vitest + Playwright + Testing Library
@@ -82,20 +84,21 @@ modules/[module-name]/
 ```
 
 #### Exemplo: Módulo de Autenticação
+
 ```typescript
 // modules/auth/index.ts
-export { AuthProvider, useAuth } from './components/AuthProvider';
-export { LoginForm, RegisterForm } from './components/';
-export { SupabaseAuthService } from './services/AuthService';
-export type { AuthService, Profile } from './types';
+export { AuthProvider, useAuth } from "./components/AuthProvider";
+export { LoginForm, RegisterForm } from "./components/";
+export { SupabaseAuthService } from "./services/AuthService";
+export type { AuthService, Profile } from "./types";
 
 // Setup function para DI Container
 export async function setupAuthModule() {
-  const { container } = await import('@/core');
-  const { SupabaseAuthService } = await import('./services/AuthService');
-  
-  container.bind('AuthService').to(SupabaseAuthService);
-  container.bind('ProfileService').to(SupabaseProfileService);
+  const { container } = await import("@/core");
+  const { SupabaseAuthService } = await import("./services/AuthService");
+
+  container.bind("AuthService").to(SupabaseAuthService);
+  container.bind("ProfileService").to(SupabaseProfileService);
 }
 ```
 
@@ -123,31 +126,33 @@ class DIContainer implements Container {
 ```
 
 #### Registro de Serviços
+
 ```typescript
 // core/setup.ts
 export function setupModules() {
   // Módulo Auth
-  container.bind('AuthService').to(SupabaseAuthService);
-  container.bind('ProfileService').to(SupabaseProfileService);
-  
-  // Módulo Workouts  
-  container.bind('WorkoutService').to(SupabaseWorkoutService);
-  
+  container.bind("AuthService").to(SupabaseAuthService);
+  container.bind("ProfileService").to(SupabaseProfileService);
+
+  // Módulo Workouts
+  container.bind("WorkoutService").to(SupabaseWorkoutService);
+
   // Módulo Payments
-  container.bind('PaymentService').to(StripePaymentService);
-  
+  container.bind("PaymentService").to(StripePaymentService);
+
   // Módulo AI
-  container.bind('AIService').to(OpenAIService);
+  container.bind("AIService").to(OpenAIService);
 }
 ```
 
 #### Uso de Serviços
+
 ```typescript
 // Em qualquer componente ou serviço
-import { container } from '@/core';
+import { container } from "@/core";
 
-const authService = container.resolve<AuthService>('AuthService');
-const paymentService = container.resolve<PaymentService>('PaymentService');
+const authService = container.resolve<AuthService>("AuthService");
+const paymentService = container.resolve<PaymentService>("PaymentService");
 ```
 
 ### 2. React Context + Custom Hooks
@@ -159,10 +164,10 @@ Para estado reativo e comunicação com UI:
 export const AdaptiveAuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
-  
+
   // Lógica adaptativa: LocalStorage vs Supabase
   const authService = useMemo(() => {
-    return isLocalStorageMode() 
+    return isLocalStorageMode()
       ? new LocalStorageAuthService()
       : container.resolve<AuthService>('AuthService');
   }, []);
@@ -181,11 +186,11 @@ export const AdaptiveAuthProvider = ({ children }) => {
 // utils/eventBus.ts
 class EventBus {
   private listeners = new Map<string, Function[]>();
-  
+
   emit(event: string, data?: any) {
-    this.listeners.get(event)?.forEach(fn => fn(data));
+    this.listeners.get(event)?.forEach((fn) => fn(data));
   }
-  
+
   on(event: string, callback: Function) {
     // Adiciona listener
   }
@@ -200,14 +205,18 @@ export const eventBus = new EventBus();
 // Queries compartilhadas entre módulos
 export const userQueries = {
   profile: (userId: string) => ({
-    queryKey: ['user', 'profile', userId],
-    queryFn: () => container.resolve<ProfileService>('ProfileService').getProfile(userId)
+    queryKey: ["user", "profile", userId],
+    queryFn: () =>
+      container.resolve<ProfileService>("ProfileService").getProfile(userId),
   }),
-  
+
   workouts: (userId: string) => ({
-    queryKey: ['user', 'workouts', userId], 
-    queryFn: () => container.resolve<WorkoutService>('WorkoutService').getUserWorkouts(userId)
-  })
+    queryKey: ["user", "workouts", userId],
+    queryFn: () =>
+      container
+        .resolve<WorkoutService>("WorkoutService")
+        .getUserWorkouts(userId),
+  }),
 };
 ```
 
@@ -220,6 +229,7 @@ export const userQueries = {
 O FitCoach Plus Platform utiliza **teoria dos grafos** para mapear dependências entre módulos, garantindo inicialização correta e testes eficientes. Esta seção fornece mapas visuais essenciais para desenvolvimento e debugging.
 
 #### 🔍 Notação Utilizada
+
 ```
 → : Dependência direta (A → B significa "A depende de B")
 ⟷ : Dependência bidirecional
@@ -235,35 +245,35 @@ O FitCoach Plus Platform utiliza **teoria dos grafos** para mapear dependências
 graph TD
     %% Módulos Core
     CORE["🔧 Core/DI Container"]
-    
+
     %% Módulos de Negócio
     AUTH["🔐 Auth Module"]
-    WORKOUTS["💪 Workouts Module"] 
+    WORKOUTS["💪 Workouts Module"]
     AI["🤖 AI Module"]
     PAYMENTS["💳 Payments Module"]
     SECURITY["🛡️ Security Module"]
     UI["🎨 UI Module"]
-    
+
     %% Serviços Externos
     SUPABASE["🔌 Supabase"]
     LOCALSTORAGE["🗄️ LocalStorage"]
     REACTQUERY["⚡ TanStack Query"]
     ROUTER["🔄 React Router"]
-    
+
     %% Dependências Críticas (⚡)
     AUTH -.->|⚡| CORE
     WORKOUTS -.->|⚡| CORE
     AI -.->|⚡| CORE
     PAYMENTS -.->|⚡| CORE
     SECURITY -.->|⚡| CORE
-    
+
     %% Dependências de Negócio
     AI --> AUTH
     AI --> WORKOUTS
     PAYMENTS --> AUTH
     SECURITY --> AUTH
     WORKOUTS --> AUTH
-    
+
     %% Dependências Externas
     AUTH -.->|🔌| SUPABASE
     AUTH -.->|🔌| LOCALSTORAGE
@@ -271,11 +281,11 @@ graph TD
     AI -.->|🔌| SUPABASE
     PAYMENTS -.->|🔌| SUPABASE
     SECURITY -.->|🔌| SUPABASE
-    
+
     %% Infraestrutura
     CORE -.->|⚡| REACTQUERY
     CORE -.->|⚡| ROUTER
-    
+
     style CORE fill:#ff6b6b,stroke:#333,stroke-width:3px
     style AUTH fill:#4ecdc4,stroke:#333,stroke-width:2px
     style AI fill:#45b7d1,stroke:#333,stroke-width:2px
@@ -326,32 +336,32 @@ graph TB
     VITEST_UI["🧪 Vitest UI<br/>Port 8033"]
     PLAYWRIGHT_UI["🎭 Playwright UI<br/>Port 8035"]
     PREVIEW["👁️ Preview<br/>Port 8031"]
-    
+
     %% Módulos de Teste
     UNIT_TESTS["📋 Unit Tests"]
     E2E_TESTS["🔄 E2E Tests"]
     INTEGRATION_TESTS["🔗 Integration Tests"]
-    
+
     %% Dependências de Teste por Módulo
     AUTH_TESTS["🔐 Auth Tests"]
     WORKOUTS_TESTS["💪 Workouts Tests"]
     AI_TESTS["🤖 AI Tests"]
     PAYMENTS_TESTS["💳 Payments Tests"]
-    
+
     %% Dependências Críticas para Testes
     E2E_TESTS -.->|⚡ MUST RUN| DEV_SERVER
     PLAYWRIGHT_UI -.->|⚡ MUST RUN| DEV_SERVER
     INTEGRATION_TESTS -.->|⚡ MUST RUN| DEV_SERVER
-    
+
     %% Dependências de Módulos de Teste
     WORKOUTS_TESTS --> AUTH_TESTS
     AI_TESTS --> AUTH_TESTS
     AI_TESTS --> WORKOUTS_TESTS
     PAYMENTS_TESTS --> AUTH_TESTS
-    
+
     %% Testes podem rodar independentemente
     UNIT_TESTS -.->|📦 Independent| VITEST_UI
-    
+
     style DEV_SERVER fill:#ff6b6b,stroke:#333,stroke-width:3px
     style E2E_TESTS fill:#ffeaa7,stroke:#333,stroke-width:2px
     style AUTH_TESTS fill:#81ecec,stroke:#333,stroke-width:2px
@@ -380,7 +390,7 @@ Padrões de Comunicação:
 
 Legendas:
 ├── DI Container: Injeção de dependência para serviços
-├── React Context: Estado compartilhado reativo  
+├── React Context: Estado compartilhado reativo
 ├── Event Bus: Comunicação assíncrona entre módulos
 ├── Hooks/Queries: TanStack Query para cache e sincronização
 ├── Service Layer: Comunicação direta entre services
@@ -389,20 +399,21 @@ Legendas:
 
 ### 🗺️ Matriz de Dependências
 
-| Módulo/Teste | Core | Auth | Workouts | AI | Payments | Security | UI | Dev Server | LocalStorage |
-|--------------|------|------|----------|----|---------|---------|----|------------|-------------|
-| **Core**         | -    | ❌   | ❌       | ❌ | ❌      | ❌      | ❌ | ❌         | ❌          |
-| **Auth**         | ✅⚡  | -    | ❌       | ❌ | ❌      | ❌      | ✅ | 🧪         | ✅          |
-| **Workouts**     | ✅⚡  | ✅   | -        | ❌ | ❌      | ❌      | ✅ | 🧪         | ✅          |
-| **AI**           | ✅⚡  | ✅   | ✅       | -  | ❌      | ❌      | ✅ | 🧪         | ✅          |
-| **Payments**     | ✅⚡  | ✅   | ❌       | ❌ | -       | ❌      | ✅ | 🧪         | ✅          |
-| **Security**     | ✅⚡  | ✅   | ❌       | ❌ | ❌      | -       | ✅ | 🧪         | ✅          |
-| **UI**           | ❌   | ❌   | ❌       | ❌ | ❌      | ❌      | -  | ❌         | ❌          |
-| **Unit Tests**   | ✅   | ✅   | ✅       | ✅ | ✅      | ✅      | ✅ | ❌         | ✅          |
-| **E2E Tests**    | ✅   | ✅   | ✅       | ✅ | ✅      | ✅      | ✅ | ✅⚡       | ✅          |
-| **Integration**  | ✅   | ✅   | ✅       | ✅ | ✅      | ✅      | ✅ | ✅⚡       | ✅          |
+| Módulo/Teste    | Core | Auth | Workouts | AI  | Payments | Security | UI  | Dev Server | LocalStorage |
+| --------------- | ---- | ---- | -------- | --- | -------- | -------- | --- | ---------- | ------------ |
+| **Core**        | -    | ❌   | ❌       | ❌  | ❌       | ❌       | ❌  | ❌         | ❌           |
+| **Auth**        | ✅⚡ | -    | ❌       | ❌  | ❌       | ❌       | ✅  | 🧪         | ✅           |
+| **Workouts**    | ✅⚡ | ✅   | -        | ❌  | ❌       | ❌       | ✅  | 🧪         | ✅           |
+| **AI**          | ✅⚡ | ✅   | ✅       | -   | ❌       | ❌       | ✅  | 🧪         | ✅           |
+| **Payments**    | ✅⚡ | ✅   | ❌       | ❌  | -        | ❌       | ✅  | 🧪         | ✅           |
+| **Security**    | ✅⚡ | ✅   | ❌       | ❌  | ❌       | -        | ✅  | 🧪         | ✅           |
+| **UI**          | ❌   | ❌   | ❌       | ❌  | ❌       | ❌       | -   | ❌         | ❌           |
+| **Unit Tests**  | ✅   | ✅   | ✅       | ✅  | ✅       | ✅       | ✅  | ❌         | ✅           |
+| **E2E Tests**   | ✅   | ✅   | ✅       | ✅  | ✅       | ✅       | ✅  | ✅⚡       | ✅           |
+| **Integration** | ✅   | ✅   | ✅       | ✅  | ✅       | ✅       | ✅  | ✅⚡       | ✅           |
 
 **Legenda:**
+
 - ✅ = Dependência Necessária
 - ✅⚡ = Dependência Crítica (falha bloqueia)
 - 🧪 = Necessário apenas para testes
@@ -417,6 +428,7 @@ Legendas:
 Para garantir que todos os módulos sejam inicializados corretamente, siga esta sequência baseada na **ordenação topológica** do grafo de dependências:
 
 #### 1. 🏁 Pré-inicialização (Development)
+
 ```bash
 # Verificar ambiente
 ./setup-validate.sh
@@ -429,24 +441,26 @@ npx kill-port 8030 8031 8033 8035
 ```
 
 #### 2. 🔧 Core Initialization
+
 ```typescript
 // Executado automaticamente em src/main.tsx
-import { setupModules } from '@/core';
+import { setupModules } from "@/core";
 
 // 1. Initialize DI Container
 const container = new DIContainer();
 
-// 2. Setup module bindings  
+// 2. Setup module bindings
 setupModules(); // Registra todos os serviços no container
 ```
 
 #### 3. ⚡ Infrastructure Services
+
 ```typescript
 // TanStack Query Client (para cache)
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { retry: 1, refetchOnWindowFocus: false }
-  }
+    queries: { retry: 1, refetchOnWindowFocus: false },
+  },
 });
 
 // React Router (para navegação)
@@ -454,6 +468,7 @@ const queryClient = new QueryClient({
 ```
 
 #### 4. 🔐 Authentication Layer
+
 ```typescript
 // AdaptiveAuthProvider - detecta modo localStorage vs Supabase
 // Inicializado em App.tsx, wrapping toda a aplicação
@@ -463,48 +478,51 @@ const queryClient = new QueryClient({
 ```
 
 #### 5. 📦 Module Registration Order
+
 ```typescript
 // Ordem específica no core/setup.ts:
 function setupModules() {
   // 1. Auth (base para todos)
-  container.bind('AuthService').to(SupabaseAuthService);
-  container.bind('ProfileService').to(SupabaseProfileService);
-  
+  container.bind("AuthService").to(SupabaseAuthService);
+  container.bind("ProfileService").to(SupabaseProfileService);
+
   // 2. Security (pode depender de auth)
-  container.bind('SecurityService').to(SupabaseSecurityService);
-  
+  container.bind("SecurityService").to(SupabaseSecurityService);
+
   // 3. Workouts (depende de auth)
-  container.bind('WorkoutService').to(SupabaseWorkoutService);
-  
+  container.bind("WorkoutService").to(SupabaseWorkoutService);
+
   // 4. Payments (depende de auth)
-  container.bind('PaymentService').to(StripePaymentService);
-  
+  container.bind("PaymentService").to(StripePaymentService);
+
   // 5. AI (depende de auth + workouts)
-  container.bind('AIService').to(OpenAIService);
+  container.bind("AIService").to(OpenAIService);
 }
 ```
 
 ### ⚠️ Dependências Críticas
 
 #### Falhas Bloqueantes
+
 ```typescript
 // Se estes falharem, todo o sistema para:
 const criticalDependencies = [
-  'Core/DI Container',        // Sem isso, nenhum serviço funciona
-  'TanStack Query Client',    // Sem isso, sem cache/estado
-  'React Router',            // Sem isso, sem navegação
-  'AdaptiveAuthProvider'     // Sem isso, sem autenticação
+  "Core/DI Container", // Sem isso, nenhum serviço funciona
+  "TanStack Query Client", // Sem isso, sem cache/estado
+  "React Router", // Sem isso, sem navegação
+  "AdaptiveAuthProvider", // Sem isso, sem autenticação
 ];
 ```
 
 #### Falhas Graceful
+
 ```typescript
 // Se estes falharem, sistema continua com funcionalidade reduzida:
 const gracefulDependencies = [
-  'LocalStorage',           // Fallback para Supabase
-  'Supabase Connection',    // Fallback para LocalStorage
-  'AI Service',            // UI mostra "indisponível"
-  'Payment Service'        // UI mostra "manutenção"
+  "LocalStorage", // Fallback para Supabase
+  "Supabase Connection", // Fallback para LocalStorage
+  "AI Service", // UI mostra "indisponível"
+  "Payment Service", // UI mostra "manutenção"
 ];
 ```
 
@@ -515,6 +533,7 @@ const gracefulDependencies = [
 ### 🎯 Estratégia de Testes por Módulo
 
 #### 1. 🔐 Testando Auth Module
+
 ```bash
 # Pré-requisitos: NENHUM (módulo base)
 npm run test src/modules/auth/
@@ -524,17 +543,19 @@ npm run dev &                    # Port 8030
 npm run test:e2e tests/auth/     # Usa dev server
 ```
 
-#### 2. 💪 Testando Workouts Module  
+#### 2. 💪 Testando Workouts Module
+
 ```bash
 # Pré-requisitos: Auth Module deve estar funcionando
 npm run test src/modules/auth/ src/modules/workouts/
 
 # Testes E2E
-npm run dev &                         # Port 8030 
+npm run dev &                         # Port 8030
 npm run test:e2e tests/workouts/      # Depende de auth funcionando
 ```
 
 #### 3. 🤖 Testando AI Module
+
 ```bash
 # Pré-requisitos: Auth + Workouts Modules
 npm run test src/modules/auth/ src/modules/workouts/ src/modules/ai/
@@ -545,16 +566,18 @@ npm run test:e2e tests/ai/       # Depende de auth + workouts
 ```
 
 #### 4. 💳 Testando Payments Module
+
 ```bash
 # Pré-requisitos: Auth Module
 npm run test src/modules/auth/ src/modules/payments/
 
-# Testes E2E  
+# Testes E2E
 npm run dev &                    # Port 8030
 npm run test:e2e tests/payments/ # Depende de auth
 ```
 
 #### 5. 🛡️ Testando Security Module
+
 ```bash
 # Pré-requisitos: Auth Module
 npm run test src/modules/auth/ src/modules/security/
@@ -567,6 +590,7 @@ npm run test:e2e tests/security/  # Depende de auth
 ### 🔄 Teste de Integração Completa
 
 #### Sequência de Teste Completo
+
 ```bash
 # 1. Ambiente limpo
 npm run clean
@@ -576,7 +600,7 @@ npm install
 npm run test src/modules/auth/      # Primeiro - base
 npm run test src/modules/security/  # Segundo - depende de auth
 npm run test src/modules/workouts/  # Terceiro - depende de auth
-npm run test src/modules/payments/  # Quarto - depende de auth  
+npm run test src/modules/payments/  # Quarto - depende de auth
 npm run test src/modules/ai/        # Último - depende de auth+workouts
 
 # 3. Build test
@@ -595,6 +619,7 @@ npm run test:e2e:ui &            # Port 8035
 ### 🛠️ Scripts de Teste Automatizados
 
 #### Para Desenvolvimento de Módulo Específico
+
 ```bash
 # Script: test-module.sh
 #!/bin/bash
@@ -605,7 +630,7 @@ case $MODULE in
     echo "🔐 Testing Auth Module..."
     npm run test src/modules/auth/
     ;;
-  "workouts")  
+  "workouts")
     echo "💪 Testing Workouts Module (requires Auth)..."
     npm run test src/modules/auth/ src/modules/workouts/
     ;;
@@ -629,6 +654,7 @@ esac
 ```
 
 #### Para Desenvolvimento com Hot Reload
+
 ```bash
 # Script: dev-with-tests.sh
 #!/bin/bash
@@ -637,7 +663,7 @@ esac
 npm run dev &
 DEV_PID=$!
 
-# Terminal 2: Unit tests em watch mode  
+# Terminal 2: Unit tests em watch mode
 npm run test:watch &
 TEST_PID=$!
 
@@ -648,7 +674,7 @@ E2E_PID=$!
 
 echo "🚀 Ambiente de desenvolvimento iniciado!"
 echo "📊 Dev Server: http://localhost:8030"
-echo "🧪 Test UI: http://localhost:8033"  
+echo "🧪 Test UI: http://localhost:8033"
 echo "🎭 E2E UI: http://localhost:8035"
 
 # Cleanup on exit
@@ -658,15 +684,15 @@ wait
 
 ### 📊 Matriz de Cobertura de Testes
 
-| Módulo | Unit Tests | Integration Tests | E2E Tests | Dependências para Teste |
-|--------|------------|------------------|-----------|------------------------|
-| **Core** | ✅ 95% | ✅ 90% | N/A | Nenhuma |
-| **Auth** | ✅ 92% | ✅ 88% | ✅ 94% | Dev Server (E2E) |
-| **UI** | ✅ 87% | ✅ 85% | ✅ 91% | Dev Server (E2E) |
-| **Security** | ✅ 89% | ✅ 86% | ✅ 88% | Auth + Dev Server |
-| **Workouts** | ✅ 91% | ✅ 87% | ✅ 89% | Auth + Dev Server |
-| **Payments** | ✅ 88% | ✅ 84% | ✅ 86% | Auth + Dev Server |
-| **AI** | ✅ 85% | ✅ 81% | ✅ 83% | Auth + Workouts + Dev Server |
+| Módulo       | Unit Tests | Integration Tests | E2E Tests | Dependências para Teste      |
+| ------------ | ---------- | ----------------- | --------- | ---------------------------- |
+| **Core**     | ✅ 95%     | ✅ 90%            | N/A       | Nenhuma                      |
+| **Auth**     | ✅ 92%     | ✅ 88%            | ✅ 94%    | Dev Server (E2E)             |
+| **UI**       | ✅ 87%     | ✅ 85%            | ✅ 91%    | Dev Server (E2E)             |
+| **Security** | ✅ 89%     | ✅ 86%            | ✅ 88%    | Auth + Dev Server            |
+| **Workouts** | ✅ 91%     | ✅ 87%            | ✅ 89%    | Auth + Dev Server            |
+| **Payments** | ✅ 88%     | ✅ 84%            | ✅ 86%    | Auth + Dev Server            |
+| **AI**       | ✅ 85%     | ✅ 81%            | ✅ 83%    | Auth + Workouts + Dev Server |
 
 **Meta Global:** 97% de cobertura total
 
@@ -704,6 +730,7 @@ yarn install
 O projeto funciona em **dois modos**:
 
 #### Modo 1: LocalStorage (Desenvolvimento/Demo)
+
 ```bash
 # Nenhuma configuração adicional necessária
 # O sistema detecta automaticamente e usa localStorage
@@ -711,6 +738,7 @@ npm run dev
 ```
 
 #### Modo 2: Supabase (Produção)
+
 ```bash
 # Configure as variáveis de ambiente (se necessário)
 # O projeto já vem com credenciais de desenvolvimento configuradas
@@ -723,7 +751,7 @@ echo "VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs..." >> .env.local
 ```bash
 # Verifica se tudo está funcionando
 npm run typecheck  # Verifica TypeScript
-npm run lint       # Verifica código  
+npm run lint       # Verifica código
 npm run test       # Executa testes
 npm run build      # Testa build de produção
 ```
@@ -735,20 +763,21 @@ npm run build      # Testa build de produção
 Para evitar conflitos de desenvolvimento, o projeto está configurado para usar a faixa de portas **8030-8040**:
 
 ### Configuração Atual (Vite)
+
 ```typescript
 // vite.config.ts
 export default defineConfig({
   server: {
     host: "::",
-    port: 8030,        // ⚠️ Alterado de 8080 para 8030
-    open: true,        // Abre automaticamente no navegador
-    strictPort: true,  // Falha se a porta não estiver disponível
+    port: 8030, // ⚠️ Alterado de 8080 para 8030
+    open: true, // Abre automaticamente no navegador
+    strictPort: true, // Falha se a porta não estiver disponível
   },
   preview: {
-    port: 8031,       // Porta para preview de build
+    port: 8031, // Porta para preview de build
     host: "::",
     strictPort: true,
-  }
+  },
 });
 ```
 
@@ -765,7 +794,7 @@ Port Allocation Graph (8030-8040):
 8031 ──┼ 👁️ Preview Server (Production)  [Optional]
        │ └── Build Verification          [Testing builds]
        │
-8032 ──┼ 📚 Storybook (UI Docs)          [Optional] 
+8032 ──┼ 📚 Storybook (UI Docs)          [Optional]
        │ └── Component Documentation     [UI Development]
        │
 8033 ──┼ 🧪 Vitest UI (Unit Tests)       [Independent]
@@ -783,20 +812,22 @@ Port Allocation Graph (8030-8040):
 ```
 
 #### Dependências Críticas de Portas
+
 ```mermaid
 graph LR
     DEV[8030<br/>Dev Server] -.->|⚡ CRITICAL| E2E[8035<br/>E2E Tests]
     DEV -.->|⚡ CRITICAL| INTEGRATION[Integration Tests]
-    
+
     VITEST[8033<br/>Unit Tests] -.->|📦 Independent| NONE[No Dependencies]
     PREVIEW[8031<br/>Preview] -.->|📦 Independent| BUILD[Build Artifact]
-    
+
     style DEV fill:#ff6b6b,stroke:#333,stroke-width:3px
     style E2E fill:#ffeaa7,stroke:#333,stroke-width:2px
     style VITEST fill:#81ecec,stroke:#333,stroke-width:2px
 ```
 
 #### Ordem de Inicialização de Serviços
+
 ```bash
 # Sequência recomendada para desenvolvimento:
 
@@ -807,7 +838,7 @@ npm run dev                    # Port 8030 - MUST START FIRST
 npm run test:ui               # Port 8033 - Independent
 npm run test:e2e:ui          # Port 8035 - Depends on 8030
 
-# 3. Documentation (Opcional)  
+# 3. Documentation (Opcional)
 npm run storybook            # Port 8032 - Independent
 
 # 4. Build Verification (Quando necessário)
@@ -825,7 +856,7 @@ npm run preview              # Port 8031 - Independent
     "test:ui": "vitest --ui --port 8033",
     "test:e2e:ui": "playwright test --ui-port=8035",
     "storybook": "storybook dev -p 8032",
-    "supabase:start": "supabase start --port-offset=4",
+    "supabase:start": "supabase start --port-offset=4"
   }
 }
 ```
@@ -835,11 +866,12 @@ npm run preview              # Port 8031 - Independent
 ## ⚡ Comandos de Desenvolvimento
 
 ### Desenvolvimento Básico
+
 ```bash
 # Inicia servidor de desenvolvimento (porta 8030)
 npm run dev
 
-# Inicia e abre automaticamente no navegador  
+# Inicia e abre automaticamente no navegador
 npm run dev:open
 
 # Build de produção
@@ -850,6 +882,7 @@ npm run preview
 ```
 
 ### Testes e Qualidade
+
 ```bash
 # Testes unitários
 npm run test                # Execução única
@@ -868,6 +901,7 @@ npm run test:all           # Todos os testes
 ```
 
 ### Ferramentas de Desenvolvimento
+
 ```bash
 # Interface de gerenciamento LocalStorage
 # Acesse: http://localhost:8030/localStorage-manager
@@ -883,18 +917,20 @@ fitcoachLocalStorageDemo.loginAsStudent()      # Login como student
 ### Modo LocalStorage vs Supabase
 
 #### Ativar Modo LocalStorage (Desenvolvimento)
+
 ```javascript
 // No console do navegador (F12)
 fitcoachLocalStorageDemo.enableLocalStorage();
 
 // Ou programaticamente
-import { localStorageService } from '@/services/localStorageService';
+import { localStorageService } from "@/services/localStorageService";
 localStorageService.enableLocalStorageMode();
 ```
 
 #### Ativar Modo Supabase (Produção)
+
 ```javascript
-// No console do navegador (F12) 
+// No console do navegador (F12)
 fitcoachLocalStorageDemo.disableLocalStorage();
 
 // Ou programaticamente
@@ -906,6 +942,7 @@ localStorageService.disableLocalStorageMode();
 ## 🧪 Sistema de Testes
 
 ### Estrutura de Testes
+
 ```
 tests/
 ├── e2e/                   # Testes End-to-End (Playwright)
@@ -917,34 +954,36 @@ tests/
 ### Configuração dos Testes
 
 #### Vitest (Testes Unitários)
+
 ```typescript
 // vitest.config.ts
 export default defineConfig({
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.ts"],
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html'],
-      exclude: ['node_modules/', 'src/test/']
-    }
-  }
+      provider: "v8",
+      reporter: ["text", "html"],
+      exclude: ["node_modules/", "src/test/"],
+    },
+  },
 });
 ```
 
 #### Playwright (Testes E2E)
+
 ```typescript
 // playwright.config.ts
 export default defineConfig({
-  testDir: './tests/e2e',
+  testDir: "./tests/e2e",
   webServer: {
-    command: 'npm run dev',
+    command: "npm run dev",
     port: 8030,
-    reuseExistingServer: !process.env.CI
+    reuseExistingServer: !process.env.CI,
   },
   use: {
-    baseURL: 'http://localhost:8030'
-  }
+    baseURL: "http://localhost:8030",
+  },
 });
 ```
 
@@ -956,7 +995,7 @@ npm run test               # Todos os testes
 npm run test:coverage      # Com relatório de coverage
 npm run test:watch         # Modo watch para desenvolvimento
 
-# Testes E2E  
+# Testes E2E
 npm run test:e2e           # Headless
 npm run test:e2e:headed    # Com interface gráfica
 npm run test:e2e:debug     # Modo debug
@@ -973,6 +1012,7 @@ npm run test:e2e:ui        # Playwright UI (porta 8035)
 ### 🚨 Problemas de Dependências (Baseado no Grafo)
 
 #### 1. 🔴 Falha na Inicialização do Core
+
 ```bash
 # Erro: "Cannot resolve DI Container"
 # Causa: Core module não inicializou corretamente
@@ -987,6 +1027,7 @@ npm run dev                          # Reinicia com cache limpo
 ```
 
 #### 2. 🟠 Módulo Auth Não Funciona
+
 ```bash
 # Erro: "AuthService not found" ou "Profile undefined"
 # Causa: Auth module não registrado no DI Container
@@ -1002,6 +1043,7 @@ fitcoachLocalStorageDemo.enableLocalStorage()  # Força modo local
 ```
 
 #### 3. 🟡 Testes E2E Falhando
+
 ```bash
 # Erro: "ECONNREFUSED localhost:8030"
 # Causa: Dev server não está rodando
@@ -1018,14 +1060,15 @@ npm run test:e2e                       # Executa testes
 ```
 
 #### 4. 🔵 Módulo AI Não Responde
+
 ```bash
-# Erro: "Cannot generate workout" ou "AI service unavailable"  
+# Erro: "Cannot generate workout" ou "AI service unavailable"
 # Causa: Dependências não satisfeitas (Auth + Workouts)
 
 # Diagnóstico:
 # Sequência de verificação baseada no grafo:
 npm run test src/modules/auth/          # Testa dependência base
-npm run test src/modules/workouts/      # Testa segunda dependência  
+npm run test src/modules/workouts/      # Testa segunda dependência
 npm run test src/modules/ai/            # Testa módulo final
 
 # Solução:
@@ -1037,6 +1080,7 @@ npm run test src/modules/ai/            # Testa módulo final
 ### 🔄 Debug por Dependência
 
 #### Algoritmo de Debug (Ordenação Topológica)
+
 ```bash
 #!/bin/bash
 # debug-dependencies.sh
@@ -1047,7 +1091,7 @@ echo "🔍 Debugging dependencies in topological order..."
 echo "1. 🔧 Testing Core..."
 npm run typecheck || echo "❌ Core has TypeScript errors"
 
-# Level 1: Infrastructure  
+# Level 1: Infrastructure
 echo "2. ⚡ Testing Infrastructure..."
 curl -s http://localhost:8030 > /dev/null || echo "❌ Dev server not running"
 
@@ -1075,24 +1119,34 @@ echo "✅ Debug complete. Fix errors in the order shown above."
 ### 🛠️ Ferramentas de Debug Específicas
 
 #### 1. 🔍 Verificação de Dependências do Módulo
+
 ```typescript
 // Adicione no console (F12) para debug:
 window.debugDependencies = () => {
   const results = {};
-  
+
   // Testa Core
   try {
-    results.core = window.container ? '✅' : '❌';
-  } catch { results.core = '❌'; }
-  
+    results.core = window.container ? "✅" : "❌";
+  } catch {
+    results.core = "❌";
+  }
+
   // Testa serviços registrados
-  const services = ['AuthService', 'WorkoutService', 'AIService', 'PaymentService'];
-  services.forEach(service => {
+  const services = [
+    "AuthService",
+    "WorkoutService",
+    "AIService",
+    "PaymentService",
+  ];
+  services.forEach((service) => {
     try {
-      results[service] = window.container?.resolve(service) ? '✅' : '❌';
-    } catch { results[service] = '❌'; }
+      results[service] = window.container?.resolve(service) ? "✅" : "❌";
+    } catch {
+      results[service] = "❌";
+    }
   });
-  
+
   console.table(results);
   return results;
 };
@@ -1101,35 +1155,40 @@ window.debugDependencies = () => {
 ```
 
 #### 2. 📊 Monitor de Inicialização
+
 ```typescript
 // src/utils/initMonitor.ts
 export class InitializationMonitor {
-  private static steps: Array<{name: string, status: 'pending' | 'success' | 'error', timestamp?: number}> = [
-    {name: 'Core DI Container', status: 'pending'},
-    {name: 'TanStack Query', status: 'pending'},
-    {name: 'React Router', status: 'pending'},
-    {name: 'Auth Provider', status: 'pending'},
-    {name: 'Module Registration', status: 'pending'},
+  private static steps: Array<{
+    name: string;
+    status: "pending" | "success" | "error";
+    timestamp?: number;
+  }> = [
+    { name: "Core DI Container", status: "pending" },
+    { name: "TanStack Query", status: "pending" },
+    { name: "React Router", status: "pending" },
+    { name: "Auth Provider", status: "pending" },
+    { name: "Module Registration", status: "pending" },
   ];
-  
+
   static markComplete(stepName: string) {
-    const step = this.steps.find(s => s.name === stepName);
+    const step = this.steps.find((s) => s.name === stepName);
     if (step) {
-      step.status = 'success';
+      step.status = "success";
       step.timestamp = Date.now();
       console.log(`✅ ${stepName} initialized`);
     }
   }
-  
+
   static markError(stepName: string, error?: any) {
-    const step = this.steps.find(s => s.name === stepName);
+    const step = this.steps.find((s) => s.name === stepName);
     if (step) {
-      step.status = 'error';
+      step.status = "error";
       step.timestamp = Date.now();
       console.error(`❌ ${stepName} failed:`, error);
     }
   }
-  
+
   static getStatus() {
     return this.steps;
   }
@@ -1141,6 +1200,7 @@ export class InitializationMonitor {
 ### 🚨 Problemas Comuns
 
 #### 1. Porta já em uso
+
 ```bash
 # Erro: EADDRINUSE :::8030
 # Solução: Matar processo na porta
@@ -1151,6 +1211,7 @@ npm run dev -- --port 8031
 ```
 
 #### 2. Dependências desatualizadas
+
 ```bash
 # Verificar dependências
 npm outdated
@@ -1164,6 +1225,7 @@ npm install
 ```
 
 #### 3. Erro de TypeScript
+
 ```bash
 # Verificar erros de tipo
 npm run typecheck
@@ -1173,6 +1235,7 @@ npx supabase gen types typescript --project-id coscoqsrnizvilxbubvq > src/integr
 ```
 
 #### 4. Problemas com LocalStorage
+
 ```bash
 # Limpar dados do localStorage
 # No console do navegador (F12):
@@ -1184,6 +1247,7 @@ fitcoachLocalStorageDemo.clearAllData()
 ```
 
 #### 5. Build falha
+
 ```bash
 # Verificar problemas de build
 npm run build 2>&1 | tee build.log
@@ -1206,13 +1270,13 @@ npm run typecheck && npm run lint && npm run test && npm run build
 
 ```typescript
 // Ativar logs detalhados
-localStorage.setItem('DEBUG', 'fitcoach:*');
+localStorage.setItem("DEBUG", "fitcoach:*");
 
-// Debug específico  
-localStorage.setItem('DEBUG', 'fitcoach:auth,fitcoach:payments');
+// Debug específico
+localStorage.setItem("DEBUG", "fitcoach:auth,fitcoach:payments");
 
 // Ver logs no console
-console.log('Debug ativo:', localStorage.getItem('DEBUG'));
+console.log("Debug ativo:", localStorage.getItem("DEBUG"));
 ```
 
 ---
@@ -1220,6 +1284,7 @@ console.log('Debug ativo:', localStorage.getItem('DEBUG'));
 ## 📞 Suporte e Documentação Adicional
 
 ### Recursos Adicionais
+
 - 📄 **README.md** - Visão geral do projeto
 - 📊 **RELATORIO-FINAL-PROJETO.md** - Status completo do desenvolvimento
 - 🧪 **TESTING.md** - Guia de testes detalhado
@@ -1260,27 +1325,27 @@ npm run clean             # Limpeza geral
 npm run diagnose:full() {
   echo "🏥 FitCoach Dependency Diagnostic Suite"
   echo "======================================"
-  
+
   # 1. Análise de Arquitetura
   echo "📊 Architecture Analysis:"
   find src/modules -name "index.ts" -exec grep -l "setupModule" {} \;
-  
+
   # 2. Análise de Dependências Circulares
   echo "🔄 Circular Dependency Check:"
   npx madge --circular --extensions ts,tsx src/
-  
+
   # 3. Análise de Bundle
   echo "📦 Bundle Analysis:"
   npm run build:analyze
-  
+
   # 4. Cobertura de Testes por Módulo
   echo "🧪 Test Coverage by Module:"
   npm run test:coverage -- --reporter=json | jq '.numPassedTestSuites'
-  
+
   # 5. Performance de Inicialização
   echo "⚡ Initialization Performance:"
   time npm run build
-  
+
   echo "✅ Diagnostic complete! Check results above."
 }
 ```
@@ -1292,6 +1357,7 @@ npm run diagnose:full() {
 ### 🔗 Referências de Arquitetura
 
 #### Padrões Implementados
+
 1. **Dependency Injection Container**: Inspirado no Spring Framework (Java) e InversifyJS
 2. **Module Pattern**: Baseado no Angular Module System
 3. **Clean Architecture**: Seguindo princípios de Robert C. Martin
@@ -1299,19 +1365,21 @@ npm run diagnose:full() {
 5. **Repository Pattern**: Para abstração de acesso a dados (Supabase/LocalStorage)
 
 #### Algoritmos de Grafo Utilizados
+
 1. **Ordenação Topológica**: Para sequência de inicialização de módulos
-2. **Detecção de Ciclos**: Para prevenção de dependências circulares  
+2. **Detecção de Ciclos**: Para prevenção de dependências circulares
 3. **Caminho Mais Curto**: Para otimização de comunicação entre módulos
 4. **Análise de Conectividade**: Para verificação de dependências essenciais
 
 ### 🎯 Métricas de Qualidade
 
 #### Complexidade de Dependências (Calculada)
+
 ```
 Módulo         | Fan-in | Fan-out | Estabilidade | Abstração
 ---------------|--------|---------|--------------|----------
 Core           |   0    |    6    |     1.0      |    0.8
-Auth           |   5    |    1    |     0.17     |    0.6  
+Auth           |   5    |    1    |     0.17     |    0.6
 Workouts       |   2    |    2    |     0.5      |    0.4
 AI             |   1    |    3    |     0.75     |    0.3
 Payments       |   1    |    2    |     0.67     |    0.4
@@ -1332,7 +1400,7 @@ Métricas Ideais:
 
 📊 Metrics Dashboard:
 ├── 🏗️ Modularidade: 94/100 (Excellent)
-├── 🔄 Manutenibilidade: 91/100 (Excellent) 
+├── 🔄 Manutenibilidade: 91/100 (Excellent)
 ├── 🧪 Testabilidade: 97/100 (Outstanding)
 ├── 📈 Escalabilidade: 89/100 (Very Good)
 ├── 🔒 Segurança: 93/100 (Excellent)
@@ -1346,6 +1414,7 @@ Métricas Ideais:
 ## 🚀 Próximos Passos para Desenvolvimento
 
 ### 1. 📋 Checklist de Configuração Inicial
+
 ```bash
 □ Clone do repositório concluído
 □ Node.js 18+ instalado e verificado
@@ -1358,13 +1427,14 @@ Métricas Ideais:
 ```
 
 ### 2. 🧑‍💻 Fluxo de Desenvolvimento Recomendado
+
 ```bash
 # Dia-a-dia de desenvolvimento:
 
 # Terminal 1: Desenvolvimento principal
 npm run dev                    # Port 8030
 
-# Terminal 2: Testes contínuos  
+# Terminal 2: Testes contínuos
 npm run test:watch            # Testes unitários em watch mode
 
 # Terminal 3: Testes E2E (quando necessário)
@@ -1376,25 +1446,28 @@ debugDependencies()              # Verificar estado dos módulos
 ```
 
 ### 3. 🎯 Desenvolvimento de Novos Módulos
+
 ```typescript
 // Template para novo módulo:
 // src/modules/[novo-modulo]/index.ts
 
 // 1. Definir tipos
-export type { NewModuleService } from './types';
+export type { NewModuleService } from "./types";
 
-// 2. Implementar serviços  
-export { SupabaseNewModuleService } from './services/NewModuleService';
+// 2. Implementar serviços
+export { SupabaseNewModuleService } from "./services/NewModuleService";
 
 // 3. Criar hooks
-export { useNewModuleFeature } from './hooks/useNewModule';
+export { useNewModuleFeature } from "./hooks/useNewModule";
 
 // 4. Setup para DI Container
 export async function setupNewModule() {
-  const { container } = await import('@/core');
-  const { SupabaseNewModuleService } = await import('./services/NewModuleService');
-  
-  container.bind('NewModuleService').to(SupabaseNewModuleService);
+  const { container } = await import("@/core");
+  const { SupabaseNewModuleService } = await import(
+    "./services/NewModuleService"
+  );
+
+  container.bind("NewModuleService").to(SupabaseNewModuleService);
 }
 
 // 5. Registrar em src/core/setup.ts
@@ -1403,10 +1476,11 @@ export async function setupNewModule() {
 ```
 
 ### 4. 🔍 Validação de Qualidade
+
 ```bash
 # Antes de fazer commit:
 npm run typecheck              # TypeScript OK
-npm run lint                   # ESLint OK  
+npm run lint                   # ESLint OK
 npm run test:all              # Todos os testes OK
 npm run build                 # Build OK
 ```
@@ -1418,8 +1492,9 @@ npm run build                 # Build OK
 ### 📞 Suporte Técnico
 
 Para dúvidas específicas sobre a arquitetura:
+
 1. 📖 Consulte primeiro esta documentação
-2. 🔍 Execute os scripts de diagnóstico  
+2. 🔍 Execute os scripts de diagnóstico
 3. 🧪 Verifique os testes relacionados ao seu módulo
 4. 📊 Use as ferramentas de debug no console
 5. 📋 Consulte os demais arquivos de documentação na raiz do projeto

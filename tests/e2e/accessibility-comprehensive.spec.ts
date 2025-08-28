@@ -1,73 +1,92 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, Page } from "@playwright/test";
 
 interface PageTestConfig {
   path: string;
   name: string;
   requiresAuth?: boolean;
-  userRole?: 'admin' | 'trainer' | 'student';
+  userRole?: "admin" | "trainer" | "student";
   waitForSelector?: string;
   setup?: (page: Page) => Promise<void>;
 }
 
 const pages: PageTestConfig[] = [
   // Public pages
-  { path: '/', name: 'Landing Page' },
-  { path: '/student-demo', name: 'Student Demo' },
-  { path: '/localStorage-manager', name: 'LocalStorage Manager' },
-  
+  { path: "/", name: "Landing Page" },
+  { path: "/student-demo", name: "Student Demo" },
+  { path: "/localStorage-manager", name: "LocalStorage Manager" },
+
   // Error pages
-  { path: '/non-existent-page', name: '404 Not Found' }
+  { path: "/non-existent-page", name: "404 Not Found" },
 ];
 
-async function authenticateUser(page: Page, role: 'admin' | 'trainer' | 'student') {
+async function authenticateUser(
+  page: Page,
+  role: "admin" | "trainer" | "student"
+) {
   const credentials = {
-    admin: { email: 'admin@fitcoach.com', password: 'admin123' },
-    trainer: { email: 'trainer@fitcoach.com', password: 'trainer123' },
-    student: { email: 'student@fitcoach.com', password: 'student123' }
+    admin: { email: "admin@fitcoach.com", password: "admin123" },
+    trainer: { email: "trainer@fitcoach.com", password: "trainer123" },
+    student: { email: "student@fitcoach.com", password: "student123" },
   };
 
-  await page.goto('/');
-  
+  await page.goto("/");
+
   // Look for login form or button
-  const loginButton = page.locator('button:has-text("Entrar"), button:has-text("Login"), [data-testid="login-button"]');
+  const loginButton = page.locator(
+    'button:has-text("Entrar"), button:has-text("Login"), [data-testid="login-button"]'
+  );
   if (await loginButton.isVisible({ timeout: 5000 })) {
     await loginButton.click();
   }
 
   // Fill login form
-  await page.fill('input[type="email"], input[name="email"]', credentials[role].email);
-  await page.fill('input[type="password"], input[name="password"]', credentials[role].password);
-  
+  await page.fill(
+    'input[type="email"], input[name="email"]',
+    credentials[role].email
+  );
+  await page.fill(
+    'input[type="password"], input[name="password"]',
+    credentials[role].password
+  );
+
   // Submit form
-  await page.click('button[type="submit"], button:has-text("Entrar"), button:has-text("Login")');
-  
+  await page.click(
+    'button[type="submit"], button:has-text("Entrar"), button:has-text("Login")'
+  );
+
   // Wait for redirect
   await page.waitForURL(`**/${role}/**`, { timeout: 10000 });
 }
 
-async function runAxeAccessibilityCheck(page: Page): Promise<any[]> {
+async function runAxeAccessibilityCheck(
+  page: Page
+): Promise<Record<string, unknown>> {
   // Inject axe-core into the page
-  await page.addScriptTag({ url: 'https://unpkg.com/axe-core@4.7.2/axe.min.js' });
-  
+  await page.addScriptTag({
+    url: "https://unpkg.com/axe-core@4.7.2/axe.min.js",
+  });
+
   // Run axe-core accessibility check
   const results = await page.evaluate(async () => {
-    // @ts-ignore
+    // @ts-expect-error - axe is loaded dynamically
     return await axe.run(document, {
       runOnly: {
-        type: 'tags',
-        values: ['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice']
-      }
+        type: "tags",
+        values: ["wcag2a", "wcag2aa", "wcag21aa", "best-practice"],
+      },
     });
   });
-  
+
   return results.violations || [];
 }
 
-test.describe('Comprehensive Accessibility Testing with Axe-Core', () => {
+test.describe("Comprehensive Accessibility Testing with Axe-Core", () => {
   for (const pageConfig of pages) {
-    test(`${pageConfig.name} - Accessibility Test`, async ({ page }, testInfo) => {
+    test(`${pageConfig.name} - Accessibility Test`, async ({
+      page,
+    }, testInfo) => {
       console.log(`\n=== TESTING ${pageConfig.name.toUpperCase()} ===`);
-      
+
       try {
         // Setup authentication if required
         if (pageConfig.requiresAuth && pageConfig.userRole) {
@@ -77,12 +96,14 @@ test.describe('Comprehensive Accessibility Testing with Axe-Core', () => {
         // Navigate to the page
         console.log(`Navigating to: ${pageConfig.path}`);
         await page.goto(pageConfig.path);
-        
+
         // Wait for page to load
         if (pageConfig.waitForSelector) {
-          await page.waitForSelector(pageConfig.waitForSelector, { timeout: 10000 });
+          await page.waitForSelector(pageConfig.waitForSelector, {
+            timeout: 10000,
+          });
         } else {
-          await page.waitForLoadState('networkidle', { timeout: 15000 });
+          await page.waitForLoadState("networkidle", { timeout: 15000 });
         }
 
         // Execute custom setup if provided
@@ -91,10 +112,10 @@ test.describe('Comprehensive Accessibility Testing with Axe-Core', () => {
         }
 
         // Take screenshot before accessibility check
-        const screenshotPath = `accessibility-before-${pageConfig.name.toLowerCase().replace(/\s+/g, '-')}.png`;
-        await page.screenshot({ 
+        const screenshotPath = `accessibility-before-${pageConfig.name.toLowerCase().replace(/\s+/g, "-")}.png`;
+        await page.screenshot({
           path: `test-results/${screenshotPath}`,
-          fullPage: true 
+          fullPage: true,
         });
 
         // Run accessibility check
@@ -104,86 +125,102 @@ test.describe('Comprehensive Accessibility Testing with Axe-Core', () => {
         console.log(`Total violations found: ${violations.length}`);
 
         if (violations.length > 0) {
-          console.log('\n--- VIOLATIONS DETAILS ---');
+          console.log("\n--- VIOLATIONS DETAILS ---");
           violations.forEach((violation, index) => {
-            console.log(`\n${index + 1}. ${violation.id}: ${violation.description}`);
+            console.log(
+              `\n${index + 1}. ${violation.id}: ${violation.description}`
+            );
             console.log(`   Impact: ${violation.impact}`);
             console.log(`   Help: ${violation.help}`);
-            console.log(`   Tags: ${violation.tags.join(', ')}`);
+            console.log(`   Tags: ${violation.tags.join(", ")}`);
             console.log(`   Nodes affected: ${violation.nodes.length}`);
-            
-            violation.nodes.forEach((node: any, nodeIndex: number) => {
-              console.log(`   Node ${nodeIndex + 1}:`);
-              console.log(`     Target: ${node.target.join(' > ')}`);
-              console.log(`     HTML: ${node.html.substring(0, 100)}...`);
-              console.log(`     Failure Summary: ${node.failureSummary}`);
-            });
+
+            violation.nodes.forEach(
+              (node: Record<string, unknown>, nodeIndex: number) => {
+                console.log(`   Node ${nodeIndex + 1}:`);
+                console.log(
+                  `     Target: ${(node.target as string[]).join(" > ")}`
+                );
+                console.log(
+                  `     HTML: ${(node.html as string).substring(0, 100)}...`
+                );
+                console.log(`     Failure Summary: ${node.failureSummary}`);
+              }
+            );
           });
 
           // Take screenshot after violations found
-          const violationsScreenshotPath = `accessibility-violations-${pageConfig.name.toLowerCase().replace(/\s+/g, '-')}.png`;
-          await page.screenshot({ 
+          const violationsScreenshotPath = `accessibility-violations-${pageConfig.name.toLowerCase().replace(/\s+/g, "-")}.png`;
+          await page.screenshot({
             path: `test-results/${violationsScreenshotPath}`,
-            fullPage: true 
+            fullPage: true,
           });
 
           // Add violation details to test info
           testInfo.attachments.push({
             name: `Accessibility Violations - ${pageConfig.name}`,
             body: JSON.stringify(violations, null, 2),
-            contentType: 'application/json'
+            contentType: "application/json",
           });
         } else {
-          console.log('✅ No accessibility violations found!');
+          console.log("✅ No accessibility violations found!");
         }
 
         // Get page info for reporting
         const pageTitle = await page.title();
         const pageUrl = page.url();
-        
+
         console.log(`\nPage Title: ${pageTitle}`);
         console.log(`Final URL: ${pageUrl}`);
-        console.log(`=== END REPORT FOR ${pageConfig.name.toUpperCase()} ===\n`);
+        console.log(
+          `=== END REPORT FOR ${pageConfig.name.toUpperCase()} ===\n`
+        );
 
         // For now, don't fail the test to collect all violations first
         // expect(violations).toHaveLength(0);
-
       } catch (error) {
         console.error(`Error testing ${pageConfig.name}:`, error);
-        
+
         // Take screenshot on error
-        const errorScreenshotPath = `accessibility-error-${pageConfig.name.toLowerCase().replace(/\s+/g, '-')}.png`;
-        await page.screenshot({ 
+        const errorScreenshotPath = `accessibility-error-${pageConfig.name.toLowerCase().replace(/\s+/g, "-")}.png`;
+        await page.screenshot({
           path: `test-results/${errorScreenshotPath}`,
-          fullPage: true 
+          fullPage: true,
         });
-        
-        console.log(`⚠️  Page ${pageConfig.name} could not be tested: ${error}`);
+
+        console.log(
+          `⚠️  Page ${pageConfig.name} could not be tested: ${error}`
+        );
       }
     });
   }
 });
 
-test.describe('Lighthouse CI Integration', () => {
-  test('Run Lighthouse Accessibility Audit for Key Pages', async ({ page }) => {
-    const keyPages = [
-      '/',
-      '/student-demo',
-      '/localStorage-manager'
-    ];
+test.describe("Lighthouse CI Integration", () => {
+  test("Run Lighthouse Accessibility Audit for Key Pages", async ({ page }) => {
+    const keyPages = ["/", "/student-demo", "/localStorage-manager"];
 
     for (const pagePath of keyPages) {
       await page.goto(pagePath);
-      await page.waitForLoadState('networkidle');
-      
+      await page.waitForLoadState("networkidle");
+
       // Take performance timing
       const timing = await page.evaluate(() => {
-        const perf = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+        const perf = performance.getEntriesByType(
+          "navigation"
+        )[0] as PerformanceNavigationTiming;
         return {
-          domContentLoaded: perf.domContentLoadedEventEnd - perf.navigationStart,
+          domContentLoaded:
+            perf.domContentLoadedEventEnd - perf.navigationStart,
           load: perf.loadEventEnd - perf.navigationStart,
-          firstPaint: performance.getEntriesByType('paint').find(p => p.name === 'first-paint')?.startTime || 0,
-          firstContentfulPaint: performance.getEntriesByType('paint').find(p => p.name === 'first-contentful-paint')?.startTime || 0
+          firstPaint:
+            performance
+              .getEntriesByType("paint")
+              .find((p) => p.name === "first-paint")?.startTime || 0,
+          firstContentfulPaint:
+            performance
+              .getEntriesByType("paint")
+              .find((p) => p.name === "first-contentful-paint")?.startTime || 0,
         };
       });
 
@@ -197,40 +234,40 @@ test.describe('Lighthouse CI Integration', () => {
   });
 });
 
-test.describe('Missing Resources Detection', () => {
-  test('Detect Missing Images, Icons, and Resources', async ({ page }) => {
+test.describe("Missing Resources Detection", () => {
+  test("Detect Missing Images, Icons, and Resources", async ({ page }) => {
     const resourceErrors: string[] = [];
     const missingImages: string[] = [];
 
     // Listen for failed network requests
-    page.on('response', response => {
+    page.on("response", (response) => {
       if (!response.ok() && response.status() >= 400) {
         resourceErrors.push(`${response.status()}: ${response.url()}`);
       }
     });
 
     // Test key pages for missing resources
-    const pagesToTest = ['/', '/student-demo', '/localStorage-manager'];
-    
+    const pagesToTest = ["/", "/student-demo", "/localStorage-manager"];
+
     for (const pagePath of pagesToTest) {
       await page.goto(pagePath);
-      await page.waitForLoadState('networkidle');
+      await page.waitForLoadState("networkidle");
 
       // Check for broken images
       const brokenImages = await page.evaluate(() => {
-        const images = Array.from(document.querySelectorAll('img'));
+        const images = Array.from(document.querySelectorAll("img"));
         return images
-          .filter(img => !img.complete || img.naturalWidth === 0)
-          .map(img => ({
+          .filter((img) => !img.complete || img.naturalWidth === 0)
+          .map((img) => ({
             src: img.src,
             alt: img.alt,
-            element: img.outerHTML.substring(0, 100)
+            element: img.outerHTML.substring(0, 100),
           }));
       });
 
       if (brokenImages.length > 0) {
         console.log(`\n🖼️  Broken images found on ${pagePath}:`);
-        brokenImages.forEach(img => {
+        brokenImages.forEach((img) => {
           console.log(`  - ${img.src} (alt: "${img.alt}")`);
           missingImages.push(`${pagePath}: ${img.src}`);
         });
@@ -240,29 +277,29 @@ test.describe('Missing Resources Detection', () => {
       const missingIcons = await page.evaluate(() => {
         const iconSelectors = [
           'i[class*="icon"]:empty',
-          '.icon:empty',
+          ".icon:empty",
           '[class*="lucide"]:empty',
-          'svg:not([viewBox]):empty'
+          "svg:not([viewBox]):empty",
         ];
-        
+
         const missing = [];
-        iconSelectors.forEach(selector => {
+        iconSelectors.forEach((selector) => {
           const elements = document.querySelectorAll(selector);
-          elements.forEach(el => {
+          elements.forEach((el) => {
             missing.push({
               selector,
               element: el.outerHTML.substring(0, 100),
-              classes: el.className
+              classes: el.className,
             });
           });
         });
-        
+
         return missing;
       });
 
       if (missingIcons.length > 0) {
         console.log(`\n🎨 Potentially missing icons on ${pagePath}:`);
-        missingIcons.forEach(icon => {
+        missingIcons.forEach((icon) => {
           console.log(`  - ${icon.element}`);
         });
       }
@@ -272,17 +309,17 @@ test.describe('Missing Resources Detection', () => {
     console.log(`\n=== MISSING RESOURCES SUMMARY ===`);
     console.log(`Network errors: ${resourceErrors.length}`);
     console.log(`Missing images: ${missingImages.length}`);
-    
+
     if (resourceErrors.length > 0) {
-      console.log('\nNetwork Errors:');
-      resourceErrors.forEach(error => console.log(`  - ${error}`));
+      console.log("\nNetwork Errors:");
+      resourceErrors.forEach((error) => console.log(`  - ${error}`));
     }
-    
+
     if (missingImages.length > 0) {
-      console.log('\nMissing Images:');
-      missingImages.forEach(img => console.log(`  - ${img}`));
+      console.log("\nMissing Images:");
+      missingImages.forEach((img) => console.log(`  - ${img}`));
     }
-    
+
     console.log(`=== END MISSING RESOURCES SUMMARY ===\n`);
   });
 });

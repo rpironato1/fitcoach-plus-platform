@@ -1,12 +1,21 @@
 /**
  * LocalStorage-only Auth Service
- * 
+ *
  * Provides authentication services using only localStorage,
  * removing all Supabase dependencies.
  */
 
-import { AuthService, ProfileService, Profile, TrainerProfile, StudentProfile } from '../types';
-import { localStorageService, LocalStorageUser } from '@/services/localStorageService';
+import {
+  AuthService,
+  ProfileService,
+  Profile,
+  TrainerProfile,
+  StudentProfile,
+} from "../types";
+import {
+  localStorageService,
+  LocalStorageUser,
+} from "@/services/localStorageService";
 
 // Mock User type to replace Supabase User
 export interface LocalStorageOnlyUser {
@@ -19,31 +28,23 @@ export interface LocalStorageOnlyUser {
 
 export class LocalStorageAuthService implements AuthService {
   async signIn(email: string, password: string): Promise<void> {
-    try {
-      await localStorageService.signIn(email, password);
-    } catch (error) {
-      throw error;
-    }
+    await localStorageService.signIn(email, password);
   }
 
-  async signUp(email: string, password: string, userData: Record<string, unknown>): Promise<void> {
-    try {
-      await localStorageService.signUp(email, password, {
-        first_name: userData.first_name as string,
-        last_name: userData.last_name as string,
-        role: userData.role as 'admin' | 'trainer' | 'student'
-      });
-    } catch (error) {
-      throw error;
-    }
+  async signUp(
+    email: string,
+    password: string,
+    userData: Record<string, unknown>
+  ): Promise<void> {
+    await localStorageService.signUp(email, password, {
+      first_name: userData.first_name as string,
+      last_name: userData.last_name as string,
+      role: userData.role as "admin" | "trainer" | "student",
+    });
   }
 
   async signOut(): Promise<void> {
-    try {
-      await localStorageService.signOut();
-    } catch (error) {
-      throw error;
-    }
+    await localStorageService.signOut();
   }
 
   async getCurrentSession(): Promise<{ user: LocalStorageOnlyUser | null }> {
@@ -51,38 +52,40 @@ export class LocalStorageAuthService implements AuthService {
       const session = localStorageService.getCurrentSession();
       return { user: session?.user || null };
     } catch (error) {
-      console.error('Error getting current session:', error);
+      console.error("Error getting current session:", error);
       return { user: null };
     }
   }
 
-  onAuthStateChange(callback: (user: LocalStorageOnlyUser | null) => void): { unsubscribe: () => void } {
+  onAuthStateChange(callback: (user: LocalStorageOnlyUser | null) => void): {
+    unsubscribe: () => void;
+  } {
     // For localStorage, we'll simulate auth state changes with a simple interval check
     let lastUser: LocalStorageOnlyUser | null = null;
-    
+
     const checkAuthState = () => {
       try {
         const session = localStorageService.getCurrentSession();
         const currentUser = session?.user || null;
-        
+
         // Only call callback if user state changed
         if (JSON.stringify(currentUser) !== JSON.stringify(lastUser)) {
           lastUser = currentUser;
           callback(currentUser);
         }
       } catch (error) {
-        console.error('Error checking auth state:', error);
+        console.error("Error checking auth state:", error);
       }
     };
 
     // Initial check
     checkAuthState();
-    
+
     // Set up periodic checking
     const intervalId = setInterval(checkAuthState, 1000);
-    
+
     return {
-      unsubscribe: () => clearInterval(intervalId)
+      unsubscribe: () => clearInterval(intervalId),
     };
   }
 }
@@ -92,7 +95,7 @@ export class LocalStorageProfileService implements ProfileService {
     try {
       return localStorageService.getProfileByUserId(userId);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.error("Error fetching profile:", error);
       return null;
     }
   }
@@ -101,7 +104,7 @@ export class LocalStorageProfileService implements ProfileService {
     try {
       return localStorageService.getTrainerProfileByUserId(userId);
     } catch (error) {
-      console.error('Error fetching trainer profile:', error);
+      console.error("Error fetching trainer profile:", error);
       return null;
     }
   }
@@ -110,7 +113,7 @@ export class LocalStorageProfileService implements ProfileService {
     try {
       return localStorageService.getStudentProfileByUserId(userId);
     } catch (error) {
-      console.error('Error fetching student profile:', error);
+      console.error("Error fetching student profile:", error);
       return null;
     }
   }

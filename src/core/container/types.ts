@@ -20,12 +20,12 @@ export interface Container {
 }
 
 export enum ServiceLifetime {
-  Transient = 'transient',
-  Singleton = 'singleton'
+  Transient = "transient",
+  Singleton = "singleton",
 }
 
 export interface ServiceBinding<T = unknown> {
-  type: 'constructor' | 'factory' | 'value';
+  type: "constructor" | "factory" | "value";
   value: ServiceConstructor<T> | ServiceFactory<T> | T;
   lifetime: ServiceLifetime;
   instance?: T;

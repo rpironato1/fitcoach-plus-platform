@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { MenstrualCycleCard } from '../../components/ui/menstrual-cycle-card';
+import type { Meta, StoryObj } from "@storybook/react";
+import { MenstrualCycleCard } from "../../components/ui/menstrual-cycle-card";
 
 const meta: Meta<typeof MenstrualCycleCard> = {
-  title: 'UI Components/Menstrual Cycle Card',
+  title: "UI Components/Menstrual Cycle Card",
   component: MenstrualCycleCard,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A specialized card component for managing menstrual cycle-based workout adaptations.',
+        component:
+          "A specialized card component for managing menstrual cycle-based workout adaptations.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     isEnabled: {
-      control: 'boolean',
+      control: "boolean",
     },
     onToggle: {
-      action: 'toggle-changed',
+      action: "toggle-changed",
     },
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '400px' }}>
+      <div style={{ width: "400px" }}>
         <Story />
       </div>
     ),

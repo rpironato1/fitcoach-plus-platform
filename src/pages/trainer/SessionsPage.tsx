@@ -1,12 +1,12 @@
-
-import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
-import { ScheduleSessionDialog } from '@/components/trainer/ScheduleSessionDialog';
-import { SessionsList } from '@/components/trainer/SessionsList';
-import { useSessions } from '@/hooks/useSessions';
+import { useLocalStorageAuth as useAuth } from "@/components/auth/LocalStorageAuthProvider";
+import { ScheduleSessionDialog } from "@/components/trainer/ScheduleSessionDialog";
+import { SessionsList } from "@/components/trainer/SessionsList";
+import { useSessions } from "@/hooks/useSessions";
 
 export default function SessionsPage() {
   const { profile } = useAuth();
-  const { students, sessions, isLoading, createSession, isCreatingSession } = useSessions();
+  const { students, sessions, isLoading, createSession, isCreatingSession } =
+    useSessions();
 
   if (isLoading || !profile) {
     return (
@@ -23,7 +23,9 @@ export default function SessionsPage() {
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Agenda de Sessões</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Agenda de Sessões
+          </h1>
           <p className="text-gray-600">
             Gerencie e acompanhe suas sessões de treino
           </p>

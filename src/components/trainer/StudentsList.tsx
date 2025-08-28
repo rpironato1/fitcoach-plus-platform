@@ -1,14 +1,24 @@
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { User, MoreHorizontal, Phone } from 'lucide-react';
-import { EmptyState } from '@/components/ui/EmptyState';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { User, MoreHorizontal, Phone } from "lucide-react";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 interface Student {
   id: string;
-  status: 'active' | 'paused' | 'cancelled';
+  status: "active" | "paused" | "cancelled";
   start_date: string;
   profiles?: {
     first_name: string;
@@ -19,19 +29,22 @@ interface Student {
 
 interface StudentsListProps {
   students: Student[];
-  onUpdateStatus: (studentId: string, status: 'active' | 'paused' | 'cancelled') => void;
+  onUpdateStatus: (
+    studentId: string,
+    status: "active" | "paused" | "cancelled"
+  ) => void;
 }
 
 const statusColors = {
-  active: 'bg-green-100 text-green-800',
-  paused: 'bg-yellow-100 text-yellow-800',
-  cancelled: 'bg-red-100 text-red-800',
+  active: "bg-green-100 text-green-800",
+  paused: "bg-yellow-100 text-yellow-800",
+  cancelled: "bg-red-100 text-red-800",
 };
 
 const statusLabels = {
-  active: 'Ativo',
-  paused: 'Pausado',
-  cancelled: 'Cancelado',
+  active: "Ativo",
+  paused: "Pausado",
+  cancelled: "Cancelado",
 };
 
 export function StudentsList({ students, onUpdateStatus }: StudentsListProps) {
@@ -53,17 +66,19 @@ export function StudentsList({ students, onUpdateStatus }: StudentsListProps) {
             />
           ) : (
             students.map((student) => (
-              <div key={student.id} className="flex items-center justify-between p-4 border rounded-lg">
+              <div
+                key={student.id}
+                className="flex items-center justify-between p-4 border rounded-lg"
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                     <User className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold">
-                      {student.profiles 
+                      {student.profiles
                         ? `${student.profiles.first_name} ${student.profiles.last_name}`
-                        : 'Nome não disponível'
-                      }
+                        : "Nome não disponível"}
                     </h3>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
                       {student.profiles?.phone && (
@@ -72,7 +87,12 @@ export function StudentsList({ students, onUpdateStatus }: StudentsListProps) {
                           {student.profiles.phone}
                         </span>
                       )}
-                      <span>Desde {new Date(student.start_date).toLocaleDateString('pt-BR')}</span>
+                      <span>
+                        Desde{" "}
+                        {new Date(student.start_date).toLocaleDateString(
+                          "pt-BR"
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -87,20 +107,20 @@ export function StudentsList({ students, onUpdateStatus }: StudentsListProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuItem 
-                        onClick={() => onUpdateStatus(student.id, 'active')}
+                      <DropdownMenuItem
+                        onClick={() => onUpdateStatus(student.id, "active")}
                         className="text-green-600"
                       >
                         Ativar
                       </DropdownMenuItem>
-                      <DropdownMenuItem 
-                        onClick={() => onUpdateStatus(student.id, 'paused')}
+                      <DropdownMenuItem
+                        onClick={() => onUpdateStatus(student.id, "paused")}
                         className="text-yellow-600"
                       >
                         Pausar
                       </DropdownMenuItem>
-                      <DropdownMenuItem 
-                        onClick={() => onUpdateStatus(student.id, 'cancelled')}
+                      <DropdownMenuItem
+                        onClick={() => onUpdateStatus(student.id, "cancelled")}
                         className="text-red-600"
                       >
                         Cancelar

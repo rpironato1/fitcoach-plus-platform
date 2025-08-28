@@ -1,15 +1,29 @@
-
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
-import { Calendar, User, Activity, Trophy, Clock, Target, Utensils, TrendingUp } from 'lucide-react';
-import { MenstrualCycleCard } from '@/components/ui/menstrual-cycle-card';
-import { GenderSelection } from '@/components/ui/gender-selection';
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useLocalStorageAuth as useAuth } from "@/components/auth/LocalStorageAuthProvider";
+import {
+  Calendar,
+  User,
+  Activity,
+  Trophy,
+  Clock,
+  Target,
+  Utensils,
+  TrendingUp,
+} from "lucide-react";
+import { MenstrualCycleCard } from "@/components/ui/menstrual-cycle-card";
+import { GenderSelection } from "@/components/ui/gender-selection";
 
 export default function StudentDashboard() {
   const { profile } = useAuth();
-  
+
   // Simulated student profile data - in real app this would come from the database
   const [studentProfile, setStudentProfile] = useState({
     gender: null as string | null,
@@ -19,7 +33,7 @@ export default function StudentDashboard() {
   // Load student profile data (simulated)
   useEffect(() => {
     // In a real app, this would fetch from the database
-    const savedProfile = localStorage.getItem('studentProfile');
+    const savedProfile = localStorage.getItem("studentProfile");
     if (savedProfile) {
       setStudentProfile(JSON.parse(savedProfile));
     }
@@ -29,7 +43,7 @@ export default function StudentDashboard() {
   const saveStudentProfile = (updates: Partial<typeof studentProfile>) => {
     const newProfile = { ...studentProfile, ...updates };
     setStudentProfile(newProfile);
-    localStorage.setItem('studentProfile', JSON.stringify(newProfile));
+    localStorage.setItem("studentProfile", JSON.stringify(newProfile));
   };
 
   const handleGenderChange = (gender: string) => {
@@ -47,7 +61,9 @@ export default function StudentDashboard() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Olá, {profile?.first_name}!
           </h1>
-          <p className="text-sm sm:text-base text-gray-600">Acompanhe seu progresso e próximas atividades</p>
+          <p className="text-sm sm:text-base text-gray-600">
+            Acompanhe seu progresso e próximas atividades
+          </p>
         </div>
         <Badge className="bg-blue-100 text-blue-800 self-start sm:self-auto">
           Aluno Ativo
@@ -56,25 +72,31 @@ export default function StudentDashboard() {
 
       {/* Status Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-        <GenderSelection 
+        <GenderSelection
           currentGender={studentProfile.gender}
           onGenderChange={handleGenderChange}
         />
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Próxima Sessão</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Próxima Sessão
+            </CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-xl sm:text-2xl font-bold">Hoje</div>
-            <p className="text-xs text-muted-foreground">15:30 - Treino de Força</p>
+            <p className="text-xs text-muted-foreground">
+              15:30 - Treino de Força
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sessões este mês</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Sessões este mês
+            </CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -96,8 +118,8 @@ export default function StudentDashboard() {
       </div>
 
       {/* Menstrual Cycle Section - Only show for female students */}
-      {studentProfile.gender === 'female' && (
-        <MenstrualCycleCard 
+      {studentProfile.gender === "female" && (
+        <MenstrualCycleCard
           isEnabled={studentProfile.menstrualCycleTracking}
           onToggle={handleMenstrualCycleToggle}
         />
@@ -143,14 +165,17 @@ export default function StudentDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base sm:text-lg">Próximas Sessões</CardTitle>
+            <CardTitle className="text-base sm:text-lg">
+              Próximas Sessões
+            </CardTitle>
             <CardDescription className="text-xs sm:text-sm">
               Suas próximas atividades agendadas
-              {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking && (
-                <span className="block text-pink-600 font-medium">
-                  🌸 Adaptadas ao seu ciclo menstrual
-                </span>
-              )}
+              {studentProfile.gender === "female" &&
+                studentProfile.menstrualCycleTracking && (
+                  <span className="block text-pink-600 font-medium">
+                    🌸 Adaptadas ao seu ciclo menstrual
+                  </span>
+                )}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -158,47 +183,68 @@ export default function StudentDashboard() {
               <div className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg">
                 <div className="min-w-0 flex-1">
                   <p className="font-medium text-sm sm:text-base">
-                    {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking 
-                      ? 'Treino Leve - Yoga & Alongamento' 
-                      : 'Treino de Força'
-                    }
+                    {studentProfile.gender === "female" &&
+                    studentProfile.menstrualCycleTracking
+                      ? "Treino Leve - Yoga & Alongamento"
+                      : "Treino de Força"}
                   </p>
-                  <p className="text-xs sm:text-sm text-gray-500">Hoje, 15:30</p>
-                  {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking && (
-                    <p className="text-xs text-pink-600">🌙 Fase menstrual - intensidade reduzida</p>
-                  )}
+                  <p className="text-xs sm:text-sm text-gray-500">
+                    Hoje, 15:30
+                  </p>
+                  {studentProfile.gender === "female" &&
+                    studentProfile.menstrualCycleTracking && (
+                      <p className="text-xs text-pink-600">
+                        🌙 Fase menstrual - intensidade reduzida
+                      </p>
+                    )}
                 </div>
-                <Badge variant="default" className="text-xs">Agendado</Badge>
+                <Badge variant="default" className="text-xs">
+                  Agendado
+                </Badge>
               </div>
               <div className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg">
                 <div className="min-w-0 flex-1">
                   <p className="font-medium text-sm sm:text-base">
-                    {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking 
-                      ? 'Caminhada & Mobilidade' 
-                      : 'Treino Cardio'
-                    }
+                    {studentProfile.gender === "female" &&
+                    studentProfile.menstrualCycleTracking
+                      ? "Caminhada & Mobilidade"
+                      : "Treino Cardio"}
                   </p>
-                  <p className="text-xs sm:text-sm text-gray-500">Amanhã, 16:00</p>
-                  {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking && (
-                    <p className="text-xs text-pink-600">🌱 Fase folicular - aumentando intensidade</p>
-                  )}
+                  <p className="text-xs sm:text-sm text-gray-500">
+                    Amanhã, 16:00
+                  </p>
+                  {studentProfile.gender === "female" &&
+                    studentProfile.menstrualCycleTracking && (
+                      <p className="text-xs text-pink-600">
+                        🌱 Fase folicular - aumentando intensidade
+                      </p>
+                    )}
                 </div>
-                <Badge variant="outline" className="text-xs">Agendado</Badge>
+                <Badge variant="outline" className="text-xs">
+                  Agendado
+                </Badge>
               </div>
               <div className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg">
                 <div className="min-w-0 flex-1">
                   <p className="font-medium text-sm sm:text-base">
-                    {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking 
-                      ? 'Treino de Força Moderado' 
-                      : 'Treino Funcional'
-                    }
+                    {studentProfile.gender === "female" &&
+                    studentProfile.menstrualCycleTracking
+                      ? "Treino de Força Moderado"
+                      : "Treino Funcional"}
                   </p>
-                  <p className="text-xs sm:text-sm text-gray-500">Quinta-feira, 18:00</p>
-                  {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking && (
-                    <p className="text-xs text-pink-600">🌸 Pré-ovulação - energia crescente</p>
-                  )}
+                  <p className="text-xs sm:text-sm text-gray-500">
+                    Quinta-feira, 18:00
+                  </p>
+                  {studentProfile.gender === "female" &&
+                    studentProfile.menstrualCycleTracking && (
+                      <p className="text-xs text-pink-600">
+                        🌸 Pré-ovulação - energia crescente
+                      </p>
+                    )}
                 </div>
-                <Badge variant="outline" className="text-xs">Agendado</Badge>
+                <Badge variant="outline" className="text-xs">
+                  Agendado
+                </Badge>
               </div>
             </div>
             {/* Empty state - disabled for demo */}
@@ -217,14 +263,17 @@ export default function StudentDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-base sm:text-lg">Plano de Dieta Atual</CardTitle>
+              <CardTitle className="text-base sm:text-lg">
+                Plano de Dieta Atual
+              </CardTitle>
               <CardDescription className="text-xs sm:text-sm">
                 Seu plano alimentar personalizado
-                {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking && (
-                  <span className="block text-pink-600 font-medium">
-                    🌸 Adaptado ao seu ciclo menstrual
-                  </span>
-                )}
+                {studentProfile.gender === "female" &&
+                  studentProfile.menstrualCycleTracking && (
+                    <span className="block text-pink-600 font-medium">
+                      🌸 Adaptado ao seu ciclo menstrual
+                    </span>
+                  )}
               </CardDescription>
             </div>
             <Utensils className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
@@ -232,32 +281,51 @@ export default function StudentDashboard() {
           <CardContent>
             <div className="space-y-3 sm:space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-xs sm:text-sm text-gray-600">Calorias diárias</span>
+                <span className="text-xs sm:text-sm text-gray-600">
+                  Calorias diárias
+                </span>
                 <span className="font-semibold text-sm sm:text-base">
-                  {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking ? '2,100' : '2,200'} kcal
+                  {studentProfile.gender === "female" &&
+                  studentProfile.menstrualCycleTracking
+                    ? "2,100"
+                    : "2,200"}{" "}
+                  kcal
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-xs sm:text-sm text-gray-600">Proteínas</span>
+                <span className="text-xs sm:text-sm text-gray-600">
+                  Proteínas
+                </span>
                 <span className="font-semibold text-sm sm:text-base">150g</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-xs sm:text-sm text-gray-600">Carboidratos</span>
+                <span className="text-xs sm:text-sm text-gray-600">
+                  Carboidratos
+                </span>
                 <span className="font-semibold text-sm sm:text-base">220g</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-xs sm:text-sm text-gray-600">
-                  {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking ? 'Ferro (alta)' : 'Gorduras'}
+                  {studentProfile.gender === "female" &&
+                  studentProfile.menstrualCycleTracking
+                    ? "Ferro (alta)"
+                    : "Gorduras"}
                 </span>
                 <span className="font-semibold text-sm sm:text-base">
-                  {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking ? '18mg' : '80g'}
+                  {studentProfile.gender === "female" &&
+                  studentProfile.menstrualCycleTracking
+                    ? "18mg"
+                    : "80g"}
                 </span>
               </div>
-              {studentProfile.gender === 'female' && studentProfile.menstrualCycleTracking && (
-                <div className="text-xs bg-pink-50 p-2 rounded-lg border border-pink-200">
-                  <strong className="text-pink-700">IA Personalizada:</strong> Dieta ajustada para fase menstrual com foco em ferro, magnésio e redução de inchaço.
-                </div>
-              )}
+              {studentProfile.gender === "female" &&
+                studentProfile.menstrualCycleTracking && (
+                  <div className="text-xs bg-pink-50 p-2 rounded-lg border border-pink-200">
+                    <strong className="text-pink-700">IA Personalizada:</strong>{" "}
+                    Dieta ajustada para fase menstrual com foco em ferro,
+                    magnésio e redução de inchaço.
+                  </div>
+                )}
             </div>
           </CardContent>
         </Card>
@@ -266,15 +334,22 @@ export default function StudentDashboard() {
       {/* Progress Section */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base sm:text-lg">Progresso Mensal</CardTitle>
-          <CardDescription className="text-xs sm:text-sm">Sua evolução no último mês</CardDescription>
+          <CardTitle className="text-base sm:text-lg">
+            Progresso Mensal
+          </CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
+            Sua evolução no último mês
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center py-6 sm:py-8">
             <TrendingUp className="h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
-            <p className="text-sm sm:text-base text-gray-500">Gráfico de progresso em desenvolvimento</p>
+            <p className="text-sm sm:text-base text-gray-500">
+              Gráfico de progresso em desenvolvimento
+            </p>
             <p className="text-xs sm:text-sm text-gray-400 mt-2">
-              Em breve você poderá acompanhar sua evolução com gráficos detalhados
+              Em breve você poderá acompanhar sua evolução com gráficos
+              detalhados
             </p>
           </div>
         </CardContent>
@@ -283,8 +358,12 @@ export default function StudentDashboard() {
       {/* Trainer Info */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base sm:text-lg">Seu Personal Trainer</CardTitle>
-          <CardDescription className="text-xs sm:text-sm">Informações de contato e suporte</CardDescription>
+          <CardTitle className="text-base sm:text-lg">
+            Seu Personal Trainer
+          </CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
+            Informações de contato e suporte
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center space-x-3 sm:space-x-4">
@@ -292,11 +371,19 @@ export default function StudentDashboard() {
               <User className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm sm:text-base">Carlos Eduardo Silva</p>
-              <p className="text-xs sm:text-sm text-gray-500">Personal Trainer Certificado</p>
-              <p className="text-xs text-gray-400 mt-1 truncate">📧 carlos@fitcoach.com | 📱 (11) 99999-9999</p>
+              <p className="font-medium text-sm sm:text-base">
+                Carlos Eduardo Silva
+              </p>
+              <p className="text-xs sm:text-sm text-gray-500">
+                Personal Trainer Certificado
+              </p>
+              <p className="text-xs text-gray-400 mt-1 truncate">
+                📧 carlos@fitcoach.com | 📱 (11) 99999-9999
+              </p>
             </div>
-            <Badge className="bg-green-100 text-green-800 text-xs">Online</Badge>
+            <Badge className="bg-green-100 text-green-800 text-xs">
+              Online
+            </Badge>
           </div>
         </CardContent>
       </Card>

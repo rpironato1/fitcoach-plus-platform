@@ -1,24 +1,24 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Checkbox } from '../../components/ui/checkbox';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Checkbox } from "../../components/ui/checkbox";
 
 const meta: Meta<typeof Checkbox> = {
-  title: 'UI Components/Checkbox',
+  title: "UI Components/Checkbox",
   component: Checkbox,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A checkbox component with proper accessibility support.',
+        component: "A checkbox component with proper accessibility support.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     checked: {
-      control: 'boolean',
+      control: "boolean",
     },
     disabled: {
-      control: 'boolean',
+      control: "boolean",
     },
   },
 };

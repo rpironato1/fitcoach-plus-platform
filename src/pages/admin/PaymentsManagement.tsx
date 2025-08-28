@@ -1,68 +1,90 @@
-
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { CreditCard, Search, Filter, TrendingUp, DollarSign } from 'lucide-react';
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  CreditCard,
+  Search,
+  Filter,
+  TrendingUp,
+  DollarSign,
+} from "lucide-react";
 
 export default function PaymentsManagement() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   const { data: payments, isLoading } = useQuery({
-    queryKey: ['admin-payments'],
+    queryKey: ["admin-payments"],
     queryFn: async () => {
       const { data } = await supabase
-        .from('payment_intents')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
+        .from("payment_intents")
+        .select("*")
+        .order("created_at", { ascending: false });
+
       return data;
-    }
+    },
   });
 
   const { data: stats } = useQuery({
-    queryKey: ['payment-stats'],
+    queryKey: ["payment-stats"],
     queryFn: async () => {
       const { data: paymentsData } = await supabase
-        .from('payment_intents')
-        .select('*');
+        .from("payment_intents")
+        .select("*");
 
-      const totalRevenue = paymentsData?.reduce((sum, p) => sum + Number(p.amount), 0) || 0;
-      const successfulPayments = paymentsData?.filter(p => p.status === 'succeeded').length || 0;
-      const pendingPayments = paymentsData?.filter(p => p.status === 'pending').length || 0;
-      const failedPayments = paymentsData?.filter(p => p.status === 'failed').length || 0;
+      const totalRevenue =
+        paymentsData?.reduce((sum, p) => sum + Number(p.amount), 0) || 0;
+      const successfulPayments =
+        paymentsData?.filter((p) => p.status === "succeeded").length || 0;
+      const pendingPayments =
+        paymentsData?.filter((p) => p.status === "pending").length || 0;
+      const failedPayments =
+        paymentsData?.filter((p) => p.status === "failed").length || 0;
 
       return {
         totalRevenue,
         successfulPayments,
         pendingPayments,
         failedPayments,
-        totalPayments: paymentsData?.length || 0
+        totalPayments: paymentsData?.length || 0,
       };
-    }
+    },
   });
 
-  const filteredPayments = payments?.filter(payment => {
-    const matchesStatus = filterStatus === 'all' || payment.status === filterStatus;
+  const filteredPayments = payments?.filter((payment) => {
+    const matchesStatus =
+      filterStatus === "all" || payment.status === filterStatus;
     return matchesStatus;
   });
 
   const statusColors = {
-    succeeded: 'bg-green-100 text-green-800',
-    pending: 'bg-yellow-100 text-yellow-800',
-    failed: 'bg-red-100 text-red-800',
-    cancelled: 'bg-gray-100 text-gray-800',
+    succeeded: "bg-green-100 text-green-800",
+    pending: "bg-yellow-100 text-yellow-800",
+    failed: "bg-red-100 text-red-800",
+    cancelled: "bg-gray-100 text-gray-800",
   };
 
   const statusLabels = {
-    succeeded: 'Aprovado',
-    pending: 'Pendente',
-    failed: 'Falhou',
-    cancelled: 'Cancelado',
+    succeeded: "Aprovado",
+    pending: "Pendente",
+    failed: "Falhou",
+    cancelled: "Cancelado",
   };
 
   if (isLoading) {
@@ -79,8 +101,12 @@ export default function PaymentsManagement() {
   return (
     <div className="p-6 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Gerenciar Pagamentos</h1>
-        <p className="text-gray-600">Monitore todas as transações da plataforma</p>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Gerenciar Pagamentos
+        </h1>
+        <p className="text-gray-600">
+          Monitore todas as transações da plataforma
+        </p>
       </div>
 
       {/* Stats Cards */}
@@ -91,17 +117,23 @@ export default function PaymentsManagement() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">R$ {(stats?.totalRevenue || 0).toFixed(2)}</div>
+            <div className="text-2xl font-bold">
+              R$ {(stats?.totalRevenue || 0).toFixed(2)}
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pagamentos Aprovados</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Pagamentos Aprovados
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.successfulPayments || 0}</div>
+            <div className="text-2xl font-bold">
+              {stats?.successfulPayments || 0}
+            </div>
           </CardContent>
         </Card>
 
@@ -111,7 +143,9 @@ export default function PaymentsManagement() {
             <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.pendingPayments || 0}</div>
+            <div className="text-2xl font-bold">
+              {stats?.pendingPayments || 0}
+            </div>
           </CardContent>
         </Card>
 
@@ -121,7 +155,9 @@ export default function PaymentsManagement() {
             <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.failedPayments || 0}</div>
+            <div className="text-2xl font-bold">
+              {stats?.failedPayments || 0}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -163,17 +199,26 @@ export default function PaymentsManagement() {
         <CardContent>
           <div className="space-y-4">
             {filteredPayments?.map((payment) => (
-              <div key={payment.id} className="flex items-center justify-between p-4 border rounded-lg">
+              <div
+                key={payment.id}
+                className="flex items-center justify-between p-4 border rounded-lg"
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                     <CreditCard className="h-6 w-6 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">R$ {Number(payment.amount).toFixed(2)}</h3>
+                    <h3 className="font-semibold">
+                      R$ {Number(payment.amount).toFixed(2)}
+                    </h3>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
                       <span>{payment.method}</span>
                       <span>Taxa: {payment.fee_percent}%</span>
-                      <span>{new Date(payment.created_at).toLocaleDateString('pt-BR')}</span>
+                      <span>
+                        {new Date(payment.created_at).toLocaleDateString(
+                          "pt-BR"
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>

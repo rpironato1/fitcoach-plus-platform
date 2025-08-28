@@ -1,8 +1,13 @@
-
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Search, Filter } from 'lucide-react';
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Search, Filter } from "lucide-react";
 
 interface TrainersFiltersProps {
   searchTerm: string;
@@ -11,11 +16,11 @@ interface TrainersFiltersProps {
   setFilterPlan: (value: string) => void;
 }
 
-export function TrainersFilters({ 
-  searchTerm, 
-  setSearchTerm, 
-  filterPlan, 
-  setFilterPlan 
+export function TrainersFilters({
+  searchTerm,
+  setSearchTerm,
+  filterPlan,
+  setFilterPlan,
 }: TrainersFiltersProps) {
   return (
     <Card>

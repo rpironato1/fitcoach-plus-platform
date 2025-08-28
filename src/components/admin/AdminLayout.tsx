@@ -1,28 +1,27 @@
-
-import { ReactNode } from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Settings, 
-  FileText, 
+import { ReactNode } from "react";
+import { Link, useLocation, Outlet } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  LayoutDashboard,
+  Users,
+  Settings,
+  FileText,
   CreditCard,
-  LogOut
-} from 'lucide-react';
-import { useLocalStorageAuth as useAuth } from '@/components/auth/LocalStorageAuthProvider';
+  LogOut,
+} from "lucide-react";
+import { useLocalStorageAuth as useAuth } from "@/components/auth/LocalStorageAuthProvider";
 
 interface AdminLayoutProps {
   children?: ReactNode;
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-  { name: 'Trainers', href: '/admin/trainers', icon: Users },
-  { name: 'Pagamentos', href: '/admin/payments', icon: CreditCard },
-  { name: 'Relatórios', href: '/admin/reports', icon: FileText },
-  { name: 'Configurações', href: '/admin/settings', icon: Settings },
+  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { name: "Trainers", href: "/admin/trainers", icon: Users },
+  { name: "Pagamentos", href: "/admin/payments", icon: CreditCard },
+  { name: "Relatórios", href: "/admin/reports", icon: FileText },
+  { name: "Configurações", href: "/admin/settings", icon: Settings },
 ];
 
 export function AdminLayout({ children }: AdminLayoutProps) {
@@ -39,16 +38,19 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <nav className="mt-6">
           {navigation.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.href || (item.href !== '/admin' && location.pathname.startsWith(item.href));
+            const isActive =
+              location.pathname === item.href ||
+              (item.href !== "/admin" &&
+                location.pathname.startsWith(item.href));
             return (
               <Link
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  'flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors',
+                  "flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors",
                   isActive
-                    ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    ? "bg-blue-50 text-blue-700 border-r-2 border-blue-700"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                 )}
               >
                 <Icon className="h-5 w-5" />
