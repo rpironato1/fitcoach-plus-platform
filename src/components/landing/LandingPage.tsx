@@ -581,7 +581,7 @@ export function LandingPage() {
             
             {/* Título Principal Espetacular */}
             <div className="space-y-6">
-              <h1 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-black leading-tight">
+              <h2 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-black leading-tight">
                 <span className="block text-white drop-shadow-2xl">
                   PRONTO PARA
                 </span>
@@ -591,7 +591,7 @@ export function LandingPage() {
                 <span className="block text-white drop-shadow-2xl">
                   SEU NEGÓCIO?
                 </span>
-              </h1>
+              </h2>
               
               <p className="text-2xl sm:text-3xl lg:text-4xl text-white/90 max-w-5xl mx-auto leading-relaxed font-light">
                 Junte-se à revolução do fitness digital e 
@@ -705,44 +705,44 @@ export function LandingPage() {
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4">Produto</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="/features" className="hover:text-white transition-colors">Recursos</a></li>
-                <li><a href="/pricing" className="hover:text-white transition-colors">Preços</a></li>
-                <li><a href="/api-docs" className="hover:text-white transition-colors">API</a></li>
-                <li><a href="/integrations" className="hover:text-white transition-colors">Integrações</a></li>
+              <h3 className="font-semibold mb-4 text-white">Produto</h3>
+              <ul className="space-y-2 text-gray-300">
+                <li><a href="/features" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Recursos</a></li>
+                <li><a href="/pricing" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Preços</a></li>
+                <li><a href="/api-docs" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">API</a></li>
+                <li><a href="/integrations" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Integrações</a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4">Empresa</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="/about" className="hover:text-white transition-colors">Sobre</a></li>
-                <li><a href="/blog" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="/careers" className="hover:text-white transition-colors">Carreiras</a></li>
-                <li><a href="/press" className="hover:text-white transition-colors">Imprensa</a></li>
+              <h3 className="font-semibold mb-4 text-white">Empresa</h3>
+              <ul className="space-y-2 text-gray-300">
+                <li><a href="/about" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Sobre</a></li>
+                <li><a href="/blog" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Blog</a></li>
+                <li><a href="/careers" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Carreiras</a></li>
+                <li><a href="/press" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Imprensa</a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4">Suporte</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="/help" className="hover:text-white transition-colors">Central de Ajuda</a></li>
-                <li><a href="/contact" className="hover:text-white transition-colors">Contato</a></li>
-                <li><a href="https://status.fitcoach.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Status</a></li>
-                <li><a href="/community" className="hover:text-white transition-colors">Comunidade</a></li>
+              <h3 className="font-semibold mb-4 text-white">Suporte</h3>
+              <ul className="space-y-2 text-gray-300">
+                <li><a href="/help" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Central de Ajuda</a></li>
+                <li><a href="/contact" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Contato</a></li>
+                <li><a href="https://status.fitcoach.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Status</a></li>
+                <li><a href="/community" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Comunidade</a></li>
               </ul>
             </div>
           </div>
           
           <Separator className="my-8 bg-gray-800" />
           
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-400">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-300">
             <p>&copy; 2024 FitCoach. Todos os direitos reservados.</p>
             <div className="flex gap-6 text-sm">
-              <a href="/privacy" className="hover:text-white transition-colors">Privacidade</a>
-              <a href="/terms" className="hover:text-white transition-colors">Termos</a>
-              <a href="/cookies" className="hover:text-white transition-colors">Cookies</a>
+              <a href="/privacy" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Privacidade</a>
+              <a href="/terms" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Termos</a>
+              <a href="/cookies" className="text-gray-300 hover:text-white focus:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900">Cookies</a>
             </div>
           </div>
         </div>
