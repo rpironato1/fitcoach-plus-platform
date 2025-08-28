@@ -57,7 +57,9 @@ export default function StudentDashboardDemo() {
       </div>
 
       {/* Status Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold text-gray-900 sr-only">Visão Geral</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
         <GenderSelection 
           currentGender={studentProfile.gender}
           onGenderChange={handleGenderChange}
@@ -139,6 +141,7 @@ export default function StudentDashboardDemo() {
             <p className="text-xs text-muted-foreground">vs mês anterior</p>
           </CardContent>
         </Card>
+        </div>
       </div>
 
       {/* Recent Activity */}
