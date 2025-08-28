@@ -1,20 +1,20 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import StudentDashboard from './StudentDashboard';
+import { render, screen, fireEvent } from "@testing-library/react";
+import { vi, describe, it, expect, beforeEach } from "vitest";
+import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import StudentDashboard from "./StudentDashboard";
 
 // Mock the auth hook
-vi.mock('../../../hooks/useAuth', () => ({
+vi.mock("../../../hooks/useAuth", () => ({
   useAuth: () => ({
     user: {
-      id: '1',
-      email: 'student@test.com',
-      name: 'Test Student',
-      role: 'student'
+      id: "1",
+      email: "student@test.com",
+      name: "Test Student",
+      role: "student",
     },
-    logout: vi.fn()
-  })
+    logout: vi.fn(),
+  }),
 }));
 
 // Mock localStorage operations
@@ -24,7 +24,7 @@ const mockLocalStorage = {
   removeItem: vi.fn(),
   clear: vi.fn(),
 };
-global.localStorage = mockLocalStorage as any;
+global.localStorage = mockLocalStorage as Storage;
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
@@ -37,20 +37,18 @@ const createWrapper = () => {
 
   return ({ children }: { children: React.ReactNode }) => (
     <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </BrowserRouter>
   );
 };
 
-describe('StudentDashboard', () => {
+describe("StudentDashboard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockLocalStorage.getItem.mockReturnValue('[]');
+    mockLocalStorage.getItem.mockReturnValue("[]");
   });
 
-  it('should render main heading', () => {
+  it("should render main heading", () => {
     const Wrapper = createWrapper();
     render(
       <Wrapper>
@@ -61,7 +59,7 @@ describe('StudentDashboard', () => {
     expect(screen.getByText(/Olá/)).toBeInTheDocument();
   });
 
-  it('should display welcome message', () => {
+  it("should display welcome message", () => {
     const Wrapper = createWrapper();
     render(
       <Wrapper>
@@ -72,7 +70,7 @@ describe('StudentDashboard', () => {
     expect(screen.getByText(/Acompanhe seu progresso/)).toBeInTheDocument();
   });
 
-  it('should show dashboard content', () => {
+  it("should show dashboard content", () => {
     const Wrapper = createWrapper();
     render(
       <Wrapper>
@@ -83,7 +81,7 @@ describe('StudentDashboard', () => {
     expect(screen.getByText(/Informações Pessoais/)).toBeInTheDocument();
   });
 
-  it('should handle localStorage operations', () => {
+  it("should handle localStorage operations", () => {
     const Wrapper = createWrapper();
     render(
       <Wrapper>
