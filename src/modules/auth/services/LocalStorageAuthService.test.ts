@@ -5,6 +5,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { LocalStorageAuthService, LocalStorageProfileService } from './LocalStorageAuthService';
+import { localStorageService } from '@/services/localStorageService';
 
 vi.mock('@/services/localStorageService', () => {
   const mockLocalStorageService = {
@@ -26,9 +27,7 @@ describe('LocalStorageAuthService', () => {
 
   beforeEach(() => {
     authService = new LocalStorageAuthService();
-    mockLocalStorageService = vi.mocked(
-      require('@/services/localStorageService').localStorageService
-    );
+    mockLocalStorageService = vi.mocked(localStorageService);
     vi.clearAllMocks();
     vi.useFakeTimers();
   });
