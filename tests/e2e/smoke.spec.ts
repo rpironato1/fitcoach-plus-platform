@@ -14,6 +14,6 @@ test.describe("FitCoach Smoke Tests", () => {
 
   test("should load localStorage manager", async ({ page }) => {
     await page.goto("/localStorage-manager");
-    await expect(page.locator("text=localStorage Manager")).toBeVisible();
+    await expect(page.locator("text=Gerenciador de Dados localStorage")).toBeVisible();
   });
 });
