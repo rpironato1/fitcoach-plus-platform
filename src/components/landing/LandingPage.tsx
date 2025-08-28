@@ -294,526 +294,535 @@ export function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12 sm:py-20 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200">
-                <Star className="h-3 w-3 mr-1" />
-                Mais de 2.500 Personal Trainers
-              </Badge>
+      <main>
+        {/* Hero Section */}
+        <section className="container mx-auto px-4 py-12 sm:py-20 lg:py-24">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200">
+                  <Star className="h-3 w-3 mr-1" />
+                  Mais de 2.500 Personal Trainers
+                </Badge>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                A plataforma
-                <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  mais completa
-                </span>
-                para Personal Trainers
-              </h1>
-
-              <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
-                Gerencie alunos, crie treinos e dietas com IA, automatize
-                pagamentos e acompanhe resultados. Tudo em uma plataforma
-                moderna e intuitiva.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                size="lg"
-                onClick={() => setIsRegisterOpen(true)}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg"
-              >
-                <PlayCircle className="h-5 w-5 mr-2" />
-                Começar Grátis
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2"
-                onClick={handleDemoClick}
-              >
-                <Globe className="h-5 w-5 mr-2" />
-                Ver Demo
-              </Button>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-3xl blur-3xl opacity-20"></div>
-            <div className="relative bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                  <Trophy className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <div className="font-semibold">Dashboard do Trainer</div>
-                  <div className="text-sm text-gray-500">
-                    Visão geral completa
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <Card className="border-blue-200">
-                  <CardContent className="p-4">
-                    <div className="text-2xl font-bold text-blue-600">12</div>
-                    <div className="text-xs text-gray-500">Alunos Ativos</div>
-                  </CardContent>
-                </Card>
-                <Card className="border-purple-200">
-                  <CardContent className="p-4">
-                    <div className="text-2xl font-bold text-purple-600">
-                      R$ 4.8k
-                    </div>
-                    <div className="text-xs text-gray-500">Este Mês</div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Meta Mensal</span>
-                  <span className="text-sm font-semibold">80%</span>
-                </div>
-                <Progress
-                  value={80}
-                  className="h-2"
-                  aria-label="Meta mensal: 80% concluído"
-                />
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-green-600">
-                <TrendingUp className="h-4 w-4" />
-                +24% vs mês anterior
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
-            <Badge className="bg-purple-100 text-purple-700">
-              Recursos Poderosos
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-              Tudo que você precisa para
-              <span className="block bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                crescer seu negócio
-              </span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Uma suíte completa de ferramentas profissionais para elevar seu
-              trabalho como Personal Trainer
-            </p>
-          </div>
-
-          <Tabs defaultValue="0" className="max-w-6xl mx-auto">
-            <TabsList className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 h-auto p-1 bg-gray-100">
-              {features.map((feature, index) => (
-                <TabsTrigger
-                  key={index}
-                  value={index.toString()}
-                  className="flex flex-col items-center gap-2 p-4 data-[state=active]:bg-white"
-                >
-                  <feature.icon className="h-5 w-5" />
-                  <span className="text-xs text-center leading-tight">
-                    {feature.title.split(" ")[0]}
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+                  A plataforma
+                  <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    mais completa
                   </span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
+                  para Personal Trainers
+                </h1>
 
-            {features.map((feature, index) => (
-              <TabsContent
-                key={index}
-                value={index.toString()}
-                className="mt-8"
-              >
-                <Card className="overflow-hidden">
-                  <CardContent className="p-0">
-                    <div className="grid lg:grid-cols-2 gap-0">
-                      <div className="p-8 lg:p-12 space-y-6">
-                        <div
-                          className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center`}
-                        >
-                          <feature.icon className="h-8 w-8 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl lg:text-3xl font-bold mb-4">
-                            {feature.title}
-                          </h3>
-                          <p className="text-gray-600 text-lg leading-relaxed">
-                            {feature.description}
-                          </p>
-                        </div>
-                        <Button
-                          size="lg"
-                          className="bg-gradient-to-r from-blue-600 to-purple-600"
-                          onClick={handleExperimentarClick}
-                        >
-                          Experimentar Agora
-                          <ArrowRight className="h-4 w-4 ml-2" />
-                        </Button>
-                      </div>
-                      <div
-                        className={`bg-gradient-to-br ${feature.gradient} p-8 lg:p-12 flex items-center justify-center`}
-                      >
-                        <div className="w-full max-w-sm bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white">
-                          <div className="space-y-4">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                                <feature.icon className="h-5 w-5" />
-                              </div>
-                              <div>
-                                <div className="font-semibold">
-                                  {feature.title}
-                                </div>
-                                <div className="text-sm opacity-80">Ativo</div>
-                              </div>
-                            </div>
-                            <Separator className="bg-white/20" />
-                            <div className="space-y-2">
-                              <div className="flex justify-between">
-                                <span className="text-sm">Eficiência</span>
-                                <span className="text-sm">95%</span>
-                              </div>
-                              <Progress
-                                value={95}
-                                className="bg-white/20"
-                                aria-label="Eficiência do treino: 95%"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
+                  Gerencie alunos, crie treinos e dietas com IA, automatize
+                  pagamentos e acompanhe resultados. Tudo em uma plataforma
+                  moderna e intuitiva.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  size="lg"
+                  onClick={() => setIsRegisterOpen(true)}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg"
+                >
+                  <PlayCircle className="h-5 w-5 mr-2" />
+                  Começar Grátis
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2"
+                  onClick={handleDemoClick}
+                >
+                  <Globe className="h-5 w-5 mr-2" />
+                  Ver Demo
+                </Button>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8">
+                {stats.map((stat, index) => (
+                  <div key={index} className="text-center">
+                    <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      {stat.value}
                     </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </div>
-      </section>
+                    <div className="text-sm text-gray-600">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-      {/* Testimonials */}
-      <section className="py-16 sm:py-20 bg-gradient-to-r from-blue-50 to-purple-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
-            <Badge className="bg-green-100 text-green-700">
-              <Heart className="h-3 w-3 mr-1" />
-              Depoimentos
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold">
-              Transformando carreiras de
-              <span className="block bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                Personal Trainers
-              </span>
-            </h2>
-          </div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-3xl blur-3xl opacity-20"></div>
+              <div className="relative bg-white rounded-3xl shadow-2xl p-6 space-y-4">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                    <Trophy className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <div className="font-semibold">Dashboard do Trainer</div>
+                    <div className="text-sm text-gray-500">
+                      Visão geral completa
+                    </div>
+                  </div>
+                </div>
 
-          <Carousel className="max-w-5xl mx-auto">
-            <CarouselContent>
-              {testimonials.map((testimonial, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="h-full bg-white shadow-lg hover:shadow-xl transition-shadow">
-                    <CardContent className="p-6 space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="text-3xl">{testimonial.image}</div>
-                        <div>
-                          <div className="font-semibold">
-                            {testimonial.name}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {testimonial.role}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                          />
-                        ))}
-                      </div>
-
-                      <p className="text-gray-600 italic">
-                        "{testimonial.content}"
-                      </p>
-
-                      <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
-                        {testimonial.metric}
-                      </Badge>
+                <div className="grid grid-cols-2 gap-4">
+                  <Card className="border-blue-200">
+                    <CardContent className="p-4">
+                      <div className="text-2xl font-bold text-blue-600">12</div>
+                      <div className="text-xs text-gray-500">Alunos Ativos</div>
                     </CardContent>
                   </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
-      </section>
+                  <Card className="border-purple-200">
+                    <CardContent className="p-4">
+                      <div className="text-2xl font-bold text-purple-600">
+                        R$ 4.8k
+                      </div>
+                      <div className="text-xs text-gray-500">Este Mês</div>
+                    </CardContent>
+                  </Card>
+                </div>
 
-      {/* Pricing Section */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
-            <Badge className="bg-orange-100 text-orange-700">
-              <Award className="h-3 w-3 mr-1" />
-              Planos Flexíveis
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold">
-              Escolha o plano ideal para
-              <span className="block bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                seu momento de carreira
-              </span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Comece grátis e escale conforme seu negócio cresce. Sem
-              compromissos, sem pegadinhas.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {plans.map((plan, index) => (
-              <Card
-                key={index}
-                className={`relative ${plan.color} hover:shadow-xl transition-all duration-300 ${plan.popular ? "scale-105" : "hover:scale-105"}`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 text-sm font-medium flex items-center gap-2">
-                      <Star className="h-4 w-4 fill-current" />
-                      Mais Popular
-                    </Badge>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">Meta Mensal</span>
+                    <span className="text-sm font-semibold">80%</span>
                   </div>
-                )}
+                  <Progress
+                    value={80}
+                    className="h-2"
+                    aria-label="Meta mensal: 80% concluído"
+                  />
+                </div>
 
-                <CardHeader className="text-center pb-8 pt-8">
-                  <CardTitle className="text-2xl font-bold">
-                    {plan.name}
-                  </CardTitle>
-                  <div className="space-y-2">
-                    <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      {plan.price}
-                    </div>
-                    <div className="text-gray-500">{plan.period}</div>
-                  </div>
-                </CardHeader>
-
-                <CardContent className="space-y-6">
-                  <ul className="space-y-3">
-                    {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button
-                    className={`w-full py-6 text-lg ${plan.popular ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" : ""}`}
-                    variant={plan.button as "default" | "outline"}
-                    onClick={() =>
-                      plan.name === "Free"
-                        ? setIsRegisterOpen(true)
-                        : handlePricingClick(plan.name)
-                    }
-                  >
-                    {plan.name === "Free" ? "Começar Grátis" : "Escolher Plano"}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
-            <Badge className="bg-gray-200 text-gray-700">
-              <MessageCircle className="h-3 w-3 mr-1" />
-              Dúvidas Frequentes
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold">
-              Ainda tem
-              <span className="bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">
-                {" "}
-                dúvidas?
-              </span>
-            </h2>
-          </div>
-
-          <Accordion type="single" collapsible className="max-w-3xl mx-auto">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left text-lg font-semibold">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 text-base leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
-
-      {/* CTA Section - Espetacular e Full Width */}
-      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Gradiente Animado */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 via-pink-600 to-orange-500 animate-gradient-xy"></div>
-
-        {/* Overlay com Pattern Animado */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-purple-900/20"></div>
-
-        {/* Efeitos de Brilho Animados */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-
-        {/* Partículas Decorativas */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-2 h-2 bg-white/30 rounded-full animate-bounce"></div>
-          <div className="absolute top-40 right-20 w-3 h-3 bg-white/20 rounded-full animate-bounce delay-500"></div>
-          <div className="absolute bottom-32 left-1/3 w-2 h-2 bg-white/40 rounded-full animate-bounce delay-1000"></div>
-          <div className="absolute bottom-20 right-1/3 w-4 h-4 bg-white/10 rounded-full animate-pulse"></div>
-        </div>
-
-        {/* Conteúdo Principal */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-20 text-center">
-          <div className="space-y-12">
-            {/* Badge Superior */}
-            <div className="flex justify-center">
-              <Badge className="bg-white/20 backdrop-blur-sm border-white/30 text-white px-6 py-2 text-lg font-medium">
-                <Star className="w-5 h-5 mr-2" />
-                Mais de 2.500 Personal Trainers confiam em nós
-              </Badge>
+                <div className="flex items-center gap-2 text-sm text-green-600">
+                  <TrendingUp className="h-4 w-4" />
+                  +24% vs mês anterior
+                </div>
+              </div>
             </div>
+          </div>
+        </section>
 
-            {/* Título Principal Espetacular */}
-            <div className="space-y-6">
-              <h2 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-black leading-tight">
-                <span className="block text-white drop-shadow-2xl">
-                  PRONTO PARA
-                </span>
-                <span className="block bg-gradient-to-r from-yellow-300 via-white to-yellow-300 bg-clip-text text-transparent animate-pulse">
-                  TRANSFORMAR
-                </span>
-                <span className="block text-white drop-shadow-2xl">
-                  SEU NEGÓCIO?
+        {/* Features Section */}
+        <section className="py-16 sm:py-20 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center space-y-4 mb-16">
+              <Badge className="bg-purple-100 text-purple-700">
+                Recursos Poderosos
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+                Tudo que você precisa para
+                <span className="block bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  crescer seu negócio
                 </span>
               </h2>
-
-              <p className="text-2xl sm:text-3xl lg:text-4xl text-white/90 max-w-5xl mx-auto leading-relaxed font-light">
-                Junte-se à revolução do fitness digital e
-                <span className="font-bold bg-gradient-to-r from-yellow-300 to-white bg-clip-text text-transparent">
-                  {" "}
-                  multiplique sua receita{" "}
-                </span>
-                com a plataforma mais avançada do Brasil
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Uma suíte completa de ferramentas profissionais para elevar seu
+                trabalho como Personal Trainer
               </p>
             </div>
 
-            {/* Call to Action Buttons Espetaculares */}
-            <div className="flex flex-col lg:flex-row gap-6 justify-center items-center pt-8">
-              <Button
-                size="lg"
-                onClick={() => setIsRegisterOpen(true)}
-                className="bg-white text-gray-900 hover:bg-yellow-300 hover:text-gray-900 shadow-2xl text-2xl font-bold px-16 py-8 rounded-2xl transition-all duration-300 transform hover:scale-110 hover:shadow-yellow-300/50"
-              >
-                <PlayCircle className="h-8 w-8 mr-4" />
-                COMEÇAR GRÁTIS AGORA
-              </Button>
+            <Tabs defaultValue="0" className="max-w-6xl mx-auto">
+              <TabsList className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 h-auto p-1 bg-gray-100">
+                {features.map((feature, index) => (
+                  <TabsTrigger
+                    key={index}
+                    value={index.toString()}
+                    className="flex flex-col items-center gap-2 p-4 data-[state=active]:bg-white"
+                  >
+                    <feature.icon className="h-5 w-5" />
+                    <span className="text-xs text-center leading-tight">
+                      {feature.title.split(" ")[0]}
+                    </span>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
 
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-4 border-white text-white hover:bg-white hover:text-gray-900 text-2xl font-bold px-16 py-8 rounded-2xl transition-all duration-300 transform hover:scale-110 backdrop-blur-sm bg-white/10"
-                onClick={handleDemoClick}
-              >
-                <Clock className="h-8 w-8 mr-4" />
-                VER DEMO EXCLUSIVA
-              </Button>
-            </div>
+              {features.map((feature, index) => (
+                <TabsContent
+                  key={index}
+                  value={index.toString()}
+                  className="mt-8"
+                >
+                  <Card className="overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="grid lg:grid-cols-2 gap-0">
+                        <div className="p-8 lg:p-12 space-y-6">
+                          <div
+                            className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center`}
+                          >
+                            <feature.icon className="h-8 w-8 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="text-2xl lg:text-3xl font-bold mb-4">
+                              {feature.title}
+                            </h3>
+                            <p className="text-gray-600 text-lg leading-relaxed">
+                              {feature.description}
+                            </p>
+                          </div>
+                          <Button
+                            size="lg"
+                            className="bg-gradient-to-r from-blue-600 to-purple-600"
+                            onClick={handleExperimentarClick}
+                          >
+                            Experimentar Agora
+                            <ArrowRight className="h-4 w-4 ml-2" />
+                          </Button>
+                        </div>
+                        <div
+                          className={`bg-gradient-to-br ${feature.gradient} p-8 lg:p-12 flex items-center justify-center`}
+                        >
+                          <div className="w-full max-w-sm bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white">
+                            <div className="space-y-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                                  <feature.icon className="h-5 w-5" />
+                                </div>
+                                <div>
+                                  <div className="font-semibold">
+                                    {feature.title}
+                                  </div>
+                                  <div className="text-sm opacity-80">
+                                    Ativo
+                                  </div>
+                                </div>
+                              </div>
+                              <Separator className="bg-white/20" />
+                              <div className="space-y-2">
+                                <div className="flex justify-between">
+                                  <span className="text-sm">Eficiência</span>
+                                  <span className="text-sm">95%</span>
+                                </div>
+                                <Progress
+                                  value={95}
+                                  className="bg-white/20"
+                                  aria-label="Eficiência do treino: 95%"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              ))}
+            </Tabs>
+          </div>
+        </section>
 
-            {/* Estatísticas Impressionantes */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-16">
-              <div className="text-center space-y-4">
-                <div className="text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
-                  2.500+
-                </div>
-                <div className="text-xl text-white/80 font-medium">
+        {/* Testimonials */}
+        <section className="py-16 sm:py-20 bg-gradient-to-r from-blue-50 to-purple-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center space-y-4 mb-16">
+              <Badge className="bg-green-100 text-green-700">
+                <Heart className="h-3 w-3 mr-1" />
+                Depoimentos
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl font-bold">
+                Transformando carreiras de
+                <span className="block bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                   Personal Trainers
-                </div>
-              </div>
-              <div className="text-center space-y-4">
-                <div className="text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
-                  R$ 10M+
-                </div>
-                <div className="text-xl text-white/80 font-medium">
-                  Processados na Plataforma
-                </div>
-              </div>
-              <div className="text-center space-y-4">
-                <div className="text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
-                  99.9%
-                </div>
-                <div className="text-xl text-white/80 font-medium">
-                  Uptime Garantido
-                </div>
-              </div>
+                </span>
+              </h2>
             </div>
 
-            {/* Benefícios de Segurança */}
-            <div className="flex flex-col lg:flex-row items-center justify-center gap-12 pt-12 text-lg">
-              <div className="flex items-center gap-4 text-white/90">
-                <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
-                  <Shield className="h-6 w-6" />
-                </div>
-                <span className="font-semibold">Dados 100% Seguros</span>
+            <Carousel className="max-w-5xl mx-auto">
+              <CarouselContent>
+                {testimonials.map((testimonial, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="md:basis-1/2 lg:basis-1/3"
+                  >
+                    <Card className="h-full bg-white shadow-lg hover:shadow-xl transition-shadow">
+                      <CardContent className="p-6 space-y-4">
+                        <div className="flex items-center gap-3">
+                          <div className="text-3xl">{testimonial.image}</div>
+                          <div>
+                            <div className="font-semibold">
+                              {testimonial.name}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {testimonial.role}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex">
+                          {[...Array(testimonial.rating)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                            />
+                          ))}
+                        </div>
+
+                        <p className="text-gray-600 italic">
+                          "{testimonial.content}"
+                        </p>
+
+                        <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+                          {testimonial.metric}
+                        </Badge>
+                      </CardContent>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <section className="py-16 sm:py-20 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center space-y-4 mb-16">
+              <Badge className="bg-orange-100 text-orange-700">
+                <Award className="h-3 w-3 mr-1" />
+                Planos Flexíveis
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl font-bold">
+                Escolha o plano ideal para
+                <span className="block bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                  seu momento de carreira
+                </span>
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Comece grátis e escale conforme seu negócio cresce. Sem
+                compromissos, sem pegadinhas.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {plans.map((plan, index) => (
+                <Card
+                  key={index}
+                  className={`relative ${plan.color} hover:shadow-xl transition-all duration-300 ${plan.popular ? "scale-105" : "hover:scale-105"}`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 text-sm font-medium flex items-center gap-2">
+                        <Star className="h-4 w-4 fill-current" />
+                        Mais Popular
+                      </Badge>
+                    </div>
+                  )}
+
+                  <CardHeader className="text-center pb-8 pt-8">
+                    <CardTitle className="text-2xl font-bold">
+                      {plan.name}
+                    </CardTitle>
+                    <div className="space-y-2">
+                      <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        {plan.price}
+                      </div>
+                      <div className="text-gray-500">{plan.period}</div>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="space-y-6">
+                    <ul className="space-y-3">
+                      {plan.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center gap-3">
+                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                          <span className="text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Button
+                      className={`w-full py-6 text-lg ${plan.popular ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" : ""}`}
+                      variant={plan.button as "default" | "outline"}
+                      onClick={() =>
+                        plan.name === "Free"
+                          ? setIsRegisterOpen(true)
+                          : handlePricingClick(plan.name)
+                      }
+                    >
+                      {plan.name === "Free"
+                        ? "Começar Grátis"
+                        : "Escolher Plano"}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16 sm:py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center space-y-4 mb-16">
+              <Badge className="bg-gray-200 text-gray-700">
+                <MessageCircle className="h-3 w-3 mr-1" />
+                Dúvidas Frequentes
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl font-bold">
+                Ainda tem
+                <span className="bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">
+                  {" "}
+                  dúvidas?
+                </span>
+              </h2>
+            </div>
+
+            <Accordion type="single" collapsible className="max-w-3xl mx-auto">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-left text-lg font-semibold">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 text-base leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </section>
+
+        {/* CTA Section - Espetacular e Full Width */}
+        <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+          {/* Background Gradiente Animado */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 via-pink-600 to-orange-500 animate-gradient-xy"></div>
+
+          {/* Overlay com Pattern Animado */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-purple-900/20"></div>
+
+          {/* Efeitos de Brilho Animados */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+
+          {/* Partículas Decorativas */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-10 w-2 h-2 bg-white/30 rounded-full animate-bounce"></div>
+            <div className="absolute top-40 right-20 w-3 h-3 bg-white/20 rounded-full animate-bounce delay-500"></div>
+            <div className="absolute bottom-32 left-1/3 w-2 h-2 bg-white/40 rounded-full animate-bounce delay-1000"></div>
+            <div className="absolute bottom-20 right-1/3 w-4 h-4 bg-white/10 rounded-full animate-pulse"></div>
+          </div>
+
+          {/* Conteúdo Principal */}
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-20 text-center">
+            <div className="space-y-12">
+              {/* Badge Superior */}
+              <div className="flex justify-center">
+                <Badge className="bg-white/20 backdrop-blur-sm border-white/30 text-white px-6 py-2 text-lg font-medium">
+                  <Star className="w-5 h-5 mr-2" />
+                  Mais de 2.500 Personal Trainers confiam em nós
+                </Badge>
               </div>
-              <div className="flex items-center gap-4 text-white/90">
-                <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
-                  <Zap className="h-6 w-6" />
-                </div>
-                <span className="font-semibold">Setup em 2 Minutos</span>
+
+              {/* Título Principal Espetacular */}
+              <div className="space-y-6">
+                <h2 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-black leading-tight">
+                  <span className="block text-white drop-shadow-2xl">
+                    PRONTO PARA
+                  </span>
+                  <span className="block bg-gradient-to-r from-yellow-300 via-white to-yellow-300 bg-clip-text text-transparent animate-pulse">
+                    TRANSFORMAR
+                  </span>
+                  <span className="block text-white drop-shadow-2xl">
+                    SEU NEGÓCIO?
+                  </span>
+                </h2>
+
+                <p className="text-2xl sm:text-3xl lg:text-4xl text-white/90 max-w-5xl mx-auto leading-relaxed font-light">
+                  Junte-se à revolução do fitness digital e
+                  <span className="font-bold bg-gradient-to-r from-yellow-300 to-white bg-clip-text text-transparent">
+                    {" "}
+                    multiplique sua receita{" "}
+                  </span>
+                  com a plataforma mais avançada do Brasil
+                </p>
               </div>
-              <div className="flex items-center gap-4 text-white/90">
-                <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
-                  <Target className="h-6 w-6" />
+
+              {/* Call to Action Buttons Espetaculares */}
+              <div className="flex flex-col lg:flex-row gap-6 justify-center items-center pt-8">
+                <Button
+                  size="lg"
+                  onClick={() => setIsRegisterOpen(true)}
+                  className="bg-white text-gray-900 hover:bg-yellow-300 hover:text-gray-900 shadow-2xl text-2xl font-bold px-16 py-8 rounded-2xl transition-all duration-300 transform hover:scale-110 hover:shadow-yellow-300/50"
+                >
+                  <PlayCircle className="h-8 w-8 mr-4" />
+                  COMEÇAR GRÁTIS AGORA
+                </Button>
+
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-4 border-white text-white hover:bg-white hover:text-gray-900 text-2xl font-bold px-16 py-8 rounded-2xl transition-all duration-300 transform hover:scale-110 backdrop-blur-sm bg-white/10"
+                  onClick={handleDemoClick}
+                >
+                  <Clock className="h-8 w-8 mr-4" />
+                  VER DEMO EXCLUSIVA
+                </Button>
+              </div>
+
+              {/* Estatísticas Impressionantes */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-16">
+                <div className="text-center space-y-4">
+                  <div className="text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
+                    2.500+
+                  </div>
+                  <div className="text-xl text-white/80 font-medium">
+                    Personal Trainers
+                  </div>
                 </div>
-                <span className="font-semibold">Sem Compromisso</span>
+                <div className="text-center space-y-4">
+                  <div className="text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
+                    R$ 10M+
+                  </div>
+                  <div className="text-xl text-white/80 font-medium">
+                    Processados na Plataforma
+                  </div>
+                </div>
+                <div className="text-center space-y-4">
+                  <div className="text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
+                    99.9%
+                  </div>
+                  <div className="text-xl text-white/80 font-medium">
+                    Uptime Garantido
+                  </div>
+                </div>
+              </div>
+
+              {/* Benefícios de Segurança */}
+              <div className="flex flex-col lg:flex-row items-center justify-center gap-12 pt-12 text-lg">
+                <div className="flex items-center gap-4 text-white/90">
+                  <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                    <Shield className="h-6 w-6" />
+                  </div>
+                  <span className="font-semibold">Dados 100% Seguros</span>
+                </div>
+                <div className="flex items-center gap-4 text-white/90">
+                  <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                    <Zap className="h-6 w-6" />
+                  </div>
+                  <span className="font-semibold">Setup em 2 Minutos</span>
+                </div>
+                <div className="flex items-center gap-4 text-white/90">
+                  <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                    <Target className="h-6 w-6" />
+                  </div>
+                  <span className="font-semibold">Sem Compromisso</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Seta Decorativa */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-6 border-r-2 border-b-2 border-white/60 transform rotate-45"></div>
-        </div>
-      </section>
+          {/* Seta Decorativa */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div className="w-6 h-6 border-r-2 border-b-2 border-white/60 transform rotate-45"></div>
+          </div>
+        </section>
+      </main>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
@@ -827,7 +836,7 @@ export function LandingPage() {
                     <Dumbbell className="h-6 w-6 text-blue-600" />
                   </div>
                 </div>
-                <span className="text-2xl font-bold">FitCoach</span>
+                <span className="text-2xl font-bold text-white">FitCoach</span>
               </div>
               <p className="text-gray-400">
                 A plataforma mais completa para Personal Trainers no Brasil.

@@ -17,7 +17,9 @@ test.describe("FitCoach Landing Page E2E Tests", () => {
     // Test navigation
     await expect(page.getByRole("button", { name: "Entrar" })).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Começar Grátis" })
+      page
+        .getByRole("navigation")
+        .getByRole("button", { name: "Começar Grátis" })
     ).toBeVisible();
 
     // Test stats section
@@ -33,7 +35,9 @@ test.describe("FitCoach Landing Page E2E Tests", () => {
       "aria-selected",
       "true"
     );
-    await expect(page.getByText("Gestão Inteligente de Alunos")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Gestão Inteligente de Alunos" })
+    ).toBeVisible();
 
     // Test Agendamento tab
     await page.getByRole("tab", { name: "Agendamento" }).click();
