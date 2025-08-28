@@ -151,6 +151,7 @@ export function LocalStorageManager() {
               <Switch
                 checked={useLocalStorage}
                 onCheckedChange={toggleStorageMode}
+                aria-label="Alternar entre localStorage e Supabase"
               />
             </div>
           </div>
