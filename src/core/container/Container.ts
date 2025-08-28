@@ -100,6 +100,17 @@ class DIContainer implements Container {
   clear(): void {
     this.bindings.clear();
   }
+
+  // Alias for clear() to match test expectations
+  unbindAll(): void {
+    this.clear();
+  }
+
+  // Add rebind method for testing
+  rebind<T>(token: string): BindingBuilder<T> {
+    this.bindings.delete(token);
+    return this.bind<T>(token);
+  }
 }
 
 export const container = new DIContainer();

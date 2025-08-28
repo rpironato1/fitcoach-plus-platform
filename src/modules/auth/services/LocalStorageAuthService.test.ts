@@ -245,14 +245,17 @@ describe('LocalStorageAuthService', () => {
 
       expect(callback).toHaveBeenCalledWith(null);
 
-      // User signs in
+      // User signs in - change the mock return value
       mockLocalStorageService.getCurrentSession.mockReturnValue({
         user: mockUser,
       });
 
+      // Advance timers to trigger the interval check
       vi.advanceTimersByTime(1000);
 
-      expect(callback).toHaveBeenCalledWith(mockUser);
+      // Wait for the callback to be called
+      expect(callback).toHaveBeenCalledTimes(2);
+      expect(callback).toHaveBeenLastCalledWith(mockUser);
 
       result.unsubscribe();
     });
@@ -309,8 +312,13 @@ describe('LocalStorageAuthService', () => {
 
       result.unsubscribe();
 
+      // Change the mock to return a user after unsubscribe
+      mockLocalStorageService.getCurrentSession.mockReturnValue({
+        user: { id: 'test-user', email: 'test@test.com', created_at: '2024-01-01' },
+      });
+
       // Advance timer after unsubscribe
-      vi.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(2000);
 
       expect(callback).toHaveBeenCalledTimes(1); // Should not be called again
     });

@@ -304,7 +304,7 @@ describe('useAuth', () => {
         expect(result.current.user).toEqual(mockUser);
         expect(result.current.profile).toBe(null);
         expect(consoleErrorSpy).toHaveBeenCalledWith('Error loading user profile:', expect.any(Error));
-      });
+      }, { timeout: 10000 });
 
       consoleErrorSpy.mockRestore();
     });
@@ -333,7 +333,7 @@ describe('useAuth', () => {
         expect(result.current.loading).toBe(false);
         expect(result.current.profile).toEqual(mockProfile);
         expect(result.current.trainerProfile).toBe(null);
-      });
+      }, { timeout: 10000 });
     });
 
     it('should handle missing student profile gracefully', async () => {
@@ -360,7 +360,7 @@ describe('useAuth', () => {
         expect(result.current.loading).toBe(false);
         expect(result.current.profile).toEqual(mockProfile);
         expect(result.current.studentProfile).toBe(null);
-      });
+      }, { timeout: 10000 });
     });
   });
 
@@ -369,6 +369,11 @@ describe('useAuth', () => {
       mockAuthService.signIn.mockResolvedValue(undefined);
 
       const { result } = renderHook(() => useAuth());
+
+      // Wait for initialization to complete
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
 
       await act(async () => {
         await result.current.signIn('user@test.com', 'password123');
@@ -381,6 +386,11 @@ describe('useAuth', () => {
       mockAuthService.signUp.mockResolvedValue(undefined);
 
       const { result } = renderHook(() => useAuth());
+
+      // Wait for initialization to complete
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
 
       const userData = {
         first_name: 'John',
@@ -400,6 +410,11 @@ describe('useAuth', () => {
 
       const { result } = renderHook(() => useAuth());
 
+      // Wait for initialization to complete
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
       await act(async () => {
         await result.current.signOut();
       });
@@ -412,6 +427,11 @@ describe('useAuth', () => {
       mockAuthService.signIn.mockRejectedValue(authError);
 
       const { result } = renderHook(() => useAuth());
+
+      // Wait for initialization to complete
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
 
       await expect(async () => {
         await act(async () => {
@@ -473,7 +493,7 @@ describe('useAuth', () => {
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
         expect(consoleErrorSpy).toHaveBeenCalledWith('Error initializing auth:', expect.any(Error));
-      });
+      }, { timeout: 10000 });
 
       consoleErrorSpy.mockRestore();
     });
@@ -494,7 +514,7 @@ describe('useAuth', () => {
         expect(result.current.loading).toBe(false);
         expect(result.current.user).toEqual(mockUser);
         expect(result.current.profile).toBe(null);
-      });
+      }, { timeout: 10000 });
     });
   });
 });

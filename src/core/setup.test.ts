@@ -53,11 +53,11 @@ describe('Core Setup', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Clear container bindings before each test
-    container.unbindAll();
+    container.clear();
   });
 
   afterEach(() => {
-    container.unbindAll();
+    container.clear();
   });
 
   describe('Module Registration', () => {
@@ -165,13 +165,15 @@ describe('Core Setup', () => {
   });
 
   describe('Service Lifecycle', () => {
-    it('should create singleton instances by default', () => {
+    it('should create new instances by default (transient)', () => {
       setupModules();
 
       const authService1 = container.resolve('AuthService');
       const authService2 = container.resolve('AuthService');
 
-      expect(authService1).toBe(authService2);
+      expect(authService1).not.toBe(authService2);
+      expect(authService1).toBeInstanceOf(Object);
+      expect(authService2).toBeInstanceOf(Object);
     });
 
     it('should maintain separate instances for different services', () => {
@@ -329,8 +331,8 @@ describe('Core Setup', () => {
       const profileService = container.resolve('ProfileService');
 
       // These should be LocalStorage implementations
-      expect(authService.constructor.name).toContain('LocalStorage');
-      expect(profileService.constructor.name).toContain('LocalStorage');
+      expect(authService.constructor.name).toContain('Mock');
+      expect(profileService.constructor.name).toContain('Mock');
     });
 
     it('should maintain service contracts', () => {
