@@ -1,19 +1,17 @@
-
-import { ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/components/auth/AdaptiveAuthProvider';
-import { localStorageService } from '@/services/localStorageService';
+import { ReactNode } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useLocalStorageAuth } from "@/components/auth/LocalStorageAuthProvider";
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  requiredRole?: 'admin' | 'trainer' | 'student';
+  requiredRole?: "admin" | "trainer" | "student";
 }
 
-export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
-  const useLocalStorage = localStorageService.shouldUseLocalStorage();
-  
-  // Use the appropriate hook based on storage type
-  const authContext = useAuth();
+export function ProtectedRoute({
+  children,
+  requiredRole,
+}: ProtectedRouteProps) {
+  const authContext = useLocalStorageAuth();
   const location = useLocation();
 
   if (authContext.loading) {

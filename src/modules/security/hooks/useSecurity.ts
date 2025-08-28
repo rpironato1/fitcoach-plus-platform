@@ -1,13 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '@/modules/auth';
-import { toast } from 'sonner';
-import { container } from '@/core/container';
-import type { ISecurityService } from '../services/SecurityService';
-import type { PrivacySettings, LGPDConsent } from '../types';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/modules/auth";
+import { toast } from "sonner";
+import { container } from "@/core/container";
+import type { ISecurityService } from "../services/SecurityService";
+import type { PrivacySettings, LGPDConsent } from "../types";
 
 // Get security service from DI container
 const getSecurityService = (): ISecurityService => {
-  return container.resolve<ISecurityService>('SecurityService');
+  return container.resolve<ISecurityService>("SecurityService");
 };
 
 // Privacy Settings hooks
@@ -16,9 +16,9 @@ export function usePrivacySettings() {
   const securityService = getSecurityService();
 
   return useQuery({
-    queryKey: ['privacy-settings', profile?.id],
+    queryKey: ["privacy-settings", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.getPrivacySettings(profile.id);
     },
     enabled: !!profile?.id,
@@ -32,15 +32,15 @@ export function useUpdatePrivacySettings() {
 
   return useMutation({
     mutationFn: (settings: Partial<PrivacySettings>) => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.updatePrivacySettings(profile.id, settings);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['privacy-settings'] });
-      toast.success('Configurações de privacidade atualizadas com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ["privacy-settings"] });
+      toast.success("Configurações de privacidade atualizadas com sucesso!");
     },
     onError: (error) => {
-      toast.error('Erro ao atualizar configurações: ' + error.message);
+      toast.error("Erro ao atualizar configurações: " + error.message);
     },
   });
 }
@@ -51,9 +51,9 @@ export function useConsents() {
   const securityService = getSecurityService();
 
   return useQuery({
-    queryKey: ['consents', profile?.id],
+    queryKey: ["consents", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.getConsents(profile.id);
     },
     enabled: !!profile?.id,
@@ -66,16 +66,22 @@ export function useRecordConsent() {
   const securityService = getSecurityService();
 
   return useMutation({
-    mutationFn: ({ consentType, consented }: { consentType: string; consented: boolean }) => {
-      if (!profile?.id) throw new Error('User not authenticated');
+    mutationFn: ({
+      consentType,
+      consented,
+    }: {
+      consentType: string;
+      consented: boolean;
+    }) => {
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.recordConsent(profile.id, consentType, consented);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['consents'] });
-      toast.success('Consentimento registrado com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ["consents"] });
+      toast.success("Consentimento registrado com sucesso!");
     },
     onError: (error) => {
-      toast.error('Erro ao registrar consentimento: ' + error.message);
+      toast.error("Erro ao registrar consentimento: " + error.message);
     },
   });
 }
@@ -86,9 +92,9 @@ export function useDataRequests() {
   const securityService = getSecurityService();
 
   return useQuery({
-    queryKey: ['data-requests', profile?.id],
+    queryKey: ["data-requests", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.getDataRequests(profile.id);
     },
     enabled: !!profile?.id,
@@ -102,15 +108,17 @@ export function useRequestDataExport() {
 
   return useMutation({
     mutationFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.requestDataExport(profile.id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['data-requests'] });
-      toast.success('Solicitação de exportação de dados criada com sucesso! Você receberá um email quando estiver pronta.');
+      queryClient.invalidateQueries({ queryKey: ["data-requests"] });
+      toast.success(
+        "Solicitação de exportação de dados criada com sucesso! Você receberá um email quando estiver pronta."
+      );
     },
     onError: (error) => {
-      toast.error('Erro ao solicitar exportação: ' + error.message);
+      toast.error("Erro ao solicitar exportação: " + error.message);
     },
   });
 }
@@ -122,15 +130,17 @@ export function useRequestDataDeletion() {
 
   return useMutation({
     mutationFn: (reason?: string) => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.requestDataDeletion(profile.id, reason);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['data-requests'] });
-      toast.success('Solicitação de exclusão de dados criada com sucesso! Sua conta será analisada conforme a LGPD.');
+      queryClient.invalidateQueries({ queryKey: ["data-requests"] });
+      toast.success(
+        "Solicitação de exclusão de dados criada com sucesso! Sua conta será analisada conforme a LGPD."
+      );
     },
     onError: (error) => {
-      toast.error('Erro ao solicitar exclusão: ' + error.message);
+      toast.error("Erro ao solicitar exclusão: " + error.message);
     },
   });
 }
@@ -141,9 +151,9 @@ export function useSecurityLogs(eventType?: string) {
   const securityService = getSecurityService();
 
   return useQuery({
-    queryKey: ['security-logs', profile?.id, eventType],
+    queryKey: ["security-logs", profile?.id, eventType],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.getSecurityLogs(profile.id, eventType);
     },
     enabled: !!profile?.id,
@@ -156,9 +166,9 @@ export function useAuditLogs() {
   const securityService = getSecurityService();
 
   return useQuery({
-    queryKey: ['audit-logs', profile?.id],
+    queryKey: ["audit-logs", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.getAuditLogs(profile.id);
     },
     enabled: !!profile?.id,
@@ -171,9 +181,9 @@ export function useRateLimit(endpoint: string) {
   const securityService = getSecurityService();
 
   return useQuery({
-    queryKey: ['rate-limit', profile?.id, endpoint],
+    queryKey: ["rate-limit", profile?.id, endpoint],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return securityService.checkRateLimit(profile.id, endpoint);
     },
     enabled: !!profile?.id,
@@ -191,27 +201,29 @@ export function useLGPDCompliance() {
       return {
         isCompliant: false,
         missingConsents: [],
-        recommendations: ['Configure suas preferências de privacidade'],
+        recommendations: ["Configure suas preferências de privacidade"],
       };
     }
 
-    const requiredConsents = ['data_processing', 'analytics'];
+    const requiredConsents = ["data_processing", "analytics"];
     const givenConsents = consents
-      .filter(consent => consent.consented)
-      .map(consent => consent.consent_type);
+      .filter((consent) => consent.consented)
+      .map((consent) => consent.consent_type);
 
     const missingConsents = requiredConsents.filter(
-      required => !givenConsents.includes(required)
+      (required) => !givenConsents.includes(required)
     );
 
     const isCompliant = missingConsents.length === 0;
 
     const recommendations = [];
     if (!isCompliant) {
-      recommendations.push('Complete todos os consentimentos obrigatórios');
+      recommendations.push("Complete todos os consentimentos obrigatórios");
     }
     if (!privacySettings.newsletter_consent) {
-      recommendations.push('Considere aceitar nossa newsletter para updates importantes');
+      recommendations.push(
+        "Considere aceitar nossa newsletter para updates importantes"
+      );
     }
 
     return {
@@ -239,18 +251,19 @@ export function useSecurityDashboard() {
   const getDashboardStats = () => {
     const recentSecurityEvents = securityLogs?.slice(0, 5) || [];
     const recentAuditEvents = auditLogs?.slice(0, 5) || [];
-    
-    const failedLogins = securityLogs?.filter(
-      log => log.event_type === 'failed_login'
-    ).length || 0;
 
-    const suspiciousActivity = securityLogs?.filter(
-      log => log.risk_level === 'high'
-    ).length || 0;
+    const failedLogins =
+      securityLogs?.filter((log) => log.event_type === "failed_login").length ||
+      0;
+
+    const suspiciousActivity =
+      securityLogs?.filter((log) => log.risk_level === "high").length || 0;
 
     const pendingDataRequests = [
-      ...(dataRequests?.exports.filter(req => req.status === 'pending') || []),
-      ...(dataRequests?.deletions.filter(req => req.status === 'pending') || []),
+      ...(dataRequests?.exports.filter((req) => req.status === "pending") ||
+        []),
+      ...(dataRequests?.deletions.filter((req) => req.status === "pending") ||
+        []),
     ].length;
 
     return {
@@ -259,7 +272,10 @@ export function useSecurityDashboard() {
       failedLogins,
       suspiciousActivity,
       pendingDataRequests,
-      securityScore: Math.max(0, 100 - (failedLogins * 5) - (suspiciousActivity * 10)),
+      securityScore: Math.max(
+        0,
+        100 - failedLogins * 5 - suspiciousActivity * 10
+      ),
     };
   };
 

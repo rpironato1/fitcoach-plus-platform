@@ -1,22 +1,30 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './card';
-import { Button } from './button';
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./card";
+import { Button } from "./button";
 
 /**
  * Card component - Container for related content with optional header, content, and footer sections
  */
 const meta: Meta<typeof Card> = {
-  title: 'UI/Card',
+  title: "UI/Card",
   component: Card,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A flexible container component for grouping related content. Includes header, content, and footer sections for structured layouts.',
+        component:
+          "A flexible container component for grouping related content. Includes header, content, and footer sections for structured layouts.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -30,7 +38,9 @@ export const Default: Story = {
     <Card className="w-[380px]">
       <CardHeader>
         <CardTitle>Plano Pro</CardTitle>
-        <CardDescription>Ideal para personal trainers independentes</CardDescription>
+        <CardDescription>
+          Ideal para personal trainers independentes
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">R$ 97/mês</div>
@@ -119,10 +129,12 @@ export const Showcase: Story = {
           <p className="text-sm text-gray-600 mt-2">Até 5 alunos</p>
         </CardContent>
         <CardFooter>
-          <Button variant="outline" className="w-full">Começar</Button>
+          <Button variant="outline" className="w-full">
+            Começar
+          </Button>
         </CardFooter>
       </Card>
-      
+
       <Card className="border-primary border-2 relative">
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
           <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">
@@ -141,7 +153,7 @@ export const Showcase: Story = {
           <Button className="w-full">Começar Grátis</Button>
         </CardFooter>
       </Card>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Elite</CardTitle>
@@ -152,16 +164,19 @@ export const Showcase: Story = {
           <p className="text-sm text-gray-600 mt-2">Alunos ilimitados</p>
         </CardContent>
         <CardFooter>
-          <Button variant="secondary" className="w-full">Falar com Vendas</Button>
+          <Button variant="secondary" className="w-full">
+            Falar com Vendas
+          </Button>
         </CardFooter>
       </Card>
     </div>
   ),
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
-        story: 'Example of multiple cards used together for pricing display with consistent styling and clear hierarchy.',
+        story:
+          "Example of multiple cards used together for pricing display with consistent styling and clear hierarchy.",
       },
     },
   },

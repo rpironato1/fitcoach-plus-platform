@@ -18,7 +18,7 @@ export interface DietPlan {
 export interface Meal {
   id: string;
   name: string;
-  meal_type: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  meal_type: "breakfast" | "lunch" | "dinner" | "snack";
   calories: number;
   protein: number;
   carbs: number;
@@ -65,7 +65,7 @@ export interface ExerciseSuggestion {
 export interface AIRequest {
   id: string;
   trainer_id: string;
-  type: 'diet_plan' | 'workout_suggestion' | 'nutrition_analysis';
+  type: "diet_plan" | "workout_suggestion" | "nutrition_analysis";
   prompt: string;
   response: string;
   tokens_used: number;
@@ -108,7 +108,7 @@ export interface AIUsageStats {
 export interface CreditTransaction {
   id: string;
   trainer_id: string;
-  type: 'purchase' | 'usage' | 'refund' | 'bonus';
+  type: "purchase" | "usage" | "refund" | "bonus";
   amount: number;
   description: string;
   ai_request_id?: string;

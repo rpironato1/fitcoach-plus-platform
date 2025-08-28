@@ -9,11 +9,11 @@ export {
   useCheckPlanLimits,
   usePlanLimits,
   useCreatePaymentIntent,
-} from './hooks/usePayments';
+} from "./hooks/usePayments";
 
 // Services
-export { StripePaymentService } from './services/PaymentService';
-export type { IPaymentService } from './services/PaymentService';
+export { StripePaymentService } from "./services/PaymentService";
+export type { IPaymentService } from "./services/PaymentService";
 
 // Types
 export type {
@@ -26,7 +26,7 @@ export type {
   CreateSubscriptionRequest,
   CreateSubscriptionResponse,
   WebhookEvent,
-} from './types';
+} from "./types";
 
 // Utils
 export {
@@ -44,4 +44,4 @@ export {
   isTrialPeriod,
   isActiveSubscription,
   getDaysRemaining,
-} from './utils';
+} from "./utils";

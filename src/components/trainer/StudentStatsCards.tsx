@@ -1,6 +1,11 @@
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, UserCheck, UserX } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Users, UserCheck, UserX } from "lucide-react";
 
 interface StudentStatsCardsProps {
   totalStudents: number;
@@ -8,7 +13,11 @@ interface StudentStatsCardsProps {
   maxStudents: number;
 }
 
-export function StudentStatsCards({ totalStudents, activeStudents, maxStudents }: StudentStatsCardsProps) {
+export function StudentStatsCards({
+  totalStudents,
+  activeStudents,
+  maxStudents,
+}: StudentStatsCardsProps) {
   const inactiveStudents = totalStudents - activeStudents;
 
   return (
@@ -32,10 +41,10 @@ export function StudentStatsCards({ totalStudents, activeStudents, maxStudents }
           <UserCheck className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-green-600">{activeStudents}</div>
-          <p className="text-xs text-muted-foreground">
-            em atividade
-          </p>
+          <div className="text-2xl font-bold text-green-600">
+            {activeStudents}
+          </div>
+          <p className="text-xs text-muted-foreground">em atividade</p>
         </CardContent>
       </Card>
 
@@ -45,10 +54,10 @@ export function StudentStatsCards({ totalStudents, activeStudents, maxStudents }
           <UserX className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-gray-600">{inactiveStudents}</div>
-          <p className="text-xs text-muted-foreground">
-            pausados/cancelados
-          </p>
+          <div className="text-2xl font-bold text-gray-600">
+            {inactiveStudents}
+          </div>
+          <p className="text-xs text-muted-foreground">pausados/cancelados</p>
         </CardContent>
       </Card>
     </div>

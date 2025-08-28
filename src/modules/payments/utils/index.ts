@@ -1,20 +1,23 @@
-import type { TrainerPlan, PlanLimits } from '../types';
+import type { TrainerPlan, PlanLimits } from "../types";
 
 /**
  * Format price in cents to Brazilian Real
  */
 export function formatPrice(priceInCents: number): string {
   const priceInReais = priceInCents / 100;
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
   }).format(priceInReais);
 }
 
 /**
  * Calculate yearly savings compared to monthly plan
  */
-export function calculateYearlySavings(monthlyPrice: number, yearlyPrice: number): number {
+export function calculateYearlySavings(
+  monthlyPrice: number,
+  yearlyPrice: number
+): number {
   const monthlyYearTotal = monthlyPrice * 12;
   return monthlyYearTotal - yearlyPrice;
 }
@@ -24,12 +27,12 @@ export function calculateYearlySavings(monthlyPrice: number, yearlyPrice: number
  */
 export function getPlanDisplayName(plan: TrainerPlan): string {
   const planNames = {
-    free: 'Plano Gratuito',
-    pro: 'Plano Pro',
-    elite: 'Plano Elite',
+    free: "Plano Gratuito",
+    pro: "Plano Pro",
+    elite: "Plano Elite",
   };
-  
-  return planNames[plan] || 'Plano Desconhecido';
+
+  return planNames[plan] || "Plano Desconhecido";
 }
 
 /**
@@ -37,18 +40,21 @@ export function getPlanDisplayName(plan: TrainerPlan): string {
  */
 export function getPlanColor(plan: TrainerPlan): string {
   const planColors = {
-    free: 'gray',
-    pro: 'blue',
-    elite: 'purple',
+    free: "gray",
+    pro: "blue",
+    elite: "purple",
   };
-  
-  return planColors[plan] || 'gray';
+
+  return planColors[plan] || "gray";
 }
 
 /**
  * Check if plan is upgrade from current plan
  */
-export function isUpgrade(currentPlan: TrainerPlan, targetPlan: TrainerPlan): boolean {
+export function isUpgrade(
+  currentPlan: TrainerPlan,
+  targetPlan: TrainerPlan
+): boolean {
   const planHierarchy = { free: 0, pro: 1, elite: 2 };
   return planHierarchy[targetPlan] > planHierarchy[currentPlan];
 }
@@ -56,7 +62,10 @@ export function isUpgrade(currentPlan: TrainerPlan, targetPlan: TrainerPlan): bo
 /**
  * Check if plan is downgrade from current plan
  */
-export function isDowngrade(currentPlan: TrainerPlan, targetPlan: TrainerPlan): boolean {
+export function isDowngrade(
+  currentPlan: TrainerPlan,
+  targetPlan: TrainerPlan
+): boolean {
   const planHierarchy = { free: 0, pro: 1, elite: 2 };
   return planHierarchy[targetPlan] < planHierarchy[currentPlan];
 }
@@ -64,14 +73,20 @@ export function isDowngrade(currentPlan: TrainerPlan, targetPlan: TrainerPlan): 
 /**
  * Calculate platform fee for a transaction amount
  */
-export function calculatePlatformFee(amount: number, feePercentage: number): number {
+export function calculatePlatformFee(
+  amount: number,
+  feePercentage: number
+): number {
   return Math.round(amount * (feePercentage / 100));
 }
 
 /**
  * Calculate trainer's net amount after platform fee
  */
-export function calculateNetAmount(grossAmount: number, feePercentage: number): number {
+export function calculateNetAmount(
+  grossAmount: number,
+  feePercentage: number
+): number {
   const fee = calculatePlatformFee(grossAmount, feePercentage);
   return grossAmount - fee;
 }
@@ -79,47 +94,54 @@ export function calculateNetAmount(grossAmount: number, feePercentage: number): 
 /**
  * Validate if student count is within plan limits
  */
-export function validateStudentLimit(currentCount: number, plan: TrainerPlan, limits: PlanLimits): boolean {
-  if (plan === 'elite') return true; // Elite has unlimited students
+export function validateStudentLimit(
+  currentCount: number,
+  plan: TrainerPlan,
+  limits: PlanLimits
+): boolean {
+  if (plan === "elite") return true; // Elite has unlimited students
   return currentCount < limits.maxStudents;
 }
 
 /**
  * Get features comparison between plans
  */
-export function getFeatureComparison(): Record<string, Record<TrainerPlan, boolean | string>> {
+export function getFeatureComparison(): Record<
+  string,
+  Record<TrainerPlan, boolean | string>
+> {
   return {
-    'Gestão de alunos': {
-      free: 'Até 3 alunos',
-      pro: 'Até 40 alunos',
-      elite: 'Ilimitado',
+    "Gestão de alunos": {
+      free: "Até 3 alunos",
+      pro: "Até 40 alunos",
+      elite: "Ilimitado",
     },
-    'Criação de treinos': {
+    "Criação de treinos": {
       free: true,
       pro: true,
       elite: true,
     },
-    'Agendamento': {
+    Agendamento: {
       free: true,
       pro: true,
       elite: true,
     },
-    'Planos de dieta com IA': {
+    "Planos de dieta com IA": {
       free: false,
-      pro: '50 créditos/mês',
-      elite: '100 créditos/mês',
+      pro: "50 créditos/mês",
+      elite: "100 créditos/mês",
     },
-    'Taxa da plataforma': {
-      free: '1.5%',
-      pro: '1.0%',
-      elite: '0.5%',
+    "Taxa da plataforma": {
+      free: "1.5%",
+      pro: "1.0%",
+      elite: "0.5%",
     },
-    'Suporte prioritário': {
+    "Suporte prioritário": {
       free: false,
       pro: true,
       elite: true,
     },
-    'Recursos avançados': {
+    "Recursos avançados": {
       free: false,
       pro: false,
       elite: true,
@@ -131,9 +153,9 @@ export function getFeatureComparison(): Record<string, Record<TrainerPlan, boole
  * Get recommended plan based on student count
  */
 export function getRecommendedPlan(studentCount: number): TrainerPlan {
-  if (studentCount <= 3) return 'free';
-  if (studentCount <= 40) return 'pro';
-  return 'elite';
+  if (studentCount <= 3) return "free";
+  if (studentCount <= 40) return "pro";
+  return "elite";
 }
 
 /**
@@ -141,15 +163,17 @@ export function getRecommendedPlan(studentCount: number): TrainerPlan {
  */
 export function isTrialPeriod(subscription: Record<string, unknown>): boolean {
   if (!subscription) return false;
-  return subscription.status === 'trialing';
+  return subscription.status === "trialing";
 }
 
 /**
  * Check if subscription is active
  */
-export function isActiveSubscription(subscription: Record<string, unknown>): boolean {
+export function isActiveSubscription(
+  subscription: Record<string, unknown>
+): boolean {
   if (!subscription) return false;
-  return ['active', 'trialing'].includes(subscription.status as string);
+  return ["active", "trialing"].includes(subscription.status as string);
 }
 
 /**

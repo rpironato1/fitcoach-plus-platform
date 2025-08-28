@@ -1,19 +1,20 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
 /**
  * Design System - Colors, typography, and design tokens
  */
 const meta: Meta = {
-  title: 'Design System/Colors & Typography',
+  title: "Design System/Colors & Typography",
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
-        component: 'FitCoach Plus Platform design system with standardized colors, typography, and spacing following WCAG AA accessibility guidelines.',
+        component:
+          "FitCoach Plus Platform design system with standardized colors, typography, and spacing following WCAG AA accessibility guidelines.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -61,12 +62,16 @@ export const ColorPalette: Story = {
           <div className="text-center">
             <div className="h-20 w-full bg-destructive rounded-lg mb-2"></div>
             <p className="font-medium">Destructive</p>
-            <p className="text-sm text-muted-foreground">Erros e ações perigosas</p>
+            <p className="text-sm text-muted-foreground">
+              Erros e ações perigosas
+            </p>
           </div>
           <div className="text-center">
             <div className="h-20 w-full bg-green-500 rounded-lg mb-2"></div>
             <p className="font-medium">Success</p>
-            <p className="text-sm text-muted-foreground">Sucesso e confirmações</p>
+            <p className="text-sm text-muted-foreground">
+              Sucesso e confirmações
+            </p>
           </div>
           <div className="text-center">
             <div className="h-20 w-full bg-yellow-500 rounded-lg mb-2"></div>
@@ -104,7 +109,8 @@ export const ColorPalette: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Complete color palette with WCAG AA compliant contrast ratios. All colors maintain accessibility standards.',
+        story:
+          "Complete color palette with WCAG AA compliant contrast ratios. All colors maintain accessibility standards.",
       },
     },
   },
@@ -121,11 +127,15 @@ export const Typography: Story = {
         <div className="space-y-4">
           <div>
             <h1 className="text-4xl font-bold">Heading 1 - 36px</h1>
-            <p className="text-sm text-muted-foreground">Para títulos principais de páginas</p>
+            <p className="text-sm text-muted-foreground">
+              Para títulos principais de páginas
+            </p>
           </div>
           <div>
             <h2 className="text-3xl font-bold">Heading 2 - 30px</h2>
-            <p className="text-sm text-muted-foreground">Para seções importantes</p>
+            <p className="text-sm text-muted-foreground">
+              Para seções importantes
+            </p>
           </div>
           <div>
             <h3 className="text-2xl font-bold">Heading 3 - 24px</h3>
@@ -137,15 +147,21 @@ export const Typography: Story = {
           </div>
           <div>
             <p className="text-base">Parágrafo - 16px</p>
-            <p className="text-sm text-muted-foreground">Texto principal com boa legibilidade</p>
+            <p className="text-sm text-muted-foreground">
+              Texto principal com boa legibilidade
+            </p>
           </div>
           <div>
             <p className="text-sm">Small text - 14px</p>
-            <p className="text-xs text-muted-foreground">Para textos auxiliares e descrições</p>
+            <p className="text-xs text-muted-foreground">
+              Para textos auxiliares e descrições
+            </p>
           </div>
           <div>
             <p className="text-xs">Extra small - 12px</p>
-            <p className="text-xs text-muted-foreground">Para metadados e informações secundárias</p>
+            <p className="text-xs text-muted-foreground">
+              Para metadados e informações secundárias
+            </p>
           </div>
         </div>
       </section>
@@ -161,9 +177,13 @@ export const Typography: Story = {
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold mb-4">Tamanhos de Texto Acessíveis</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          Tamanhos de Texto Acessíveis
+        </h2>
         <div className="bg-muted p-4 rounded-lg">
-          <p className="text-sm mb-2">✅ Todos os tamanhos de texto atendem aos requisitos WCAG:</p>
+          <p className="text-sm mb-2">
+            ✅ Todos os tamanhos de texto atendem aos requisitos WCAG:
+          </p>
           <ul className="text-sm space-y-1 ml-4">
             <li>• Tamanho mínimo: 12px (adequado para metadados)</li>
             <li>• Tamanho padrão: 16px (ótima legibilidade)</li>
@@ -177,7 +197,8 @@ export const Typography: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Typography system with accessible font sizes and proper hierarchy for optimal readability.',
+        story:
+          "Typography system with accessible font sizes and proper hierarchy for optimal readability.",
       },
     },
   },
@@ -245,7 +266,8 @@ export const Spacing: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Consistent spacing and border radius system for layout consistency.',
+        story:
+          "Consistent spacing and border radius system for layout consistency.",
       },
     },
   },

@@ -1,29 +1,37 @@
-
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Users, MoreHorizontal, Trash2 } from 'lucide-react';
-import { Trainer } from '@/hooks/useTrainersManagement';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Users, MoreHorizontal, Trash2 } from "lucide-react";
+import { Trainer } from "@/hooks/useTrainersManagement";
 
 interface TrainerCardProps {
   trainer: Trainer;
-  onUpdatePlan: (trainerId: string, plan: 'free' | 'pro' | 'elite') => void;
+  onUpdatePlan: (trainerId: string, plan: "free" | "pro" | "elite") => void;
   onDeleteTrainer: (trainerId: string) => void;
 }
 
 const planColors = {
-  free: 'bg-gray-100 text-gray-800',
-  pro: 'bg-blue-100 text-blue-800',
-  elite: 'bg-purple-100 text-purple-800',
+  free: "bg-gray-100 text-gray-800",
+  pro: "bg-blue-100 text-blue-800",
+  elite: "bg-purple-100 text-purple-800",
 };
 
 const planNames = {
-  free: 'Free',
-  pro: 'Pro', 
-  elite: 'Elite',
+  free: "Free",
+  pro: "Pro",
+  elite: "Elite",
 };
 
-export function TrainerCard({ trainer, onUpdatePlan, onDeleteTrainer }: TrainerCardProps) {
+export function TrainerCard({
+  trainer,
+  onUpdatePlan,
+  onDeleteTrainer,
+}: TrainerCardProps) {
   return (
     <div className="flex items-center justify-between p-4 border rounded-lg">
       <div className="flex items-center gap-4">
@@ -32,10 +40,12 @@ export function TrainerCard({ trainer, onUpdatePlan, onDeleteTrainer }: TrainerC
         </div>
         <div>
           <h3 className="font-semibold">
-            {trainer.profiles ? `${trainer.profiles.first_name} ${trainer.profiles.last_name}` : 'Nome não disponível'}
+            {trainer.profiles
+              ? `${trainer.profiles.first_name} ${trainer.profiles.last_name}`
+              : "Nome não disponível"}
           </h3>
           <div className="flex items-center gap-4 text-sm text-gray-600">
-            <span>{trainer.profiles?.phone || 'Telefone não informado'}</span>
+            <span>{trainer.profiles?.phone || "Telefone não informado"}</span>
             <span>{trainer._count?.students || 0} alunos</span>
             <span>{trainer.ai_credits} créditos IA</span>
           </div>
@@ -52,22 +62,16 @@ export function TrainerCard({ trainer, onUpdatePlan, onDeleteTrainer }: TrainerC
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem 
-              onClick={() => onUpdatePlan(trainer.id, 'free')}
-            >
+            <DropdownMenuItem onClick={() => onUpdatePlan(trainer.id, "free")}>
               Alterar para Free
             </DropdownMenuItem>
-            <DropdownMenuItem 
-              onClick={() => onUpdatePlan(trainer.id, 'pro')}
-            >
+            <DropdownMenuItem onClick={() => onUpdatePlan(trainer.id, "pro")}>
               Alterar para Pro
             </DropdownMenuItem>
-            <DropdownMenuItem 
-              onClick={() => onUpdatePlan(trainer.id, 'elite')}
-            >
+            <DropdownMenuItem onClick={() => onUpdatePlan(trainer.id, "elite")}>
               Alterar para Elite
             </DropdownMenuItem>
-            <DropdownMenuItem 
+            <DropdownMenuItem
               onClick={() => onDeleteTrainer(trainer.id)}
               className="text-red-600"
             >

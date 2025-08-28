@@ -16,6 +16,7 @@ Este arquivo fornece orientação ao Claude Code (claude.ai/code) ao trabalhar c
 ## Comandos de Desenvolvimento
 
 ### Desenvolvimento Local
+
 ```bash
 npm run dev          # Inicia servidor dev na porta 8030
 npm run dev:open     # Inicia servidor e abre no navegador
@@ -23,6 +24,7 @@ npm run preview      # Preview build de produção na porta 8031
 ```
 
 ### Build e Análise
+
 ```bash
 npm run build        # Build de produção
 npm run build:dev    # Build modo desenvolvimento
@@ -30,6 +32,7 @@ npm run build:analyze # Build + análise de bundle
 ```
 
 ### Testes
+
 ```bash
 # Testes unitários/integração (Vitest)
 npm run test         # Executa todos os testes
@@ -56,6 +59,7 @@ npm run test:stress # Testes de stress (k6)
 ```
 
 ### Storybook
+
 ```bash
 npm run storybook       # Servidor Storybook (porta 6006)
 npm run build-storybook # Build para produção
@@ -64,6 +68,7 @@ npm run build-storybook # Build para produção
 ## Arquitetura do Código
 
 ### Estrutura Modular
+
 O projeto utiliza uma **arquitetura modular** com injeção de dependências:
 
 ```
@@ -87,7 +92,9 @@ src/
 ```
 
 ### Padrão de Módulos
+
 Cada módulo contém:
+
 - `hooks/` - Custom hooks específicos
 - `services/` - Classes de serviço
 - `types/` - Definições TypeScript
@@ -95,15 +102,17 @@ Cada módulo contém:
 - `components/` - Componentes específicos
 
 ### Sistema de Autenticação
+
 - **Adaptativo**: Supabase Auth + LocalStorage para demo
 - **Roles**: admin, trainer, student
 - **Proteção de rotas** via `ProtectedRoute`
 - **Credenciais de teste**:
   - Admin: admin@fitcoach.com / admin123
-  - Trainer: trainer@fitcoach.com / trainer123  
+  - Trainer: trainer@fitcoach.com / trainer123
   - Student: student@fitcoach.com / student123
 
 ### Roteamento
+
 - `/` - Landing page pública
 - `/admin/*` - Painel administrativo
 - `/trainer/*` - Dashboard do trainer
@@ -114,23 +123,27 @@ Cada módulo contém:
 ## Padrões de Desenvolvimento
 
 ### Componentes UI
+
 - **shadcn/ui** para componentes base
 - **Variants** usando `class-variance-authority`
 - **Stories** obrigatórias para novos componentes
 - **Testes** com Testing Library
 
 ### Gerenciamento de Estado
+
 - **TanStack Query** para estado do servidor
 - **React Context** para estado de autenticação
 - **LocalStorage** para dados de demonstração
 
 ### Estilo e CSS
+
 - **Tailwind CSS** como framework principal
 - **CSS Modules** para estilos específicos
 - **Design tokens** através de classes Tailwind
 - **Responsividade** mobile-first
 
 ### Configurações de Build
+
 - **Otimizações**: Chunks separados por vendor
 - **Compressão**: Terser para produção
 - **Assets**: Otimização automática de imagens
@@ -139,6 +152,7 @@ Cada módulo contém:
 ## Dados de Demonstração
 
 O sistema inclui **DataSourceManager** para alternar entre:
+
 - **Supabase**: Dados reais de produção
 - **LocalStorage**: Dados simulados para demo
   - Dados completos: Dataset completo

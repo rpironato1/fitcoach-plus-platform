@@ -7,12 +7,14 @@ Esta funcionalidade permite que alunas do sexo feminino ativem treinos e dietas 
 ## ✨ Características Implementadas
 
 ### 🎯 **Seleção de Gênero**
+
 - Campo obrigatório para definir o gênero do aluno
 - Interface intuitiva com dropdown de seleção
 - Feedback visual quando não definido
 - Suporte para: Feminino, Masculino, Outro
 
 ### 🌸 **Card de Treino Adaptado ao Ciclo**
+
 - **Visibilidade Condicional**: Aparece apenas para alunas do sexo feminino
 - **Toggle de Ativação**: Switch para ativar/desativar a funcionalidade
 - **Informações Detalhadas**: Dialog explicativo sobre as fases do ciclo
@@ -21,32 +23,38 @@ Esta funcionalidade permite que alunas do sexo feminino ativem treinos e dietas 
 ## 🔄 Fases do Ciclo Menstrual Consideradas
 
 ### 🌙 **Fase Menstrual (dias 1-5)**
+
 - **Treinos**: Mais leves, foco em alongamento e yoga
 - **Dieta**: Rica em ferro e magnésio
 - **Exemplo**: "Treino Leve - Yoga & Alongamento"
 
 ### 🌱 **Fase Folicular (dias 6-14)**
+
 - **Treinos**: Energia crescente, intensidade moderada
 - **Benefícios**: Boa fase para novos exercícios
 - **Exemplo**: "Caminhada & Mobilidade"
 
 ### 🌸 **Ovulação (dias 14-16)**
+
 - **Treinos**: Pico de energia, treinos intensos e força
 - **Performance**: Máxima capacidade física
 - **Exemplo**: "Treino de Força Moderado"
 
 ### 🍂 **Fase Lútea (dias 17-28)**
+
 - **Treinos**: Redução gradual, foco em resistência
 - **Dieta**: Redução de sódio e açúcar
 
 ## 🤖 Integração com IA
 
 ### **Personalização Inteligente**
+
 - A IA considera a fase do ciclo ao gerar treinos nos planos pagos
 - Adaptação automática das recomendações nutricionais
 - Sugestões baseadas em evidências científicas
 
 ### **Exemplo de Adaptação Nutricional**
+
 ```
 🔄 Sem ciclo menstrual:
 - Calorias: 2,200 kcal
@@ -61,20 +69,23 @@ Esta funcionalidade permite que alunas do sexo feminino ativem treinos e dietas 
 ## 💻 Implementação Técnica
 
 ### **Componentes Criados**
+
 1. **MenstrualCycleCard** (`/components/ui/menstrual-cycle-card.tsx`)
 2. **GenderSelection** (`/components/ui/gender-selection.tsx`)
 3. **StudentDashboardDemo** (`/pages/student/StudentDashboardDemo.tsx`)
 
 ### **Tipos de Dados Estendidos**
+
 ```typescript
 student_profiles: {
-  gender: string | null
-  menstrual_cycle_tracking: boolean
+  gender: string | null;
+  menstrual_cycle_tracking: boolean;
   // ... outros campos existentes
 }
 ```
 
 ### **Funcionalidades**
+
 - ✅ Persistência local via localStorage (demo)
 - ✅ Feedback visual com toast notifications
 - ✅ Interface responsiva mobile-first
@@ -86,7 +97,7 @@ student_profiles: {
 ### **Estados da Interface**
 
 1. **Estado Inicial** (gênero não definido):
-   - Mostra card de "Informações Pessoais" 
+   - Mostra card de "Informações Pessoais"
    - Dica para definir gênero e desbloquear recursos
 
 2. **Gênero Feminino Definido**:
@@ -103,12 +114,14 @@ student_profiles: {
 ## 🎨 Design e UX
 
 ### **Elementos Visuais**
+
 - **Cores**: Gradiente rosa/roxo para tema feminino
 - **Ícones**: 💗 (coração), 📅 (calendário), 🌸 (flor)
 - **Emojis das Fases**: 🌙 🌱 🌸 🍂
 - **Feedback**: Toast notifications personalizadas
 
 ### **Responsividade**
+
 - ✅ Layout mobile-first
 - ✅ Cards adaptativos
 - ✅ Texto escalável
@@ -117,6 +130,7 @@ student_profiles: {
 ## 🧪 Testes Realizados
 
 ### **Cenários Testados**
+
 1. ✅ Seleção de gênero (Feminino/Masculino/Outro)
 2. ✅ Aparição condicional do card de ciclo menstrual
 3. ✅ Ativação/desativação da funcionalidade
@@ -125,6 +139,7 @@ student_profiles: {
 6. ✅ Responsividade mobile
 
 ### **Screenshots Capturados**
+
 - `menstrual-cycle-dashboard-desktop.png` - Dashboard completo desktop
 - `menstrual-cycle-dashboard-mobile.png` - Dashboard completo mobile
 - `menstrual-cycle-card-feature.png` - Card da funcionalidade em destaque
@@ -132,11 +147,13 @@ student_profiles: {
 ## 🚀 Próximos Passos
 
 ### **Integração Backend** (Futuro)
+
 - [ ] Migração da database para adicionar campos `gender` e `menstrual_cycle_tracking`
 - [ ] API endpoints para salvar/recuperar preferências
 - [ ] Integração com o serviço de IA existente
 
 ### **Melhorias Futuras**
+
 - [ ] Calendário menstrual interativo
 - [ ] Previsão inteligente das fases
 - [ ] Histórico de sintomas

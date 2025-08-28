@@ -8,7 +8,7 @@ export {
   useAssignWorkoutToStudent,
   useWorkoutSessions,
   useCreateWorkoutSession,
-} from '@/modules/workouts';
+} from "@/modules/workouts";
 
 // Re-export types for backward compatibility
 export type {
@@ -16,4 +16,4 @@ export type {
   WorkoutPlan,
   WorkoutPlanExercise,
   WorkoutSession,
-} from '@/modules/workouts';
+} from "@/modules/workouts";

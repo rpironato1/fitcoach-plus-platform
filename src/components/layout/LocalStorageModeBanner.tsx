@@ -1,15 +1,15 @@
 /**
  * LocalStorage Mode Banner
- * 
+ *
  * Shows a banner when the app is running in localStorage mode
  * for testing purposes
  */
 
-import { useState, useEffect } from 'react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Database, X, Settings } from 'lucide-react';
-import { localStorageService } from '@/services/localStorageService';
+import { useState, useEffect } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Database, X, Settings } from "lucide-react";
+import { localStorageService } from "@/services/localStorageService";
 
 export function LocalStorageModeBanner() {
   const [showBanner, setShowBanner] = useState(false);
@@ -17,19 +17,20 @@ export function LocalStorageModeBanner() {
 
   useEffect(() => {
     const isUsingLocalStorage = localStorageService.shouldUseLocalStorage();
-    const isDismissed = sessionStorage.getItem('localStorage_banner_dismissed') === 'true';
-    
+    const isDismissed =
+      sessionStorage.getItem("localStorage_banner_dismissed") === "true";
+
     setShowBanner(isUsingLocalStorage && !isDismissed);
   }, []);
 
   const handleDismiss = () => {
     setDismissed(true);
     setShowBanner(false);
-    sessionStorage.setItem('localStorage_banner_dismissed', 'true');
+    sessionStorage.setItem("localStorage_banner_dismissed", "true");
   };
 
   const goToManager = () => {
-    window.location.href = '/localStorage-manager';
+    window.location.href = "/localStorage-manager";
   };
 
   if (!showBanner || dismissed) {
@@ -42,11 +43,12 @@ export function LocalStorageModeBanner() {
       <AlertDescription className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
           <span>
-            <strong>Modo Teste Ativo:</strong> Usando dados localStorage para demonstração.
+            <strong>Modo Teste Ativo:</strong> Usando dados localStorage para
+            demonstração.
           </span>
-          <Button 
-            size="sm" 
-            variant="outline" 
+          <Button
+            size="sm"
+            variant="outline"
             onClick={goToManager}
             className="ml-2 h-6 text-xs border-amber-300 text-amber-800 hover:bg-amber-100"
           >

@@ -5,9 +5,11 @@
 ### FASE 1: CORE BUSINESS LOGIC (2-3 semanas)
 
 #### 1.1 Sistema de Gestão de Treinos ⏱️ 2 semanas
+
 **Prioridade:** 🔴 CRÍTICA - É a funcionalidade PRINCIPAL
 
 **Banco de Dados:**
+
 ```sql
 -- Adicionar tabelas no próximo migration
 CREATE TABLE exercises (
@@ -69,20 +71,23 @@ CREATE TABLE workout_logs (
 ```
 
 **Frontend Components:**
+
 - `WorkoutBuilder` - Criação de fichas de treino
 - `ExerciseDatabase` - Banco de exercícios
 - `WorkoutAssignment` - Atribuição para alunos
 - `ProgressTracking` - Acompanhamento de execução
 
 #### 1.2 Dashboard Real ⏱️ 1 semana
+
 **Problema Atual:** Dados sempre mostram "0"
 
 **Implementar:**
+
 ```typescript
 // hooks/useTrainerStats.ts
 export function useTrainerStats(trainerId: string) {
   return useQuery({
-    queryKey: ['trainer-stats', trainerId],
+    queryKey: ["trainer-stats", trainerId],
     queryFn: async () => {
       // Buscar estatísticas reais:
       // - Número de alunos ativos
@@ -90,12 +95,13 @@ export function useTrainerStats(trainerId: string) {
       // - Receita estimada
       // - Planos de dieta criados
       // - Próximas sessões
-    }
+    },
   });
 }
 ```
 
 **Métricas Reais Necessárias:**
+
 - Total de alunos ativos (COUNT student_profiles WHERE status='active')
 - Sessões agendadas próximas 7 dias
 - Receita projetada do mês
@@ -109,6 +115,7 @@ export function useTrainerStats(trainerId: string) {
 #### 2.1 Integração Stripe ⏱️ 2 semanas
 
 **Edge Functions Necessárias:**
+
 ```typescript
 // supabase/functions/create-payment-intent/index.ts
 // supabase/functions/stripe-webhook/index.ts
@@ -116,6 +123,7 @@ export function useTrainerStats(trainerId: string) {
 ```
 
 **Implementação Step-by-Step:**
+
 1. **Semana 1:**
    - Configurar Stripe SDK
    - Criar Edge Function para Payment Intents
@@ -131,6 +139,7 @@ export function useTrainerStats(trainerId: string) {
 #### 2.2 Sistema de Planos Real ⏱️ 1 semana
 
 **Middleware de Limitações:**
+
 ```typescript
 // Implementar em: hooks/usePlanLimits.ts
 export function usePlanLimits() {
@@ -138,16 +147,16 @@ export function usePlanLimits() {
     const limits = {
       free: 3,
       pro: 40,
-      elite: 100
+      elite: 100,
     };
     return currentCount < limits[plan];
   };
-  
+
   const checkAICredits = (used: number, plan: string) => {
     const limits = {
       free: 0,
       pro: 50,
-      elite: 200
+      elite: 200,
     };
     return used < limits[plan];
   };
@@ -155,6 +164,7 @@ export function usePlanLimits() {
 ```
 
 **Features:**
+
 - Modal de upgrade quando atingir limites
 - Trial de 14 dias automático
 - Downgrade automático após vencimento
@@ -166,12 +176,13 @@ export function usePlanLimits() {
 #### 3.1 Integração OpenAI ⏱️ 2 semanas
 
 **Edge Function para IA:**
+
 ```typescript
 // supabase/functions/generate-diet-plan/index.ts
-import OpenAI from 'openai';
+import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: Deno.env.get('OPENAI_API_KEY'),
+  apiKey: Deno.env.get("OPENAI_API_KEY"),
 });
 
 export async function generateDietPlan(params: {
@@ -187,10 +198,11 @@ export async function generateDietPlan(params: {
 ```
 
 **Sistema de Créditos:**
+
 ```typescript
 // hooks/useAICredits.ts
 export function useAICredits() {
-  const consumeCredit = async (type: 'diet' | 'workout' | 'chat') => {
+  const consumeCredit = async (type: "diet" | "workout" | "chat") => {
     // Verificar se tem créditos
     // Descontar da tabela ai_credit_ledger
     // Bloquear se sem créditos
@@ -203,6 +215,7 @@ export function useAICredits() {
 ### FASE 4: SEGURANÇA E COMPLIANCE (1-2 semanas)
 
 #### 4.1 Rate Limiting ⏱️ 3 dias
+
 ```typescript
 // supabase/functions/_shared/rate-limiter.ts
 export const checkRateLimit = async (req: Request, limit: number) => {
@@ -213,6 +226,7 @@ export const checkRateLimit = async (req: Request, limit: number) => {
 ```
 
 #### 4.2 LGPD Compliance ⏱️ 2 dias
+
 ```typescript
 // supabase/functions/delete-user-account/index.ts
 export async function deleteUserAccount(userId: string) {
@@ -224,6 +238,7 @@ export async function deleteUserAccount(userId: string) {
 ```
 
 #### 4.3 Correção de Testes ⏱️ 2 dias
+
 - Corrigir mock do AuthProvider
 - Implementar testes para funcionalidades principais
 - Configurar CI/CD com testes obrigatórios
@@ -235,9 +250,10 @@ export async function deleteUserAccount(userId: string) {
 ### Testes Críticos para Implementar:
 
 1. **E2E Principal:**
+
 ```typescript
 // tests/e2e/main-flow.spec.ts
-test('Fluxo completo trainer', async ({ page }) => {
+test("Fluxo completo trainer", async ({ page }) => {
   // 1. Signup como trainer
   // 2. Criar primeiro aluno
   // 3. Criar ficha de treino
@@ -248,8 +264,9 @@ test('Fluxo completo trainer', async ({ page }) => {
 ```
 
 2. **Testes de Limitação:**
+
 ```typescript
-test('Free plan limits', async () => {
+test("Free plan limits", async () => {
   // Verificar que free não pode ter 4º aluno
   // Verificar que free não pode usar IA
   // Verificar que free tem fee de 1.5%
@@ -261,6 +278,7 @@ test('Free plan limits', async () => {
 ## 📊 MÉTRICAS DE SUCESSO
 
 ### MVP (Fase 1-2 Completa):
+
 - [ ] Trainer consegue criar ficha de treino completa
 - [ ] Aluno consegue ver e executar treino
 - [ ] Dashboard mostra dados reais
@@ -268,12 +286,14 @@ test('Free plan limits', async () => {
 - [ ] Limitações de plano funcionando
 
 ### Versão Comercial (Fase 1-3 Completa):
+
 - [ ] IA gerando dietas personalizadas
 - [ ] Sistema de créditos funcionando
 - [ ] Upgrade/downgrade automático
 - [ ] Relatórios de progresso funcionais
 
 ### Versão Produção (Todas Fases):
+
 - [ ] Rate limiting ativo
 - [ ] LGPD compliance
 - [ ] Testes E2E passando
@@ -284,16 +304,19 @@ test('Free plan limits', async () => {
 ## 🚀 PRÓXIMOS PASSOS IMEDIATOS
 
 ### Esta Semana:
+
 1. **DIA 1-2:** Criar migration para sistema de treinos
 2. **DIA 3-4:** Implementar componente WorkoutBuilder
 3. **DIA 5:** Implementar ExerciseDatabase com seed data
 
 ### Próxima Semana:
+
 1. **DIA 1-2:** Finalizar sistema de treinos
 2. **DIA 3:** Implementar dashboard real
 3. **DIA 4-5:** Começar integração Stripe
 
 ### Semana 3:
+
 1. **DIA 1-3:** Finalizar Stripe integration
 2. **DIA 4-5:** Implementar sistema de planos
 
@@ -309,5 +332,5 @@ test('Free plan limits', async () => {
 
 ---
 
-*Documento criado em: 02/01/2025*
-*Próxima revisão: Após completar Fase 1*
+_Documento criado em: 02/01/2025_
+_Próxima revisão: Após completar Fase 1_

@@ -1,43 +1,58 @@
-import { supabase } from '@/integrations/supabase/client';
-import type { 
-  Exercise, 
-  WorkoutPlan, 
-  WorkoutSession, 
+import { supabase } from "@/integrations/supabase/client";
+import type {
+  Exercise,
+  WorkoutPlan,
+  WorkoutSession,
   WorkoutPlanExerciseRaw,
-  WorkoutSessionRaw 
-} from '../types';
+  WorkoutSessionRaw,
+} from "../types";
 
 export interface IWorkoutService {
   // Exercise methods
   getExercises(trainerId?: string): Promise<Exercise[]>;
-  createExercise(exercise: Omit<Exercise, 'id' | 'created_at'>): Promise<Exercise>;
-  
+  createExercise(
+    exercise: Omit<Exercise, "id" | "created_at">
+  ): Promise<Exercise>;
+
   // Workout Plan methods
   getWorkoutPlans(trainerId: string): Promise<WorkoutPlan[]>;
   getWorkoutPlan(id: string): Promise<WorkoutPlan | null>;
-  createWorkoutPlan(plan: Omit<WorkoutPlan, 'id' | 'created_at'>): Promise<WorkoutPlan>;
-  assignWorkoutToStudent(templateId: string, studentId: string, trainerId: string): Promise<WorkoutPlan>;
-  
+  createWorkoutPlan(
+    plan: Omit<WorkoutPlan, "id" | "created_at">
+  ): Promise<WorkoutPlan>;
+  assignWorkoutToStudent(
+    templateId: string,
+    studentId: string,
+    trainerId: string
+  ): Promise<WorkoutPlan>;
+
   // Workout Session methods
   getWorkoutSessions(trainerId: string): Promise<WorkoutSession[]>;
-  createWorkoutSession(session: Omit<WorkoutSession, 'id' | 'created_at' | 'workout_plan' | 'student'>): Promise<WorkoutSession>;
+  createWorkoutSession(
+    session: Omit<
+      WorkoutSession,
+      "id" | "created_at" | "workout_plan" | "student"
+    >
+  ): Promise<WorkoutSession>;
 }
 
 export class SupabaseWorkoutService implements IWorkoutService {
   async getExercises(trainerId?: string): Promise<Exercise[]> {
     const { data, error } = await supabase
-      .from('exercises')
-      .select('*')
+      .from("exercises")
+      .select("*")
       .or(`is_public.eq.true,trainer_id.eq.${trainerId}`)
-      .order('name');
+      .order("name");
 
     if (error) throw error;
     return data || [];
   }
 
-  async createExercise(exercise: Omit<Exercise, 'id' | 'created_at'>): Promise<Exercise> {
+  async createExercise(
+    exercise: Omit<Exercise, "id" | "created_at">
+  ): Promise<Exercise> {
     const { data, error } = await supabase
-      .from('exercises')
+      .from("exercises")
       .insert([exercise])
       .select()
       .single();
@@ -48,39 +63,46 @@ export class SupabaseWorkoutService implements IWorkoutService {
 
   async getWorkoutPlans(trainerId: string): Promise<WorkoutPlan[]> {
     const { data, error } = await supabase
-      .from('workout_plans')
-      .select(`
+      .from("workout_plans")
+      .select(
+        `
         *,
         workout_plan_exercises (
           *,
           exercises (*)
         )
-      `)
-      .eq('trainer_id', trainerId)
-      .order('created_at', { ascending: false });
+      `
+      )
+      .eq("trainer_id", trainerId)
+      .order("created_at", { ascending: false });
 
     if (error) throw error;
 
-    return data?.map((plan) => ({
-      ...plan,
-      exercises: plan.workout_plan_exercises?.map((wpe: WorkoutPlanExerciseRaw) => ({
-        ...wpe,
-        exercise: wpe.exercises,
-      })) || [],
-    })) || [];
+    return (
+      data?.map((plan) => ({
+        ...plan,
+        exercises:
+          plan.workout_plan_exercises?.map((wpe: WorkoutPlanExerciseRaw) => ({
+            ...wpe,
+            exercise: wpe.exercises,
+          })) || [],
+      })) || []
+    );
   }
 
   async getWorkoutPlan(id: string): Promise<WorkoutPlan | null> {
     const { data, error } = await supabase
-      .from('workout_plans')
-      .select(`
+      .from("workout_plans")
+      .select(
+        `
         *,
         workout_plan_exercises (
           *,
           exercises (*)
         )
-      `)
-      .eq('id', id)
+      `
+      )
+      .eq("id", id)
       .single();
 
     if (error) throw error;
@@ -89,16 +111,19 @@ export class SupabaseWorkoutService implements IWorkoutService {
 
     return {
       ...data,
-      exercises: data.workout_plan_exercises?.map((wpe: WorkoutPlanExerciseRaw) => ({
-        ...wpe,
-        exercise: wpe.exercises,
-      })) || [],
+      exercises:
+        data.workout_plan_exercises?.map((wpe: WorkoutPlanExerciseRaw) => ({
+          ...wpe,
+          exercise: wpe.exercises,
+        })) || [],
     };
   }
 
-  async createWorkoutPlan(plan: Omit<WorkoutPlan, 'id' | 'created_at'>): Promise<WorkoutPlan> {
+  async createWorkoutPlan(
+    plan: Omit<WorkoutPlan, "id" | "created_at">
+  ): Promise<WorkoutPlan> {
     const { data, error } = await supabase
-      .from('workout_plans')
+      .from("workout_plans")
       .insert([plan])
       .select()
       .single();
@@ -107,24 +132,30 @@ export class SupabaseWorkoutService implements IWorkoutService {
     return data;
   }
 
-  async assignWorkoutToStudent(templateId: string, studentId: string, trainerId: string): Promise<WorkoutPlan> {
+  async assignWorkoutToStudent(
+    templateId: string,
+    studentId: string,
+    trainerId: string
+  ): Promise<WorkoutPlan> {
     // Get the original plan with exercises
     const originalPlan = await this.getWorkoutPlan(templateId);
-    if (!originalPlan) throw new Error('Template workout plan not found');
+    if (!originalPlan) throw new Error("Template workout plan not found");
 
     // Create a copy for the student
     const { data: newPlan, error: planError } = await supabase
-      .from('workout_plans')
-      .insert([{
-        trainer_id: trainerId,
-        name: originalPlan.name,
-        description: originalPlan.description,
-        difficulty_level: originalPlan.difficulty_level,
-        estimated_duration_minutes: originalPlan.estimated_duration_minutes,
-        muscle_groups: originalPlan.muscle_groups,
-        is_template: false,
-        student_id: studentId,
-      }])
+      .from("workout_plans")
+      .insert([
+        {
+          trainer_id: trainerId,
+          name: originalPlan.name,
+          description: originalPlan.description,
+          difficulty_level: originalPlan.difficulty_level,
+          estimated_duration_minutes: originalPlan.estimated_duration_minutes,
+          muscle_groups: originalPlan.muscle_groups,
+          is_template: false,
+          student_id: studentId,
+        },
+      ])
       .select()
       .single();
 
@@ -133,7 +164,7 @@ export class SupabaseWorkoutService implements IWorkoutService {
     // Copy the exercises
     if (originalPlan.exercises && originalPlan.exercises.length > 0) {
       const { error: exercisesError } = await supabase
-        .from('workout_plan_exercises')
+        .from("workout_plan_exercises")
         .insert(
           originalPlan.exercises.map((exercise) => ({
             workout_plan_id: newPlan.id,
@@ -155,33 +186,44 @@ export class SupabaseWorkoutService implements IWorkoutService {
 
   async getWorkoutSessions(trainerId: string): Promise<WorkoutSession[]> {
     const { data, error } = await supabase
-      .from('workout_sessions')
-      .select(`
+      .from("workout_sessions")
+      .select(
+        `
         *,
         workout_plans (*),
         profiles!workout_sessions_student_id_fkey (first_name, last_name)
-      `)
-      .eq('trainer_id', trainerId)
-      .order('scheduled_date', { ascending: false });
+      `
+      )
+      .eq("trainer_id", trainerId)
+      .order("scheduled_date", { ascending: false });
 
     if (error) throw error;
 
-    return data?.map((session: WorkoutSessionRaw) => ({
-      ...session,
-      workout_plan: session.workout_plans,
-      student: session.profiles,
-    })) || [];
+    return (
+      data?.map((session: WorkoutSessionRaw) => ({
+        ...session,
+        workout_plan: session.workout_plans,
+        student: session.profiles,
+      })) || []
+    );
   }
 
-  async createWorkoutSession(session: Omit<WorkoutSession, 'id' | 'created_at' | 'workout_plan' | 'student'>): Promise<WorkoutSession> {
+  async createWorkoutSession(
+    session: Omit<
+      WorkoutSession,
+      "id" | "created_at" | "workout_plan" | "student"
+    >
+  ): Promise<WorkoutSession> {
     const { data, error } = await supabase
-      .from('workout_sessions')
+      .from("workout_sessions")
       .insert([session])
-      .select(`
+      .select(
+        `
         *,
         workout_plans (*),
         profiles!workout_sessions_student_id_fkey (first_name, last_name)
-      `)
+      `
+      )
       .single();
 
     if (error) throw error;

@@ -12,11 +12,11 @@ export {
   useCreditBalance,
   useCreditTransactions,
   useCanUseAI,
-} from './hooks/useAI';
+} from "./hooks/useAI";
 
 // Services
-export { OpenAIService } from './services/AIService';
-export type { IAIService } from './services/AIService';
+export { OpenAIService } from "./services/AIService";
+export type { IAIService } from "./services/AIService";
 
 // Types
 export type {
@@ -31,7 +31,7 @@ export type {
   GenerateWorkoutRequest,
   AIUsageStats,
   CreditTransaction,
-} from './types';
+} from "./types";
 
 // Utils
 export {
@@ -47,4 +47,4 @@ export {
   getDietaryRestrictions,
   getFitnessGoals,
   formatMealType,
-} from './utils';
+} from "./utils";

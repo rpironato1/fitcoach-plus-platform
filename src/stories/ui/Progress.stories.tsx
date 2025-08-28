@@ -1,26 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Progress } from '../../components/ui/progress';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Progress } from "../../components/ui/progress";
 
 const meta: Meta<typeof Progress> = {
-  title: 'UI Components/Progress',
+  title: "UI Components/Progress",
   component: Progress,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A progress indicator component.',
+        component: "A progress indicator component.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     value: {
-      control: { type: 'range', min: 0, max: 100, step: 1 },
+      control: { type: "range", min: 0, max: 100, step: 1 },
     },
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '300px' }}>
+      <div style={{ width: "300px" }}>
         <Story />
       </div>
     ),

@@ -1,7 +1,7 @@
-import { ReactElement } from 'react'
-import { render, RenderOptions } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactElement } from "react";
+import { render, RenderOptions } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Mock do Supabase para testes
 const mockSupabase = {
@@ -10,7 +10,9 @@ const mockSupabase = {
     getUser: () => Promise.resolve({ data: { user: null }, error: null }),
     signIn: () => Promise.resolve({ data: { user: null }, error: null }),
     signOut: () => Promise.resolve({ error: null }),
-    onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+    onAuthStateChange: () => ({
+      data: { subscription: { unsubscribe: () => {} } },
+    }),
   },
   from: () => ({
     select: () => ({
@@ -25,11 +27,11 @@ const mockSupabase = {
     update: () => Promise.resolve({ data: [], error: null }),
     delete: () => Promise.resolve({ data: [], error: null }),
   }),
-}
+};
 
 // Provider personalizado para testes
 interface AllTheProvidersProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const AllTheProviders = ({ children }: AllTheProvidersProps) => {
@@ -43,65 +45,65 @@ const AllTheProviders = ({ children }: AllTheProvidersProps) => {
         retry: false,
       },
     },
-  })
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        {children}
-      </BrowserRouter>
+      <BrowserRouter>{children}</BrowserRouter>
     </QueryClientProvider>
-  )
-}
+  );
+};
 
 // Função de render customizada
 const customRender = (
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>,
-) => render(ui, { wrapper: AllTheProviders, ...options })
+  options?: Omit<RenderOptions, "wrapper">
+) => render(ui, { wrapper: AllTheProviders, ...options });
 
 // Exportar tudo da testing library
-export * from '@testing-library/react'
+export * from "@testing-library/react";
 
 // Sobrescrever o render method
-export { customRender as render }
+export { customRender as render };
 
 // Mock data factories
 export const createMockUser = () => ({
-  id: 'test-user-id',
-  email: 'test@example.com',
+  id: "test-user-id",
+  email: "test@example.com",
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
-})
+});
 
-export const createMockProfile = (role: 'admin' | 'trainer' | 'student' = 'student') => ({
-  id: 'test-profile-id',
-  first_name: 'Test',
-  last_name: 'User',
-  phone: '+5511999999999',
+export const createMockProfile = (
+  role: "admin" | "trainer" | "student" = "student"
+) => ({
+  id: "test-profile-id",
+  first_name: "Test",
+  last_name: "User",
+  phone: "+5511999999999",
   role,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
-})
+});
 
 export const createMockTrainer = () => ({
-  id: 'test-trainer-id',
-  plan: 'free' as const,
+  id: "test-trainer-id",
+  plan: "free" as const,
   active_until: null,
-  whatsapp_number: '+5511999999999',
-  bio: 'Test trainer bio',
+  whatsapp_number: "+5511999999999",
+  bio: "Test trainer bio",
   avatar_url: null,
   max_students: 3,
   ai_credits: 0,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
-})
+});
 
 export const createMockStudent = () => ({
-  id: 'test-student-id',
-  trainer_id: 'test-trainer-id',
+  id: "test-student-id",
+  trainer_id: "test-trainer-id",
   start_date: new Date().toISOString(),
-  status: 'active' as const,
+  status: "active" as const,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
-})
+});

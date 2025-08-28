@@ -1,13 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '@/modules/auth';
-import { toast } from 'sonner';
-import { container } from '@/core/container';
-import type { IAIService } from '../services/AIService';
-import type { GenerateDietPlanRequest, GenerateWorkoutRequest } from '../types';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/modules/auth";
+import { toast } from "sonner";
+import { container } from "@/core/container";
+import type { IAIService } from "../services/AIService";
+import type { GenerateDietPlanRequest, GenerateWorkoutRequest } from "../types";
 
 // Get AI service from DI container
 const getAIService = (): IAIService => {
-  return container.resolve<IAIService>('AIService');
+  return container.resolve<IAIService>("AIService");
 };
 
 // Diet Plan hooks
@@ -16,9 +16,9 @@ export function useDietPlans() {
   const aiService = getAIService();
 
   return useQuery({
-    queryKey: ['diet-plans', profile?.id],
+    queryKey: ["diet-plans", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return aiService.getDietPlans(profile.id);
     },
     enabled: !!profile?.id,
@@ -29,7 +29,7 @@ export function useDietPlan(id: string) {
   const aiService = getAIService();
 
   return useQuery({
-    queryKey: ['diet-plan', id],
+    queryKey: ["diet-plan", id],
     queryFn: () => aiService.getDietPlan(id),
     enabled: !!id,
   });
@@ -42,17 +42,17 @@ export function useGenerateDietPlan() {
 
   return useMutation({
     mutationFn: (request: GenerateDietPlanRequest) => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return aiService.generateDietPlan(profile.id, request);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['diet-plans'] });
-      queryClient.invalidateQueries({ queryKey: ['ai-usage-stats'] });
-      queryClient.invalidateQueries({ queryKey: ['credit-balance'] });
-      toast.success('Plano de dieta gerado com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ["diet-plans"] });
+      queryClient.invalidateQueries({ queryKey: ["ai-usage-stats"] });
+      queryClient.invalidateQueries({ queryKey: ["credit-balance"] });
+      toast.success("Plano de dieta gerado com sucesso!");
     },
     onError: (error) => {
-      toast.error('Erro ao gerar plano de dieta: ' + error.message);
+      toast.error("Erro ao gerar plano de dieta: " + error.message);
     },
   });
 }
@@ -63,9 +63,9 @@ export function useWorkoutSuggestions() {
   const aiService = getAIService();
 
   return useQuery({
-    queryKey: ['workout-suggestions', profile?.id],
+    queryKey: ["workout-suggestions", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return aiService.getWorkoutSuggestions(profile.id);
     },
     enabled: !!profile?.id,
@@ -79,17 +79,17 @@ export function useGenerateWorkoutSuggestion() {
 
   return useMutation({
     mutationFn: (request: GenerateWorkoutRequest) => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return aiService.generateWorkoutSuggestion(profile.id, request);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout-suggestions'] });
-      queryClient.invalidateQueries({ queryKey: ['ai-usage-stats'] });
-      queryClient.invalidateQueries({ queryKey: ['credit-balance'] });
-      toast.success('Sugestão de treino gerada com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ["workout-suggestions"] });
+      queryClient.invalidateQueries({ queryKey: ["ai-usage-stats"] });
+      queryClient.invalidateQueries({ queryKey: ["credit-balance"] });
+      toast.success("Sugestão de treino gerada com sucesso!");
     },
     onError: (error) => {
-      toast.error('Erro ao gerar sugestão de treino: ' + error.message);
+      toast.error("Erro ao gerar sugestão de treino: " + error.message);
     },
   });
 }
@@ -100,9 +100,9 @@ export function useAIUsageStats() {
   const aiService = getAIService();
 
   return useQuery({
-    queryKey: ['ai-usage-stats', profile?.id],
+    queryKey: ["ai-usage-stats", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return aiService.getAIUsageStats(profile.id);
     },
     enabled: !!profile?.id,
@@ -114,9 +114,9 @@ export function useAIRequests() {
   const aiService = getAIService();
 
   return useQuery({
-    queryKey: ['ai-requests', profile?.id],
+    queryKey: ["ai-requests", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return aiService.getAIRequests(profile.id);
     },
     enabled: !!profile?.id,
@@ -129,9 +129,9 @@ export function useCreditBalance() {
   const aiService = getAIService();
 
   return useQuery({
-    queryKey: ['credit-balance', profile?.id],
+    queryKey: ["credit-balance", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return aiService.getCreditBalance(profile.id);
     },
     enabled: !!profile?.id,
@@ -143,9 +143,9 @@ export function useCreditTransactions() {
   const aiService = getAIService();
 
   return useQuery({
-    queryKey: ['credit-transactions', profile?.id],
+    queryKey: ["credit-transactions", profile?.id],
     queryFn: () => {
-      if (!profile?.id) throw new Error('User not authenticated');
+      if (!profile?.id) throw new Error("User not authenticated");
       return aiService.getCreditTransactions(profile.id);
     },
     enabled: !!profile?.id,
@@ -160,7 +160,9 @@ export function useCanUseAI() {
   return {
     canUseDietPlan: (creditBalance || 0) >= 5,
     canUseWorkoutSuggestion: (creditBalance || 0) >= 3,
-    hasActiveSubscription: ['pro', 'elite'].includes(trainerProfile?.plan || 'free'),
+    hasActiveSubscription: ["pro", "elite"].includes(
+      trainerProfile?.plan || "free"
+    ),
     creditBalance: creditBalance || 0,
   };
 }

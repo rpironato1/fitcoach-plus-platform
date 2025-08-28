@@ -1,27 +1,27 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Textarea } from '../../components/ui/textarea';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Textarea } from "../../components/ui/textarea";
 
 const meta: Meta<typeof Textarea> = {
-  title: 'UI Components/Textarea',
+  title: "UI Components/Textarea",
   component: Textarea,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A textarea component for multi-line text input.',
+        component: "A textarea component for multi-line text input.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     placeholder: {
-      control: 'text',
+      control: "text",
     },
     disabled: {
-      control: 'boolean',
+      control: "boolean",
     },
     rows: {
-      control: 'number',
+      control: "number",
     },
   },
 };
@@ -31,27 +31,27 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    placeholder: 'Enter your message...',
+    placeholder: "Enter your message...",
   },
 };
 
 export const WithRows: Story = {
   args: {
-    placeholder: 'Enter your message...',
+    placeholder: "Enter your message...",
     rows: 5,
   },
 };
 
 export const Disabled: Story = {
   args: {
-    placeholder: 'Disabled textarea',
+    placeholder: "Disabled textarea",
     disabled: true,
   },
 };
 
 export const WithValue: Story = {
   args: {
-    value: 'This is a multi-line\ntext input field\nwith some content.',
-    placeholder: 'Enter your message...',
+    value: "This is a multi-line\ntext input field\nwith some content.",
+    placeholder: "Enter your message...",
   },
 };

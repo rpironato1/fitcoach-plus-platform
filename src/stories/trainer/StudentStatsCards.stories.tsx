@@ -1,32 +1,32 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { StudentStatsCards } from '../../components/trainer/StudentStatsCards';
+import type { Meta, StoryObj } from "@storybook/react";
+import { StudentStatsCards } from "../../components/trainer/StudentStatsCards";
 
 const meta: Meta<typeof StudentStatsCards> = {
-  title: 'Trainer Components/Student Stats Cards',
+  title: "Trainer Components/Student Stats Cards",
   component: StudentStatsCards,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'Dashboard cards showing student statistics for trainers.',
+        component: "Dashboard cards showing student statistics for trainers.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     totalStudents: {
-      control: 'number',
+      control: "number",
     },
     activeStudents: {
-      control: 'number',
+      control: "number",
     },
     maxStudents: {
-      control: 'number',
+      control: "number",
     },
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '800px' }}>
+      <div style={{ width: "800px" }}>
         <Story />
       </div>
     ),

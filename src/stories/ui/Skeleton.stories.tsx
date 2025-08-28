@@ -1,21 +1,21 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Skeleton } from '../../components/ui/skeleton';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Skeleton } from "../../components/ui/skeleton";
 
 const meta: Meta<typeof Skeleton> = {
-  title: 'UI Components/Skeleton',
+  title: "UI Components/Skeleton",
   component: Skeleton,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A skeleton component for loading states.',
+        component: "A skeleton component for loading states.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <div style={{ width: '400px' }}>
+      <div style={{ width: "400px" }}>
         <Story />
       </div>
     ),
@@ -26,15 +26,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <Skeleton className="h-4 w-full" />
-  ),
+  render: () => <Skeleton className="h-4 w-full" />,
 };
 
 export const Circle: Story = {
-  render: () => (
-    <Skeleton className="h-12 w-12 rounded-full" />
-  ),
+  render: () => <Skeleton className="h-12 w-12 rounded-full" />,
 };
 
 export const Card: Story = {

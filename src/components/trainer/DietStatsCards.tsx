@@ -1,6 +1,11 @@
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChefHat, Users, Calendar } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ChefHat, Users, Calendar } from "lucide-react";
 
 interface DietPlan {
   id: string;
@@ -14,11 +19,14 @@ interface DietStatsCardsProps {
 
 export function DietStatsCards({ dietPlans }: DietStatsCardsProps) {
   const totalPlans = dietPlans.length;
-  const uniqueStudents = new Set(dietPlans.map(plan => plan.student_id)).size;
-  const thisMonth = dietPlans.filter(plan => {
+  const uniqueStudents = new Set(dietPlans.map((plan) => plan.student_id)).size;
+  const thisMonth = dietPlans.filter((plan) => {
     const createdDate = new Date(plan.created_at);
     const now = new Date();
-    return createdDate.getMonth() === now.getMonth() && createdDate.getFullYear() === now.getFullYear();
+    return (
+      createdDate.getMonth() === now.getMonth() &&
+      createdDate.getFullYear() === now.getFullYear()
+    );
   }).length;
 
   return (
@@ -30,22 +38,20 @@ export function DietStatsCards({ dietPlans }: DietStatsCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{totalPlans}</div>
-          <p className="text-xs text-muted-foreground">
-            planos criados
-          </p>
+          <p className="text-xs text-muted-foreground">planos criados</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Alunos com Planos</CardTitle>
+          <CardTitle className="text-sm font-medium">
+            Alunos com Planos
+          </CardTitle>
           <Users className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{uniqueStudents}</div>
-          <p className="text-xs text-muted-foreground">
-            alunos atendidos
-          </p>
+          <p className="text-xs text-muted-foreground">alunos atendidos</p>
         </CardContent>
       </Card>
 
@@ -56,9 +62,7 @@ export function DietStatsCards({ dietPlans }: DietStatsCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{thisMonth}</div>
-          <p className="text-xs text-muted-foreground">
-            novos planos
-          </p>
+          <p className="text-xs text-muted-foreground">novos planos</p>
         </CardContent>
       </Card>
     </div>

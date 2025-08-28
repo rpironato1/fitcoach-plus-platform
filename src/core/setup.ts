@@ -1,25 +1,28 @@
-import { container } from '@/core';
-import { SupabaseAuthService, SupabaseProfileService } from '@/modules/auth/services/AuthService';
-import { SupabaseWorkoutService } from '@/modules/workouts/services/WorkoutService';
-import { StripePaymentService } from '@/modules/payments/services/PaymentService';
-import { OpenAIService } from '@/modules/ai/services/AIService';
-import { SupabaseSecurityService } from '@/modules/security/services/SecurityService';
+import { container } from "@/core";
+import {
+  LocalStorageAuthService,
+  LocalStorageProfileService,
+} from "@/modules/auth/services/LocalStorageAuthService";
+import { LocalStorageWorkoutService } from "@/modules/workouts/services/LocalStorageWorkoutService";
+import { LocalStoragePaymentService } from "@/modules/payments/services/LocalStoragePaymentService";
+import { LocalStorageAIService } from "@/modules/ai/services/LocalStorageAIService";
+import { LocalStorageSecurityService } from "@/modules/security/services/LocalStorageSecurityService";
 
-// Setup all modules' dependencies
+// Setup all modules' dependencies with LocalStorage-only services
 export function setupModules() {
   // Auth module dependencies
-  container.bind('AuthService').to(SupabaseAuthService);
-  container.bind('ProfileService').to(SupabaseProfileService);
-  
+  container.bind("AuthService").to(LocalStorageAuthService);
+  container.bind("ProfileService").to(LocalStorageProfileService);
+
   // Workouts module dependencies
-  container.bind('WorkoutService').to(SupabaseWorkoutService);
-  
+  container.bind("WorkoutService").to(LocalStorageWorkoutService);
+
   // Payments module dependencies
-  container.bind('PaymentService').to(StripePaymentService);
-  
+  container.bind("PaymentService").to(LocalStoragePaymentService);
+
   // AI module dependencies
-  container.bind('AIService').to(OpenAIService);
-  
+  container.bind("AIService").to(LocalStorageAIService);
+
   // Security module dependencies
-  container.bind('SecurityService').to(SupabaseSecurityService);
+  container.bind("SecurityService").to(LocalStorageSecurityService);
 }

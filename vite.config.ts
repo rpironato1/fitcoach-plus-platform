@@ -16,11 +16,9 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     strictPort: true,
   },
-  plugins: [
-    react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
+  plugins: [react(), mode === "development" && componentTagger()].filter(
+    Boolean
+  ),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -28,7 +26,7 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     // Optimize for production
-    minify: 'terser',
+    minify: "terser",
     cssCodeSplit: true,
     sourcemap: false,
     chunkSizeWarningLimit: 500,
@@ -36,28 +34,41 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: {
           // Vendor chunks for better caching
-          'react-vendor': ['react', 'react-dom'],
-          'ui-vendor': ['@radix-ui/react-slot', '@radix-ui/react-dialog', '@radix-ui/react-tabs'],
-          'router-vendor': ['react-router-dom'],
-          'chart-vendor': ['recharts'],
-          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          'date-vendor': ['date-fns', 'react-day-picker'],
-          'animation-vendor': ['tailwindcss-animate', 'class-variance-authority'],
+          "react-vendor": ["react", "react-dom"],
+          "ui-vendor": [
+            "@radix-ui/react-slot",
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-tabs",
+          ],
+          "router-vendor": ["react-router-dom"],
+          "chart-vendor": ["recharts"],
+          "form-vendor": ["react-hook-form", "@hookform/resolvers", "zod"],
+          "date-vendor": ["date-fns", "react-day-picker"],
+          "animation-vendor": [
+            "tailwindcss-animate",
+            "class-variance-authority",
+          ],
         },
         // Optimize asset naming
         chunkFileNames: (chunkInfo) => {
           const facadeModuleId = chunkInfo.facadeModuleId
-            ? chunkInfo.facadeModuleId.split('/').pop()?.replace('.tsx', '').replace('.ts', '')
-            : 'chunk';
+            ? chunkInfo.facadeModuleId
+                .split("/")
+                .pop()
+                ?.replace(".tsx", "")
+                .replace(".ts", "")
+            : "chunk";
           return `js/${facadeModuleId}-[hash].js`;
         },
         assetFileNames: (assetInfo) => {
-          const info = assetInfo.name?.split('.') || [];
+          const info = assetInfo.name?.split(".") || [];
           const ext = info[info.length - 1];
-          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name || '')) {
+          if (
+            /\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name || "")
+          ) {
             return `images/[name]-[hash][extname]`;
           }
-          if (/\.(css)$/i.test(assetInfo.name || '')) {
+          if (/\.(css)$/i.test(assetInfo.name || "")) {
             return `css/[name]-[hash][extname]`;
           }
           return `assets/[name]-[hash][extname]`;
@@ -74,6 +85,6 @@ export default defineConfig(({ mode }) => ({
   },
   // Enable compression in dev mode
   define: {
-    __DEV__: mode === 'development',
+    __DEV__: mode === "development",
   },
 }));

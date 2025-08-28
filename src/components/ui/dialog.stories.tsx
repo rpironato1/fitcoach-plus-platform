@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Dialog,
   DialogContent,
@@ -7,26 +7,27 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './dialog';
-import { Button } from './button';
-import { Input } from './input';
-import { Label } from './label';
+} from "./dialog";
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
 
 /**
  * Dialog component - Modal dialogs for important user interactions
  */
 const meta: Meta<typeof Dialog> = {
-  title: 'UI/Dialog',
+  title: "UI/Dialog",
   component: Dialog,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'Modal dialogs for capturing user attention and handling important interactions. Built with accessibility and keyboard navigation support.',
+        component:
+          "Modal dialogs for capturing user attention and handling important interactions. Built with accessibility and keyboard navigation support.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -99,11 +100,7 @@ export const WithForm: Story = {
             <Label htmlFor="reps" className="text-right">
               Repetições
             </Label>
-            <Input
-              id="reps"
-              placeholder="10-12"
-              className="col-span-3"
-            />
+            <Input id="reps" placeholder="10-12" className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="weight" className="text-right">
@@ -127,7 +124,8 @@ export const WithForm: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Dialog with form inputs for data collection. Demonstrates proper form layout within modal context.',
+        story:
+          "Dialog with form inputs for data collection. Demonstrates proper form layout within modal context.",
       },
     },
   },
@@ -146,7 +144,7 @@ export const Destructive: Story = {
         <DialogHeader>
           <DialogTitle className="text-destructive">Deletar Conta</DialogTitle>
           <DialogDescription>
-            Esta ação é permanente e não pode ser desfeita. Todos os seus dados, 
+            Esta ação é permanente e não pode ser desfeita. Todos os seus dados,
             treinos e informações serão removidos definitivamente.
           </DialogDescription>
         </DialogHeader>
@@ -157,10 +155,7 @@ export const Destructive: Story = {
           <p className="text-sm mt-2">
             Se você tem certeza, digite "DELETAR" no campo abaixo:
           </p>
-          <Input 
-            className="mt-2" 
-            placeholder="Digite DELETAR para confirmar"
-          />
+          <Input className="mt-2" placeholder="Digite DELETAR para confirmar" />
         </div>
         <DialogFooter>
           <Button variant="outline">Cancelar</Button>
@@ -172,7 +167,8 @@ export const Destructive: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Dialog for destructive actions with clear warnings and confirmation patterns.',
+        story:
+          "Dialog for destructive actions with clear warnings and confirmation patterns.",
       },
     },
   },
@@ -189,7 +185,9 @@ export const Success: Story = {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-green-600">🎉 Treino Finalizado!</DialogTitle>
+          <DialogTitle className="text-green-600">
+            🎉 Treino Finalizado!
+          </DialogTitle>
           <DialogDescription>
             Parabéns! Você completou seu treino de hoje com sucesso.
           </DialogDescription>
@@ -227,7 +225,8 @@ export const Success: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Success dialog with celebratory content and detailed feedback for user achievements.',
+        story:
+          "Success dialog with celebratory content and detailed feedback for user achievements.",
       },
     },
   },
@@ -263,8 +262,10 @@ export const Information: Story = {
           </div>
           <div className="bg-muted p-3 rounded-lg">
             <p className="text-sm">
-              <strong>Versão:</strong> 2.0.0<br />
-              <strong>Última atualização:</strong> Dezembro 2024<br />
+              <strong>Versão:</strong> 2.0.0
+              <br />
+              <strong>Última atualização:</strong> Dezembro 2024
+              <br />
               <strong>Suporte:</strong> suporte@fitcoachplus.com
             </p>
           </div>
@@ -278,7 +279,8 @@ export const Information: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Information dialog for displaying app details, help content, or feature explanations.',
+        story:
+          "Information dialog for displaying app details, help content, or feature explanations.",
       },
     },
   },
