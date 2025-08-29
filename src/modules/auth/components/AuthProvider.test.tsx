@@ -35,6 +35,31 @@ vi.mock('../hooks/useAuth', () => {
   };
 });
 
+// Mock auth data for testing different scenarios
+const mockAuthData = {
+  user: {
+    id: 'user-123',
+    email: 'user@test.com',
+    created_at: '2024-01-01T00:00:00Z',
+  },
+  profile: {
+    id: 'user-123',
+    first_name: 'John',
+    last_name: 'Doe',
+    role: 'student' as const,
+  },
+  trainerProfile: null,
+  studentProfile: {
+    id: 'user-123',
+    goals: ['weight_loss'],
+    fitness_level: 'beginner' as const,
+  },
+  loading: false,
+  signIn: vi.fn(),
+  signOut: vi.fn(),
+  signUp: vi.fn(),
+};
+
 // Test component that uses the auth context
 function TestComponent() {
   const auth = useAuth();

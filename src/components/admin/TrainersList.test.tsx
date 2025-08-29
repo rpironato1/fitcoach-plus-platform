@@ -66,7 +66,14 @@ describe('TrainersList', () => {
   const mockTrainers = [
     {
       id: '1',
-      name: 'John Trainer',
+      profiles: {
+        first_name: 'John',
+        last_name: 'Trainer',
+        phone: '123-456-7890',
+      },
+      _count: { students: 25 },
+      ai_credits: 100,
+      plan: 'pro' as const,
       email: 'john@trainer.com',
       specializations: ['Strength Training', 'Weight Loss'],
       experience: 5,
@@ -78,7 +85,14 @@ describe('TrainersList', () => {
     },
     {
       id: '2',
-      name: 'Sarah Fitness',
+      profiles: {
+        first_name: 'Sarah',
+        last_name: 'Fitness',
+        phone: '987-654-3210',
+      },
+      _count: { students: 40 },
+      ai_credits: 150,
+      plan: 'elite' as const,
       email: 'sarah@fitness.com',
       specializations: ['Yoga', 'Pilates', 'Flexibility'],
       experience: 8,
@@ -90,7 +104,14 @@ describe('TrainersList', () => {
     },
     {
       id: '3',
-      name: 'Mike Power',
+      profiles: {
+        first_name: 'Mike',
+        last_name: 'Power',
+        phone: '555-123-4567',
+      },
+      _count: { students: 30 },
+      ai_credits: 50,
+      plan: 'free' as const,
       email: 'mike@power.com',
       specializations: ['Powerlifting', 'Bodybuilding'],
       experience: 10,

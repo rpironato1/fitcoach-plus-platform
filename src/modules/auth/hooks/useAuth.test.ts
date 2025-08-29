@@ -78,8 +78,8 @@ describe('useAuth', () => {
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-      }, { timeout: 12000 });
-    });
+      }, { timeout: 5000 });
+    }, 8000);
 
     it('should handle initialization errors gracefully', async () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
