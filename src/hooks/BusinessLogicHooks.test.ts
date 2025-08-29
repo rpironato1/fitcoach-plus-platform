@@ -649,7 +649,7 @@ describe('Business Logic Hooks Comprehensive Testing', () => {
     });
 
     it('should handle service method calls with null data', async () => {
-      const studentsHook = renderHook(() => useStudentsManagement(), { wrapper });
+      const { result } = renderHook(() => useStudentsManagement(), { wrapper });
 
       act(() => {
         result.current.createStudent(null as any);

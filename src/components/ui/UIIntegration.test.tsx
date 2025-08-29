@@ -135,7 +135,7 @@ describe('UI Component Integration Tests', () => {
       );
 
       const card = screen.getByText('Test content').parentElement;
-      expect(card).toHaveClass('card-styles');
+      expect(card).toHaveAttribute('class', 'card-styles');
     });
   });
 

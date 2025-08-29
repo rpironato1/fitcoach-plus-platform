@@ -209,7 +209,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-email')).toHaveTextContent('Invalid email format');
+        expect(screen.getByTestId('error-email')).toHaveTextContent('Invalid email format');
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -234,7 +234,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-password')).toHaveTextContent('Password must be at least 8 characters');
+        expect(screen.getByTestId('error-password')).toHaveTextContent('Password must be at least 8 characters');
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -260,7 +260,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-age')).toHaveTextContent('Must be at least 18 years old');
+        expect(screen.getByTestId('error-age')).toHaveTextContent('Must be at least 18 years old');
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -317,7 +317,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(screen.getByText('Submit'));
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-name')).toHaveTextContent('Workout name must be at least 3 characters');
+        expect(screen.getByTestId('error-name')).toHaveTextContent('Workout name must be at least 3 characters');
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -344,7 +344,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(screen.getByText('Submit'));
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-description')).toHaveTextContent('Description must be at least 10 characters');
+        expect(screen.getByTestId('error-description')).toHaveTextContent('Description must be at least 10 characters');
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -378,7 +378,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(screen.getByText('Submit'));
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-difficulty')).toHaveTextContent('Invalid enum value');
+        expect(screen.getByTestId('error-difficulty')).toHaveTextContent('Invalid enum value');
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -406,7 +406,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(screen.getByText('Submit'));
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-calories')).toHaveTextContent('Minimum 800 calories');
+        expect(screen.getByTestId('error-calories')).toHaveTextContent('Minimum 800 calories');
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -432,7 +432,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(screen.getByText('Submit'));
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-protein')).toHaveTextContent('Protein cannot be negative');
+        expect(screen.getByTestId('error-protein')).toHaveTextContent('Protein cannot be negative');
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -505,10 +505,10 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(screen.getByText('Submit'));
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-email')).toBeInTheDocument();
-        expect(screen.getByTestId('field-error-password')).toBeInTheDocument();
-        expect(screen.getByTestId('field-error-name')).toBeInTheDocument();
-        expect(screen.getByTestId('field-error-age')).toBeInTheDocument();
+        expect(screen.getByTestId('error-email')).toBeInTheDocument();
+        expect(screen.getByTestId('error-password')).toBeInTheDocument();
+        expect(screen.getByTestId('error-name')).toBeInTheDocument();
+        expect(screen.getByTestId('error-age')).toBeInTheDocument();
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();
@@ -531,7 +531,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(screen.getByText('Submit'));
 
       await waitFor(() => {
-        expect(screen.getByTestId('field-error-email')).toBeInTheDocument();
+        expect(screen.getByTestId('error-email')).toBeInTheDocument();
       });
 
       // Fix the email and submit again
@@ -552,7 +552,7 @@ describe('Zod Schema Validation Tests', () => {
       });
 
       // Error should be cleared
-      expect(screen.queryByTestId('field-error-email')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('error-email')).not.toBeInTheDocument();
     });
   });
 });

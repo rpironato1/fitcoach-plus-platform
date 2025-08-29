@@ -270,6 +270,11 @@ describe('useAuth', () => {
 
       const { result } = renderHook(() => useAuth());
 
+      await act(async () => {
+        vi.runAllTimers();
+        await new Promise(resolve => setTimeout(resolve, 10));
+      });
+
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
         expect(result.current.user).toEqual(mockUser);
@@ -298,6 +303,11 @@ describe('useAuth', () => {
 
       const { result } = renderHook(() => useAuth());
 
+      await act(async () => {
+        vi.runAllTimers();
+        await new Promise(resolve => setTimeout(resolve, 10));
+      });
+
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
         expect(result.current.user).toEqual(mockUser);
@@ -321,13 +331,18 @@ describe('useAuth', () => {
 
       const { result } = renderHook(() => useAuth());
 
+      await act(async () => {
+        vi.runAllTimers();
+        await new Promise(resolve => setTimeout(resolve, 10));
+      });
+
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
         expect(result.current.user).toEqual(mockUser);
         expect(result.current.profile).toBe(null);
-        expect(consoleErrorSpy).toHaveBeenCalledWith('Error loading user profile:', expect.any(Error));
-      }, { timeout: 10000 });
+      }, { timeout: 3000 });
 
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Error loading user profile:', expect.any(Error));
       consoleErrorSpy.mockRestore();
     });
 
