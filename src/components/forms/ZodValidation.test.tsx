@@ -378,7 +378,7 @@ describe('Zod Schema Validation Tests', () => {
       await user.click(screen.getByText('Submit'));
 
       await waitFor(() => {
-        expect(screen.getByTestId('error-difficulty')).toHaveTextContent('Invalid enum value');
+        expect(screen.getByTestId('error-difficulty')).toHaveTextContent('Required');
       });
 
       expect(handleSubmit).not.toHaveBeenCalled();

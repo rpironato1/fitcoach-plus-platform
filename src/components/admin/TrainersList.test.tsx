@@ -104,15 +104,17 @@ describe('TrainersList', () => {
 
   describe('rendering', () => {
     it('should render trainers list successfully', () => {
-      mockUseTrainersManagement.mockReturnValue({
-        trainers: mockTrainers,
-        isLoading: false,
-        error: null,
-        deleteTrainerMutation: { mutate: vi.fn(), isLoading: false },
-        updateTrainerMutation: { mutate: vi.fn(), isLoading: false },
-      });
+      const mockOnUpdatePlan = vi.fn();
+      const mockOnDeleteTrainer = vi.fn();
 
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={mockOnUpdatePlan}
+          onDeleteTrainer={mockOnDeleteTrainer}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByText('John Trainer')).toBeInTheDocument();
       expect(screen.getByText('Sarah Fitness')).toBeInTheDocument();
@@ -120,44 +122,41 @@ describe('TrainersList', () => {
     });
 
     it('should show loading state', () => {
-      mockUseTrainersManagement.mockReturnValue({
-        trainers: [],
-        isLoading: true,
-        error: null,
-        deleteTrainerMutation: { mutate: vi.fn(), isLoading: false },
-        updateTrainerMutation: { mutate: vi.fn(), isLoading: false },
-      });
-
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={[]}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByText(/loading/i)).toBeInTheDocument();
     });
 
     it('should show error state', () => {
       const error = new Error('Failed to load trainers');
-      mockUseTrainersManagement.mockReturnValue({
-        trainers: [],
-        isLoading: false,
-        error,
-        deleteTrainerMutation: { mutate: vi.fn(), isLoading: false },
-        updateTrainerMutation: { mutate: vi.fn(), isLoading: false },
-      });
-
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={[]}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByText(/failed to load trainers/i)).toBeInTheDocument();
     });
 
     it('should show empty state when no trainers', () => {
-      mockUseTrainersManagement.mockReturnValue({
-        trainers: [],
-        isLoading: false,
-        error: null,
-        deleteTrainerMutation: { mutate: vi.fn(), isLoading: false },
-        updateTrainerMutation: { mutate: vi.fn(), isLoading: false },
-      });
-
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={[]}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByText(/no trainers found/i)).toBeInTheDocument();
     });
@@ -175,7 +174,14 @@ describe('TrainersList', () => {
     });
 
     it('should display trainer basic information', () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByText('john@trainer.com')).toBeInTheDocument();
       expect(screen.getByText('5 years experience')).toBeInTheDocument();
@@ -184,7 +190,14 @@ describe('TrainersList', () => {
     });
 
     it('should display trainer specializations', () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByText('Strength Training')).toBeInTheDocument();
       expect(screen.getByText('Weight Loss')).toBeInTheDocument();
@@ -193,7 +206,14 @@ describe('TrainersList', () => {
     });
 
     it('should display trainer certifications', () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByText('NASM-CPT')).toBeInTheDocument();
       expect(screen.getByText('ACSM-CPT')).toBeInTheDocument();
@@ -201,7 +221,14 @@ describe('TrainersList', () => {
     });
 
     it('should show active/inactive status', () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const activeStatus = screen.getAllByText(/active/i);
       const inactiveStatus = screen.getAllByText(/inactive/i);
@@ -211,7 +238,14 @@ describe('TrainersList', () => {
     });
 
     it('should display trainer bio when available', () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByText(/experienced trainer specializing in strength/i)).toBeInTheDocument();
       expect(screen.getByText(/certified yoga instructor/i)).toBeInTheDocument();
@@ -230,7 +264,14 @@ describe('TrainersList', () => {
     });
 
     it('should filter trainers by name', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const searchInput = screen.getByPlaceholderText(/search trainers/i);
       await user.type(searchInput, 'John');
@@ -240,7 +281,14 @@ describe('TrainersList', () => {
     });
 
     it('should filter trainers by specialization', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const specializationFilter = screen.getByLabelText(/specialization/i);
       await user.selectOptions(specializationFilter, 'Yoga');
@@ -250,7 +298,14 @@ describe('TrainersList', () => {
     });
 
     it('should filter trainers by status', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const statusFilter = screen.getByLabelText(/status/i);
       await user.selectOptions(statusFilter, 'inactive');
@@ -261,7 +316,14 @@ describe('TrainersList', () => {
     });
 
     it('should sort trainers by experience', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const sortSelect = screen.getByLabelText(/sort by/i);
       await user.selectOptions(sortSelect, 'experience');
@@ -273,7 +335,14 @@ describe('TrainersList', () => {
     });
 
     it('should sort trainers by rating', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const sortSelect = screen.getByLabelText(/sort by/i);
       await user.selectOptions(sortSelect, 'rating');
@@ -285,7 +354,14 @@ describe('TrainersList', () => {
     });
 
     it('should clear filters', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const searchInput = screen.getByPlaceholderText(/search trainers/i);
       await user.type(searchInput, 'John');
@@ -316,7 +392,14 @@ describe('TrainersList', () => {
     });
 
     it('should handle trainer deletion', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const deleteButtons = screen.getAllByText(/delete/i);
       await user.click(deleteButtons[0]);
@@ -329,7 +412,14 @@ describe('TrainersList', () => {
     });
 
     it('should handle trainer status toggle', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const statusToggle = screen.getByTestId('status-toggle-1');
       await user.click(statusToggle);
@@ -341,7 +431,14 @@ describe('TrainersList', () => {
     });
 
     it('should open trainer edit modal', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const editButtons = screen.getAllByText(/edit/i);
       await user.click(editButtons[0]);
@@ -351,7 +448,14 @@ describe('TrainersList', () => {
     });
 
     it('should handle trainer profile view', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const viewButtons = screen.getAllByText(/view profile/i);
       await user.click(viewButtons[0]);
@@ -373,7 +477,14 @@ describe('TrainersList', () => {
     });
 
     it('should have proper ARIA labels', () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByLabelText(/search trainers/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/specialization filter/i)).toBeInTheDocument();
@@ -382,7 +493,14 @@ describe('TrainersList', () => {
     });
 
     it('should support keyboard navigation', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const searchInput = screen.getByPlaceholderText(/search trainers/i);
       await user.tab();
@@ -394,7 +512,14 @@ describe('TrainersList', () => {
     });
 
     it('should have proper heading structure', () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/trainers/i);
       expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(3); // One for each trainer
@@ -409,7 +534,14 @@ describe('TrainersList', () => {
         updateTrainerMutation: { mutate: vi.fn(), isLoading: false },
       });
 
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByRole('status')).toHaveTextContent(/loading trainers/i);
     });
@@ -427,7 +559,14 @@ describe('TrainersList', () => {
         updateTrainerMutation: { mutate: vi.fn(), isLoading: false },
       });
 
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const deleteButtons = screen.getAllByText(/delete/i);
       await user.click(deleteButtons[0]);
@@ -455,7 +594,14 @@ describe('TrainersList', () => {
         updateTrainerMutation: { mutate: mockUpdateMutation, isLoading: false },
       });
 
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const statusToggle = screen.getByTestId('status-toggle-1');
       await user.click(statusToggle);
@@ -481,7 +627,14 @@ describe('TrainersList', () => {
         updateTrainerMutation: { mutate: vi.fn(), isLoading: false },
       });
 
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByText(/check your internet connection/i)).toBeInTheDocument();
     });
@@ -506,7 +659,14 @@ describe('TrainersList', () => {
         value: 375,
       });
       
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByTestId('mobile-trainer-list')).toBeInTheDocument();
     });
@@ -519,7 +679,14 @@ describe('TrainersList', () => {
         value: 1200,
       });
       
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       expect(screen.getByTestId('desktop-trainer-grid')).toBeInTheDocument();
     });
@@ -541,7 +708,14 @@ describe('TrainersList', () => {
         updateTrainerMutation: { mutate: vi.fn(), isLoading: false },
       });
 
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       // Should only render visible items
       const visibleTrainers = screen.getAllByTestId('trainer-card');
@@ -549,7 +723,14 @@ describe('TrainersList', () => {
     });
 
     it('should debounce search input', async () => {
-      render(<TrainersList />, { wrapper });
+      render(
+        <TrainersList 
+          trainers={mockTrainers}
+          onUpdatePlan={vi.fn()}
+          onDeleteTrainer={vi.fn()}
+        />, 
+        { wrapper }
+      );
 
       const searchInput = screen.getByPlaceholderText(/search trainers/i);
       

@@ -128,7 +128,7 @@ describe('UI Component Integration Tests', () => {
 
     it('should apply styling classes', () => {
       render(
-        <MockCard className="card-styles">
+        <MockCard className="rounded-lg border bg-card text-card-foreground shadow-sm">
           Test content
         </MockCard>,
         { wrapper }
