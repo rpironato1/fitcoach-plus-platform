@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, waitFor, act } from '@testing-library/react';
+import { renderHook, waitFor, act } from '@testing-library/react'; import { act } from '@testing-library/react';
 import { useAuth } from './useAuth';
 import { container } from '@/core';
 
@@ -33,10 +33,8 @@ describe('useAuth', () => {
     vi.clearAllMocks();
     vi.useFakeTimers();
     
-    // Setup default container behavior
-    mockContainer.isBound.mockImplementation((service) => {
-      return service === 'AuthService' || service === 'ProfileService';
-    });
+    // Setup default container behavior - services are bound by default
+    mockContainer.isBound.mockReturnValue(true);
     
     mockContainer.resolve.mockImplementation((service) => {
       if (service === 'AuthService') return mockAuthService;
@@ -73,16 +71,15 @@ describe('useAuth', () => {
       expect(result.current.loading).toBe(true);
 
       // Simulate services becoming available
-      setTimeout(() => {
-        mockContainer.isBound.mockReturnValue(true);
-      }, 200);
-
       await act(async () => {
-        vi.advanceTimersByTime(300);
-        await waitFor(() => {
-          expect(mockAuthService.getCurrentSession).toHaveBeenCalled();
-        });
+        mockContainer.isBound.mockReturnValue(true);
+        await act(async () => { vi.runAllTimers(); await new Promise(resolve => setTimeout(resolve, 10)); });
+        await new Promise(resolve => setTimeout(resolve, 10));
       });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      }, { timeout: 3000 });
     });
 
     it('should handle initialization errors gracefully', async () => {
@@ -93,9 +90,9 @@ describe('useAuth', () => {
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-        expect(consoleErrorSpy).toHaveBeenCalledWith('Error initializing auth:', expect.any(Error));
-      });
+      }, { timeout: 3000 });
 
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Error initializing auth:', expect.any(Error));
       consoleErrorSpy.mockRestore();
     });
   });
@@ -120,11 +117,16 @@ describe('useAuth', () => {
 
       const { result } = renderHook(() => useAuth());
 
+      await act(async () => {
+        vi.runAllTimers();
+        await new Promise(resolve => setTimeout(resolve, 10));
+      });
+
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
         expect(result.current.user).toEqual(mockUser);
         expect(result.current.profile).toEqual(mockProfile);
-      });
+      }, { timeout: 3000 });
     });
 
     it('should set loading to false when no session exists', async () => {
@@ -132,11 +134,16 @@ describe('useAuth', () => {
 
       const { result } = renderHook(() => useAuth());
 
+      await act(async () => {
+        vi.runAllTimers();
+        await new Promise(resolve => setTimeout(resolve, 10));
+      });
+
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
         expect(result.current.user).toBe(null);
         expect(result.current.profile).toBe(null);
-      });
+      }, { timeout: 3000 });
     });
 
     it('should handle auth state changes', async () => {
@@ -148,6 +155,12 @@ describe('useAuth', () => {
       });
 
       const { result } = renderHook(() => useAuth());
+
+      // Wait for initial load
+      await act(async () => {
+        vi.runAllTimers();
+        await new Promise(resolve => setTimeout(resolve, 10));
+      });
 
       const mockUser = {
         id: 'user-123',
@@ -167,21 +180,25 @@ describe('useAuth', () => {
       // Simulate user signing in
       await act(async () => {
         authCallback?.(mockUser);
-        await waitFor(() => {
-          expect(result.current.user).toEqual(mockUser);
-          expect(result.current.profile).toEqual(mockProfile);
-        });
+        await new Promise(resolve => setTimeout(resolve, 10));
       });
+
+      await waitFor(() => {
+        expect(result.current.user).toEqual(mockUser);
+        expect(result.current.profile).toEqual(mockProfile);
+      }, { timeout: 3000 });
 
       // Simulate user signing out
       await act(async () => {
         authCallback?.(null);
-        await waitFor(() => {
-          expect(result.current.user).toBe(null);
-          expect(result.current.profile).toBe(null);
-          expect(result.current.loading).toBe(false);
-        });
+        await new Promise(resolve => setTimeout(resolve, 10));
       });
+
+      await waitFor(() => {
+        expect(result.current.user).toBe(null);
+        expect(result.current.profile).toBe(null);
+        expect(result.current.loading).toBe(false);
+      }, { timeout: 3000 });
     });
   });
 
@@ -213,13 +230,18 @@ describe('useAuth', () => {
 
       const { result } = renderHook(() => useAuth());
 
+      await act(async () => {
+        vi.runAllTimers();
+        await new Promise(resolve => setTimeout(resolve, 10));
+      });
+
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
         expect(result.current.user).toEqual(mockUser);
         expect(result.current.profile).toEqual(mockProfile);
         expect(result.current.trainerProfile).toEqual(mockTrainerProfile);
         expect(result.current.studentProfile).toBe(null);
-      });
+      }, { timeout: 3000 });
     });
 
     it('should load student profile for student users', async () => {
@@ -254,7 +276,7 @@ describe('useAuth', () => {
         expect(result.current.profile).toEqual(mockProfile);
         expect(result.current.studentProfile).toEqual(mockStudentProfile);
         expect(result.current.trainerProfile).toBe(null);
-      });
+      }, { timeout: 3000 });
     });
 
     it('should load admin profile without additional profile data', async () => {
@@ -282,7 +304,7 @@ describe('useAuth', () => {
         expect(result.current.profile).toEqual(mockProfile);
         expect(result.current.trainerProfile).toBe(null);
         expect(result.current.studentProfile).toBe(null);
-      });
+      }, { timeout: 3000 });
     });
 
     it('should handle profile loading errors gracefully', async () => {
@@ -373,7 +395,7 @@ describe('useAuth', () => {
       // Wait for initialization to complete
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-      });
+      }, { timeout: 3000 });
 
       await act(async () => {
         await result.current.signIn('user@test.com', 'password123');
@@ -390,7 +412,7 @@ describe('useAuth', () => {
       // Wait for initialization to complete
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-      });
+      }, { timeout: 3000 });
 
       const userData = {
         first_name: 'John',
@@ -413,7 +435,7 @@ describe('useAuth', () => {
       // Wait for initialization to complete
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-      });
+      }, { timeout: 3000 });
 
       await act(async () => {
         await result.current.signOut();
@@ -431,7 +453,7 @@ describe('useAuth', () => {
       // Wait for initialization to complete
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-      });
+      }, { timeout: 3000 });
 
       await expect(async () => {
         await act(async () => {

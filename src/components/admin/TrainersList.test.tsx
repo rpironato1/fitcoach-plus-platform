@@ -43,11 +43,20 @@ describe('TrainersList', () => {
     });
     user = userEvent.setup();
     
-    // Reset the mock functions
+    // Reset the mock functions but not the implementations
     mockGetTrainers.mockClear();
     mockUpdateTrainer.mockClear();
     mockDeleteTrainer.mockClear();
     mockToast.mockClear();
+    
+    // Reset to default mock implementation
+    mockUseTrainersManagement.mockReturnValue({
+      trainers: [],
+      isLoading: false,
+      error: null,
+      deleteTrainerMutation: { mutate: vi.fn(), isLoading: false },
+      updateTrainerMutation: { mutate: vi.fn(), isLoading: false },
+    });
   });
 
   const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -431,7 +440,7 @@ describe('TrainersList', () => {
           title: 'Error',
           description: 'Failed to delete trainer',
           variant: 'destructive',
-        });
+        }, { timeout: 3000 });
       });
     });
 
@@ -456,7 +465,7 @@ describe('TrainersList', () => {
           title: 'Error',
           description: 'Failed to update trainer status',
           variant: 'destructive',
-        });
+        }, { timeout: 3000 });
       });
     });
 

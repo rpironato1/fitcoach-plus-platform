@@ -262,7 +262,7 @@ describe('LocalStorageAuthService', () => {
       expect(callback).toHaveBeenCalledTimes(1);
 
       // Advance timer - user unchanged
-      vi.advanceTimersByTime(1000);
+      await act(async () => { vi.runAllTimers(); await new Promise(resolve => setTimeout(resolve, 10)); });
 
       expect(callback).toHaveBeenCalledTimes(1); // Still only called once
 
