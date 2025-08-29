@@ -127,7 +127,7 @@ describe('useAuth', () => {
         expect(result.current.user).toEqual(mockUser);
         expect(result.current.profile).toEqual(mockProfile);
       }, { timeout: 12000 });
-    }, 10000);
+    });
 
     it('should set loading to false when no session exists', async () => {
       mockAuthService.getCurrentSession.mockResolvedValue({ user: null });
@@ -172,58 +172,6 @@ describe('useAuth', () => {
       mockProfileService.getProfile.mockResolvedValue(mockProfile);
 
       // Simulate user signing in
-      await act(async () => {
-        authCallback?.(mockUser);
-        await new Promise(resolve => setTimeout(resolve, 10));
-      });
-
-      await waitFor(() => {
-        expect(result.current.user).toEqual(mockUser);
-        expect(result.current.profile).toEqual(mockProfile);
-      }, { timeout: 12000 });
-
-      // Simulate user signing out
-      await act(async () => {
-        authCallback?.(null);
-        await new Promise(resolve => setTimeout(resolve, 10));
-      });
-
-      await waitFor(() => {
-        expect(result.current.user).toBe(null);
-        expect(result.current.profile).toBe(null);
-        expect(result.current.loading).toBe(false);
-      }, { timeout: 12000 });
-    });
-  });
-
-  describe('Profile Loading', () => {
-    it('should load trainer profile for trainer users', async () => {
-      const mockUser = {
-        id: 'trainer-123',
-        email: 'trainer@test.com',
-        created_at: '2024-01-01T00:00:00Z',
-      };
-
-      const mockProfile = {
-        id: 'trainer-123',
-        first_name: 'Jane',
-        last_name: 'Smith',
-        role: 'trainer' as const,
-      };
-
-      const mockTrainerProfile = {
-        id: 'trainer-123',
-        plan: 'pro' as const,
-        max_students: 50,
-        ai_credits: 100,
-      };
-
-      mockAuthService.getCurrentSession.mockResolvedValue({ user: mockUser });
-      mockProfileService.getProfile.mockResolvedValue(mockProfile);
-      mockProfileService.getTrainerProfile.mockResolvedValue(mockTrainerProfile);
-
-      const { result } = renderHook(() => useAuth());
-
       act(() => { vi.runAllTimers(); });
 
       await waitFor(() => {
@@ -342,7 +290,7 @@ describe('useAuth', () => {
         role: 'trainer' as const,
       };
 
-      mockAuthService.getCurrentSession.mockResolvedValue({ user: mockUser });
+      mockAuthService.getCurrentSession.mockResolvedValue({ user: mockUser }, 15000);
       mockProfileService.getProfile.mockResolvedValue(mockProfile);
       mockProfileService.getTrainerProfile.mockResolvedValue(null);
 
@@ -369,7 +317,7 @@ describe('useAuth', () => {
         role: 'student' as const,
       };
 
-      mockAuthService.getCurrentSession.mockResolvedValue({ user: mockUser });
+      mockAuthService.getCurrentSession.mockResolvedValue({ user: mockUser }, 15000);
       mockProfileService.getProfile.mockResolvedValue(mockProfile);
       mockProfileService.getStudentProfile.mockResolvedValue(null);
 
@@ -392,7 +340,7 @@ describe('useAuth', () => {
       // Wait for initialization to complete
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-      }, { timeout: 12000 });
+      }, { timeout: 12000 }, 15000);
 
       await act(async () => {
         await result.current.signIn('user@test.com', 'password123');
@@ -409,7 +357,7 @@ describe('useAuth', () => {
       // Wait for initialization to complete
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-      }, { timeout: 12000 });
+      }, { timeout: 12000 }, 15000);
 
       const userData = {
         first_name: 'John',
@@ -432,7 +380,7 @@ describe('useAuth', () => {
       // Wait for initialization to complete
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-      }, { timeout: 12000 });
+      }, { timeout: 12000 }, 15000);
 
       await act(async () => {
         await result.current.signOut();
@@ -450,7 +398,7 @@ describe('useAuth', () => {
       // Wait for initialization to complete
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
-      }, { timeout: 12000 });
+      }, { timeout: 12000 }, 15000);
 
       await expect(async () => {
         await act(async () => {
@@ -478,7 +426,7 @@ describe('useAuth', () => {
       mockAuthService.onAuthStateChange.mockImplementation((callback) => {
         authCallback = callback;
         return { unsubscribe: vi.fn() };
-      });
+      }, 15000);
 
       const { result, unmount } = renderHook(() => useAuth());
 

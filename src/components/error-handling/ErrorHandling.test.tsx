@@ -46,7 +46,7 @@ const ErrorBoundary = ({ children, onError }: { children: React.ReactNode, onErr
 
   if (hasError && error) {
     return (
-      <div role="alert" aria-live="assertive" data-testid="error-fallback">
+      <div role="alert" aria-live="assertive" data-testid="field-error-fallback">
         <h2>Something went wrong</h2>
         <p>An unexpected error occurred</p>
         <button onClick={() => { setHasError(false); setError(null); }}>
