@@ -279,6 +279,7 @@ export function LandingPage() {
                 size="sm"
                 onClick={() => setIsLoginOpen(true)}
                 className="hidden sm:inline-flex"
+                aria-label="Entrar na plataforma FitCoach"
               >
                 Entrar
               </Button>
@@ -970,8 +971,8 @@ export function LandingPage() {
 
           <Separator className="my-8 bg-gray-800" />
 
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-300">
-            <p>&copy; 2024 FitCoach. Todos os direitos reservados.</p>
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-gray-300 font-medium">&copy; 2024 FitCoach. Todos os direitos reservados.</p>
             <div className="flex gap-6 text-sm">
               <a
                 href="/privacy"
