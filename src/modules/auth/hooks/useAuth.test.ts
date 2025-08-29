@@ -144,7 +144,7 @@ describe('useAuth', () => {
     });
 
     it('should handle auth state changes', async () => {
-      let authCallback: ((user: any) => void) | undefined;
+      let authCallback: ((user: unknown) => void) | undefined;
 
       mockAuthService.onAuthStateChange.mockImplementation((callback) => {
         authCallback = callback;
@@ -421,7 +421,7 @@ describe('useAuth', () => {
     });
 
     it('should prevent state updates after unmount', async () => {
-      let authCallback: ((user: any) => void) | undefined;
+      let authCallback: ((user: unknown) => void) | undefined;
 
       mockAuthService.onAuthStateChange.mockImplementation((callback) => {
         authCallback = callback;

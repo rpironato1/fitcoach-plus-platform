@@ -95,7 +95,7 @@ describe('Platform Services and Utilities Testing', () => {
     });
 
     it('should validate workout plan requirements', () => {
-      const validateWorkoutPlan = (plan: any) => {
+      const validateWorkoutPlan = (plan: Record<string, unknown>) => {
         const errors: string[] = [];
         
         if (!plan.name || plan.name.length < 3) {
@@ -305,7 +305,7 @@ describe('Platform Services and Utilities Testing', () => {
     });
 
     it('should handle null and undefined values gracefully', () => {
-      const safeAccessor = (obj: any, path: string[], defaultValue: any = null) => {
+      const safeAccessor = (obj: Record<string, unknown>, path: string[], defaultValue: unknown = null) => {
         try {
           return path.reduce((current, key) => current?.[key], obj) ?? defaultValue;
         } catch {
@@ -322,7 +322,7 @@ describe('Platform Services and Utilities Testing', () => {
 
     it('should retry failed operations with exponential backoff', async () => {
       const retryWithBackoff = async (
-        operation: () => Promise<any>,
+        operation: () => Promise<unknown>,
         maxRetries = 3,
         baseDelay = 100
       ) => {
@@ -360,11 +360,11 @@ describe('Platform Services and Utilities Testing', () => {
 
   describe('Performance and Optimization Helpers', () => {
     it('should debounce function calls', async () => {
-      const debounce = (func: Function, delay: number) => {
+      const debounce = (func: (...args: unknown[]) => void, delay: number) => {
         let timeoutId: NodeJS.Timeout;
-        return (...args: any[]) => {
+        return (...args: unknown[]) => {
           clearTimeout(timeoutId);
-          timeoutId = setTimeout(() => func.apply(null, args), delay);
+          timeoutId = setTimeout(() => func(...args), delay);
         };
       };
       
@@ -384,9 +384,9 @@ describe('Platform Services and Utilities Testing', () => {
     });
 
     it('should memoize expensive calculations', () => {
-      const memoize = (fn: Function) => {
+      const memoize = (fn: (...args: unknown[]) => unknown) => {
         const cache = new Map();
-        return (...args: any[]) => {
+        return (...args: unknown[]) => {
           const key = JSON.stringify(args);
           if (cache.has(key)) {
             return cache.get(key);
@@ -411,7 +411,7 @@ describe('Platform Services and Utilities Testing', () => {
     });
 
     it('should batch multiple operations', async () => {
-      const batchOperations = (operations: Function[], batchSize = 3) => {
+      const batchOperations = (operations: (() => void)[], batchSize = 3) => {
         const batches = [];
         for (let i = 0; i < operations.length; i += batchSize) {
           batches.push(operations.slice(i, i + batchSize));

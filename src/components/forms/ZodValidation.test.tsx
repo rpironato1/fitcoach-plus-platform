@@ -46,8 +46,8 @@ const ValidatedForm = ({
   children 
 }: {
   schema: z.ZodSchema;
-  onSubmit: (data: any) => void;
-  defaultValues?: any;
+  onSubmit: (data: Record<string, unknown>) => void;
+  defaultValues?: Record<string, unknown>;
   children: React.ReactNode;
 }) => {
   const [values, setValues] = React.useState(defaultValues);
@@ -72,7 +72,7 @@ const ValidatedForm = ({
     }
   };
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: unknown) => {
     setValues(prev => ({ ...prev, [field]: value }));
   };
 
@@ -105,7 +105,14 @@ const TextInput = ({
   values = {}, 
   errors = {}, 
   onChange 
-}: any) => (
+}: {
+  name: string;
+  label: string;
+  type?: string;
+  values?: Record<string, unknown>;
+  errors?: Record<string, string>;
+  onChange?: (field: string, value: unknown) => void;
+}) => (
   <div>
     <label htmlFor={name}>{label}</label>
     <input
@@ -130,7 +137,13 @@ const NumberInput = ({
   values = {}, 
   errors = {}, 
   onChange 
-}: any) => (
+}: {
+  name: string;
+  label: string;
+  values?: Record<string, unknown>;
+  errors?: Record<string, string>;
+  onChange?: (field: string, value: unknown) => void;
+}) => (
   <div>
     <label htmlFor={name}>{label}</label>
     <input
@@ -156,7 +169,14 @@ const SelectInput = ({
   values = {}, 
   errors = {}, 
   onChange 
-}: any) => (
+}: {
+  name: string;
+  label: string;
+  options: { value: string; label: string }[];
+  values?: Record<string, unknown>;
+  errors?: Record<string, string>;
+  onChange?: (field: string, value: unknown) => void;
+}) => (
   <div>
     <label htmlFor={name}>{label}</label>
     <select

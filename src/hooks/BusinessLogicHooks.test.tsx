@@ -652,9 +652,9 @@ describe('Business Logic Hooks Comprehensive Testing', () => {
       const { result } = renderHook(() => useStudentsManagement(), { wrapper });
 
       act(() => {
-        result.current.createStudent(null as any);
-        result.current.updateStudent(null as any);
-        result.current.deleteStudent(null as any);
+        result.current.createStudent(null as unknown);
+        result.current.updateStudent(null as unknown);
+        result.current.deleteStudent(null as unknown);
       });
 
       expect(mockStudentsService.createStudent).toHaveBeenCalledWith(null);

@@ -479,7 +479,7 @@ describe('usePlanLimits', () => {
     });
 
     it('should handle null trainer ID', () => {
-      const { result } = renderHook(() => usePlanLimits(null as any), { wrapper });
+      const { result } = renderHook(() => usePlanLimits(null as unknown), { wrapper });
 
       expect(result.current.data).toBeUndefined();
       expect(mockPlanLimitsService.getPlanLimits).not.toHaveBeenCalled();

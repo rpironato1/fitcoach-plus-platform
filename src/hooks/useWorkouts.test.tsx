@@ -343,7 +343,7 @@ describe('useWorkouts', () => {
     });
 
     it('should handle null user ID', () => {
-      const { result } = renderHook(() => useWorkouts(null as any, 'student'), { wrapper });
+      const { result } = renderHook(() => useWorkouts(null as unknown, 'student'), { wrapper });
 
       expect(result.current.data).toBeUndefined();
       expect(mockWorkoutsService.getWorkoutsByStudent).not.toHaveBeenCalled();
@@ -374,7 +374,7 @@ describe('useWorkouts', () => {
     });
 
     it('should handle invalid workout type parameter', () => {
-      const { result } = renderHook(() => useWorkouts('user123', 'invalid' as any), { wrapper });
+      const { result } = renderHook(() => useWorkouts('user123', 'invalid' as unknown), { wrapper });
 
       expect(result.current.data).toBeUndefined();
       expect(mockWorkoutsService.getWorkoutsByTrainer).not.toHaveBeenCalled();

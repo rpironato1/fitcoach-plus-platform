@@ -8,6 +8,7 @@ import { describe, it, expect, beforeEach, vi, beforeAll, afterEach } from 'vite
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { z } from 'zod';
+import React from 'react';
 import * as React from 'react';
 import { useDashboardData } from './useDashboardData';
 

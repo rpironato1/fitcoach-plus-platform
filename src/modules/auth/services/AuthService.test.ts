@@ -197,7 +197,7 @@ describe('SupabaseAuthService', () => {
 
     it('should call callback with user when auth state changes', () => {
       const callback = vi.fn();
-      let authStateCallback: ((event: string, session: any) => void) | undefined;
+      let authStateCallback: ((event: string, session: unknown) => void) | undefined;
 
       mockSupabase.auth.onAuthStateChange.mockImplementation((cb) => {
         authStateCallback = cb;
@@ -215,7 +215,7 @@ describe('SupabaseAuthService', () => {
 
     it('should call callback with null when user signs out', () => {
       const callback = vi.fn();
-      let authStateCallback: ((event: string, session: any) => void) | undefined;
+      let authStateCallback: ((event: string, session: unknown) => void) | undefined;
 
       mockSupabase.auth.onAuthStateChange.mockImplementation((cb) => {
         authStateCallback = cb;

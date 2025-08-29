@@ -297,7 +297,7 @@ describe('useSessions', () => {
     });
 
     it('should handle null user ID', () => {
-      const { result } = renderHook(() => useSessions(null as any, 'student'), { wrapper });
+      const { result } = renderHook(() => useSessions(null as unknown, 'student'), { wrapper });
 
       expect(result.current.data).toBeUndefined();
       expect(mockSessionsService.getSessionsByStudent).not.toHaveBeenCalled();
@@ -362,7 +362,7 @@ describe('useSessions', () => {
     });
 
     it('should handle invalid session type parameter', () => {
-      const { result } = renderHook(() => useSessions('user123', 'invalid' as any), { wrapper });
+      const { result } = renderHook(() => useSessions('user123', 'invalid' as unknown), { wrapper });
 
       expect(result.current.data).toBeUndefined();
       expect(mockSessionsService.getSessionsByTrainer).not.toHaveBeenCalled();

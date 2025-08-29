@@ -155,7 +155,7 @@ describe('useStudents', () => {
     });
 
     it('should handle null trainer ID', () => {
-      const { result } = renderHook(() => useStudents(null as any), { wrapper });
+      const { result } = renderHook(() => useStudents(null as unknown), { wrapper });
 
       expect(result.current.data).toBeUndefined();
       expect(mockStudentsService.getStudents).not.toHaveBeenCalled();

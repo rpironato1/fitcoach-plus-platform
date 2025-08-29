@@ -379,7 +379,7 @@ describe('useDietPlans', () => {
     });
 
     it('should handle null user ID', () => {
-      const { result } = renderHook(() => useDietPlans(null as any, 'student'), { wrapper });
+      const { result } = renderHook(() => useDietPlans(null as unknown, 'student'), { wrapper });
 
       expect(result.current.data).toBeUndefined();
       expect(mockDietPlansService.getDietPlansByStudent).not.toHaveBeenCalled();
@@ -410,7 +410,7 @@ describe('useDietPlans', () => {
     });
 
     it('should handle invalid diet plan type parameter', () => {
-      const { result } = renderHook(() => useDietPlans('user123', 'invalid' as any), { wrapper });
+      const { result } = renderHook(() => useDietPlans('user123', 'invalid' as unknown), { wrapper });
 
       expect(result.current.data).toBeUndefined();
       expect(mockDietPlansService.getDietPlansByTrainer).not.toHaveBeenCalled();

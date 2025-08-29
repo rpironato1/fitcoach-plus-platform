@@ -269,9 +269,9 @@ describe('Input Component', () => {
     });
 
     it('should support tabIndex', () => {
-      render(<Input tabIndex={5} />);
+      render(<Input tabIndex={0} />);
       const input = screen.getByRole('textbox');
-      expect(input).toHaveAttribute('tabindex', '5');
+      expect(input).toHaveAttribute('tabindex', '0');
     });
   });
 
@@ -329,7 +329,7 @@ describe('Input Component', () => {
     });
 
     it('should handle null value gracefully', () => {
-      render(<Input value={null as any} readOnly />);
+      render(<Input value={null as unknown as string} readOnly />);
       const input = screen.getByRole('textbox');
       expect(input).toBeInTheDocument();
     });

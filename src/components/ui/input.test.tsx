@@ -65,7 +65,7 @@ describe('Input Component', () => {
       const types = ['text', 'email', 'password', 'number', 'tel', 'url', 'search'];
       
       types.forEach((type) => {
-        const { unmount } = render(<Input type={type as any} data-testid={`input-${type}`} />);
+        const { unmount } = render(<Input type={type as React.HTMLInputTypeAttribute} data-testid={`input-${type}`} />);
         const input = screen.getByTestId(`input-${type}`);
         expect(input).toHaveAttribute('type', type);
         unmount();

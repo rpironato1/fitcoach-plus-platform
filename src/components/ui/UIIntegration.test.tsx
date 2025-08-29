@@ -5,7 +5,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 
 // Mock component for basic UI element testing
-const MockButton = ({ children, onClick, disabled, className, ...props }: any) => (
+const MockButton = ({ children, onClick, disabled, className, ...props }: {
+  children: React.ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  className?: string;
+  [key: string]: unknown;
+}) => (
   <button
     onClick={onClick}
     disabled={disabled}
@@ -16,7 +22,10 @@ const MockButton = ({ children, onClick, disabled, className, ...props }: any) =
   </button>
 );
 
-const MockCard = ({ children, className }: any) => (
+const MockCard = ({ children, className }: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
   <div className={className}>{children}</div>
 );
 

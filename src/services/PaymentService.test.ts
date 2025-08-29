@@ -33,7 +33,7 @@ describe('PaymentService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     paymentService = new PaymentService(mockConfig);
-    // @ts-ignore
+    // @ts-expect-error -- Testing mock private property access
     paymentService.stripe = mockStripe;
   });
 
@@ -87,7 +87,7 @@ describe('PaymentService', () => {
           status: 'requires_payment_method',
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const subscriptionData = {
@@ -122,7 +122,7 @@ describe('PaymentService', () => {
           error: 'Invalid price ID',
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const subscriptionData = {
@@ -143,7 +143,7 @@ describe('PaymentService', () => {
           currentPeriodEnd: 1704067200,
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const updateData = {
@@ -178,7 +178,7 @@ describe('PaymentService', () => {
           refundAmount: 2500,
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const cancelData = {
@@ -215,7 +215,7 @@ describe('PaymentService', () => {
           pausedUntil: 1704067200,
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const result = await paymentService.pauseSubscription('sub_123', {
@@ -314,7 +314,7 @@ describe('PaymentService', () => {
           reason: 'requested_by_customer',
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const refundData = {
@@ -339,7 +339,7 @@ describe('PaymentService', () => {
           reason: 'requested_by_customer',
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const refundData = {
@@ -379,7 +379,7 @@ describe('PaymentService', () => {
           isDefault: true,
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const result = await paymentService.savePaymentMethod('cus_123', 'card_element');
@@ -400,7 +400,7 @@ describe('PaymentService', () => {
           deleted: true,
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const result = await paymentService.deletePaymentMethod('pm_123');
@@ -420,7 +420,7 @@ describe('PaymentService', () => {
           defaultPaymentMethod: 'pm_456',
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const result = await paymentService.setDefaultPaymentMethod('cus_123', 'pm_456');
@@ -455,7 +455,7 @@ describe('PaymentService', () => {
           hasMore: false,
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const result = await paymentService.getBillingHistory('cus_123', {
@@ -473,7 +473,7 @@ describe('PaymentService', () => {
         ok: true,
         blob: vi.fn().mockResolvedValue(mockBlob),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       // Mock URL.createObjectURL
@@ -486,7 +486,7 @@ describe('PaymentService', () => {
         download: '',
         click: vi.fn(),
       };
-      vi.spyOn(document, 'createElement').mockReturnValue(mockLink as any);
+      vi.spyOn(document, 'createElement').mockReturnValue(mockLink as unknown as HTMLAnchorElement);
 
       await paymentService.downloadInvoice('in_123');
 
@@ -513,7 +513,7 @@ describe('PaymentService', () => {
           ],
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const result = await paymentService.getUpcomingInvoice('sub_123');
@@ -564,7 +564,7 @@ describe('PaymentService', () => {
         ok: true,
         json: vi.fn().mockResolvedValue({ received: true }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const result = await paymentService.handleWebhook(webhookEvent);
@@ -589,7 +589,7 @@ describe('PaymentService', () => {
         ok: true,
         json: vi.fn().mockResolvedValue({ received: true }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const result = await paymentService.handleWebhook(webhookEvent);
@@ -600,7 +600,7 @@ describe('PaymentService', () => {
 
   describe('error handling and edge cases', () => {
     it('should handle network timeouts', async () => {
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockImplementation(() => 
         new Promise((_, reject) => 
           setTimeout(() => reject(new Error('Network timeout')), 100)
@@ -625,7 +625,7 @@ describe('PaymentService', () => {
           retryAfter: 60,
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       const subscriptionData = {
@@ -654,7 +654,7 @@ describe('PaymentService', () => {
         currency: 'usd',
       };
 
-      await expect(paymentService.processPayment(incompleteData as any, 'card_element'))
+      await expect(paymentService.processPayment(incompleteData as unknown as PaymentData, 'card_element'))
         .rejects.toThrow('Missing required payment data');
     });
 
@@ -706,7 +706,7 @@ describe('PaymentService', () => {
           error: 'Duplicate payment attempt',
         }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       await expect(paymentService.processPayment(paymentData, 'card_element'))
@@ -751,12 +751,12 @@ describe('PaymentService', () => {
         ok: true,
         json: vi.fn().mockResolvedValue({ success: true }),
       };
-      // @ts-ignore
+      // @ts-expect-error -- Testing mock private property access
       global.fetch.mockResolvedValue(mockResponse);
 
       await paymentService.processPayment(unsafeData, 'card_element');
 
-      const fetchCall = (global.fetch as any).mock.calls[0];
+      const fetchCall = (global.fetch as unknown as jest.MockedFunction<typeof fetch>).mock.calls[0];
       const sentData = JSON.parse(fetchCall[1].body);
 
       expect(sentData.description).not.toContain('<script>');
